@@ -1,0 +1,3 @@
+- agregado #include <cstring> en cotemarek.h para solucionar error "‘stdcmp’ is not a member of ‘std’"
+- agregado #include <cstdlib> en main.cpp para solucionar error "‘atoi’ is not a member of ‘std’"
+- agregado #include <limits> en mesher.cpp para solucionar error "‘numeric_limits’ is not a member of ‘std’"

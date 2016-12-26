@@ -1,0 +1,3 @@
+/home/javier/Documentos/Memoria/view/CMakeFiles/edit_cache.dir
+/home/javier/Documentos/Memoria/view/CMakeFiles/rebuild_cache.dir
+/home/javier/Documentos/Memoria/view/CMakeFiles/viewer.dir

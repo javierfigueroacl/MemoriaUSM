@@ -1,0 +1,21 @@
+Ver mallas (en carpeta donde esten las mallas):
+
+./viewer -o file.m3d
+ where -o can be:
+  -d: for mdl
+  -m: for m3d
+
+Ejecutar herramienta de generacion de mallas:
+
+./mesher_roi -i FEMUR.mdl -s 2
+
+-i input
+-s numero de refinaciones
+-o output (opcional)
+
+Se genera un .m3d, se abre con el viewer usando -m en vez de -d
+
+--------------------------- ESTRUCTURA DE BOUNDARY TEMPLATE ------------------------------
+
+BoundaryTemplate1,2,3 -> PatternA,PatternB,PatternC
+BoundaryTemplate4 -> PatternA,PatternB,PatternC,PatternD,PatternE,PatternF,PatternG

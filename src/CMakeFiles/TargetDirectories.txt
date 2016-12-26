@@ -1,0 +1,3 @@
+/home/javier/Documentos/Memoria/src/CMakeFiles/edit_cache.dir
+/home/javier/Documentos/Memoria/src/CMakeFiles/rebuild_cache.dir
+/home/javier/Documentos/Memoria/src/CMakeFiles/mesher_roi.dir
