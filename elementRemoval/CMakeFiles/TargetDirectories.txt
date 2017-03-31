@@ -1,0 +1,3 @@
+/home/javier/Documentos/Memoria/elementRemoval/CMakeFiles/edit_cache.dir
+/home/javier/Documentos/Memoria/elementRemoval/CMakeFiles/rebuild_cache.dir
+/home/javier/Documentos/Memoria/elementRemoval/CMakeFiles/remove_elements.dir

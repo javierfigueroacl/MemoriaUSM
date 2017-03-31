@@ -2,7 +2,6 @@
 #define CoteMarek_h 1
 
 #include <string.h>
-#include <cstring>
 #include "TriMesh.h"
 #include "../mesher_services/Mesh.h"
 #include "../mesher_services/VPoint3D.h"

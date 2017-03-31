@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/mesh2mdl.dir/MeshToMdl.cpp.o /home/javier/Documentos/Memoria/geometry/Point.o /home/javier/Documentos/Memoria/geometry/Face.o /home/javier/Documentos/Memoria/geometry/FaceContainer.o /home/javier/Documentos/Memoria/read_write/ReadMeshSurface.o /home/javier/Documentos/Memoria/read_write/WriteMdl.o  -o mesh2mdl -rdynamic 

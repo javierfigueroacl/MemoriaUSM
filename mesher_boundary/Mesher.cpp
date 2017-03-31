@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Mesher.h"
-#include <limits>
 
 namespace Clobscode
 {

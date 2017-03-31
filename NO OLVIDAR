@@ -19,3 +19,71 @@ Se genera un .m3d, se abre con el viewer usando -m en vez de -d
 
 BoundaryTemplate1,2,3 -> PatternA,PatternB,PatternC
 BoundaryTemplate4 -> PatternA,PatternB,PatternC,PatternD,PatternE,PatternF,PatternG
+
+---------------------------------------------------------------------------------
+
+Para compilar primero debes ejecutar make en la carpeta mesher_services y luego debes ir a la mesher_boundary. Ahí debes ejecutar:
+%> cmake .
+…
+%> make
+
+Eso va a generar el ejecutable mesher_boundary. Dentro de esa misma carpeta van dos inputs para prueba (cilindro y caja). Para generar una malla de nivel de refinamiento 3 (cantidad recursiva de veces de aplicar Octree) ejecutar:
+./mesher_boundary cylinder.mdl hex_en.mdl 3 mi_malla_output
+
+1. Fijarse que la ventana activa de geomview sea la de la cámara.
+2. presionar las teclas: “ae”. Eso activará la visualización de arcos.
+3. presionar las teclas: “af”. Eso des-activará la visualización de caras.
+4. presionar las teclas: “ab”. Eso des-activará la visualización de la Bounding-box (cubo que encierra la geometría).
+5. presionar la tecla “r” para activar rotación y jugar con el mouse para rotar la figura.
+
+
+Donde el 3 es por nivel de refinamiento y “mi_malla_output” es el nombre de salida. Para visualizar el resultado debes llamar al visualizador (viewer) pasándole como parámetro la malla recién generada:
+%> path/viewer -m mi_malla_output.m3d
+
+donde path es el path al viewer.
+
+------------------------------------------------------------
+cd Documentos
+cd Memoria
+./viewer -m mi_malla_output.m3d
+
+Los octantes que dan error (hay dos baldosas visibles paralelas, esas no, la tercera) están en las coordenadas:
+
+x: [-5,0]
+y: [-5,0]
+z (octante 1): [-5,-2]
+z (octante 2): [-2,3]
+
+Se encontró que el octante 2 tiene las siguientes coordenadas:
+-3.54551 -3.51602 -1.5 <- punto xyz 
+-3.54551 -3.51602 2.25 <- punto xyz 
+-0.250001 -4.99013 2.25 <- punto xyz 
+-0.250001 -4.99013 -1.5 <- punto xyz 
+-4.98039 -0.31168 -1.5 <- punto xyz 
+-4.98039 -0.31168 2.25 <- punto xyz 
+-0.25 -0.25 2.25 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+
+Se encontró el octante que comparte la cara "bugeada" del octante 1:
+octante encontrado 
+-3.54551 -3.51602 -1.5 <- punto xyz 
+-4.98039 -0.31168 -1.5 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+-0.250001 -4.99013 -1.5 <- punto xyz 
+-4 -4 -5.25 <- punto xyz 
+
+El último "octante" tiene sólo 5 nodos (pirámide). Es posible que sea un elemento perteneciente a un patrón de superficie.
+
+Se confirma que pertenece a un patrón de superficie. Al octante 1 se le aplica el patrón 7a.
+
+Se encontraron los nodos del octante 1
+-4 -4 -5.25 <- punto xyz 
+-3.54551 -3.51602 -1.5 <- punto xyz 
+-0.250001 -4.99013 -1.5 <- punto xyz 
+-0.25 -4 -5 <- punto xyz 
+-4 -0.25 -5 <- punto xyz 
+-4.98039 -0.31168 -1.5 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+-0.25 -0.25 -5 <- punto xyz 
+
+

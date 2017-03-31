@@ -2,9 +2,7 @@
 #include "TriMesh.h"
 #include "FEMesh.h"
 #include "CoteMarek.h"
-#include <cstdlib>
 #include <string>
-#include <cstring>
 #include <cctype>
 #include <time.h>
 

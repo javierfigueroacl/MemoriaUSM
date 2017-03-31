@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/joinoff.dir/JoinPoint.cpp.o CMakeFiles/joinoff.dir/JoinOff.cpp.o /home/javier/Documentos/Memoria/geometry/Point.o /home/javier/Documentos/Memoria/geometry/Face.o /home/javier/Documentos/Memoria/geometry/FaceContainer.o /home/javier/Documentos/Memoria/read_write/ReadOff.o /home/javier/Documentos/Memoria/read_write/WriteOff.o  -o joinoff -rdynamic 

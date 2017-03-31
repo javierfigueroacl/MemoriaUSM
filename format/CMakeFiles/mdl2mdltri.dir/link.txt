@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/mdl2mdltri.dir/MdlToMdlTriangle.cpp.o /home/javier/Documentos/Memoria/geometry/Point.o /home/javier/Documentos/Memoria/geometry/Face.o /home/javier/Documentos/Memoria/geometry/FaceContainer.o /home/javier/Documentos/Memoria/read_write/WriteMdl.o /home/javier/Documentos/Memoria/read_write/ReadMdl.o  -o mdl2mdltri -rdynamic 
