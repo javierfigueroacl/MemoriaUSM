@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Mesher.h"
+#include <limits>
 
 namespace Clobscode
 {
@@ -677,6 +678,39 @@ namespace Clobscode
 		list<MeshPoint>::iterator piter;
 		list<unsigned int> in_to_check;
 		list<unsigned int>::iterator e_in_iter;
+
+		//////////////////////////////////////////////////////////////////////
+		// fix problem with surface pattern neightborhood with boundary patterns
+		vector <EnhancedElement> tmp_elements;
+		vector <EnhancedElement> py_elements;
+		// Llenar vector octantes
+		for (unsigned int i=0; i<elements.size(); i++) {
+			tmp_elements.push_back(elements[i]);
+		}
+
+		// Recorrer vector octantes
+		for(unsigned int i=0; i<tmp_elements.size();i++){
+			vector <unsigned int> points_ele = tmp_elements[i].getPoints();
+			vector <Point3D> elepts;
+			vector <Point3D> py_elements_face;
+			// Llenar vector coordenadas punto
+			for(unsigned int k=0; k<points_ele.size();k++){
+			elepts.push_back(points.at(points_ele[k]).getPoint());
+			}
+			// Si es de tamaño 5, es una pirámide
+			if (elepts.size() == 5){
+				for(unsigned int k=0; k<points_ele.size();k++)
+				py_elements_face.push_back(points.at(points_ele[k]).getPoint());
+				cout <<" --------------------- \n";
+				//print puntos
+				for (unsigned int j=0; j < py_elements_face.size(); j++)
+					cout << py_elements_face[j] << " <- punto xyz \n";
+				cout <<" --------------------- \n";
+				//Guardar piramide
+				py_elements.push_back(tmp_elements[i]);
+			}		
+		}
+		//////////////////////////////////////////////////////////////////////////////////
 		
 		for (unsigned int i=0; i<elements.size(); i++) {
 			
