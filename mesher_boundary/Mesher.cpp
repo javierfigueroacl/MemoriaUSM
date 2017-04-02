@@ -682,33 +682,31 @@ namespace Clobscode
 		//////////////////////////////////////////////////////////////////////
 		// fix problem with surface pattern neightborhood with boundary patterns
 		vector <EnhancedElement> tmp_elements;
-		vector <EnhancedElement> py_elements;
+		vector < vector <unsigned int> > py_elements_face;
 		// Llenar vector octantes
 		for (unsigned int i=0; i<elements.size(); i++) {
 			tmp_elements.push_back(elements[i]);
 		}
-
 		// Recorrer vector octantes
 		for(unsigned int i=0; i<tmp_elements.size();i++){
 			vector <unsigned int> points_ele = tmp_elements[i].getPoints();
-			vector <Point3D> elepts;
-			vector <Point3D> py_elements_face;
-			// Llenar vector coordenadas punto
-			for(unsigned int k=0; k<points_ele.size();k++){
-			elepts.push_back(points.at(points_ele[k]).getPoint());
+
+			if (points_ele.size() == 5){
+				py_elements_face.push_back(points_ele);
+			
 			}
-			// Si es de tamaño 5, es una pirámide
-			if (elepts.size() == 5){
-				for(unsigned int k=0; k<points_ele.size();k++)
-				py_elements_face.push_back(points.at(points_ele[k]).getPoint());
+		}
+		//Debugging
+		for(unsigned int i=0; i<py_elements_face.size();i++){
+			vector <Point3D> elepts;
+			for(unsigned int k=0; k<py_elements_face[i].size();k++){
+				elepts.push_back(points.at(py_elements_face[i][k]).getPoint());
+			}
+			cout <<" --------------------- \n";
+			//print puntos
+			for (unsigned int j=0; j < elepts.size(); j++)
+				cout << elepts[j] << " <- punto xyz \n";
 				cout <<" --------------------- \n";
-				//print puntos
-				for (unsigned int j=0; j < py_elements_face.size(); j++)
-					cout << py_elements_face[j] << " <- punto xyz \n";
-				cout <<" --------------------- \n";
-				//Guardar piramide
-				py_elements.push_back(tmp_elements[i]);
-			}		
 		}
 		//////////////////////////////////////////////////////////////////////////////////
 		
@@ -741,8 +739,8 @@ namespace Clobscode
 			
 			/*Important note: the applyBoundary function is currently considering*/
 			
-			
-			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf)) {
+			// agregado py_elements_face como parametro
+			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf,py_elements_face)) {
 				newele.push_back(elements[i]);
 				continue;
 			}
