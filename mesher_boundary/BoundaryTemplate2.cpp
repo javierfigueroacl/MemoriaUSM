@@ -14,7 +14,8 @@ namespace Clobscode
 										   vector<MeshPoint> &pts,
 										   list<MeshPoint> &newpts,
 										   vector<vector<unsigned int> > &newsubs_in,
-										   vector<vector<unsigned int> > &newsubs_out){
+										   vector<vector<unsigned int> > &newsubs_out,
+										   vector<vector<unsigned int> > &conflicting_elements){
 		
 		HexRotation hrot;
 		vector<unsigned int> rotated;
@@ -26,17 +27,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[in[1]]){
-			PatternA(rotated,newsubs_in,newsubs_out);
+			PatternA(rotated,newsubs_in,newsubs_out,conflicting_elements);
 			return true;
 		}
 		if(rotated[1] == all[in[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,newsubs_in,newsubs_out);
+			PatternA(rotated,newsubs_in,newsubs_out,conflicting_elements);
 			return true;
 		}
 		if(rotated[4] == all[in[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,newsubs_in,newsubs_out);
+			PatternA(rotated,newsubs_in,newsubs_out,conflicting_elements);
 			return true;
 		}
 		
@@ -71,7 +72,8 @@ namespace Clobscode
 	
 	void BoundaryTemplate2::PatternA(vector<unsigned int> &all, 
 									 vector<vector<unsigned int> > &newsubs_in,
-									 vector<vector<unsigned int> > &newsubs_out){
+									 vector<vector<unsigned int> > &newsubs_out,
+									 vector<vector<unsigned int> > &conflicting_elements){
 		
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		

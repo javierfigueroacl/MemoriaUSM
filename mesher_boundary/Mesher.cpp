@@ -682,7 +682,7 @@ namespace Clobscode
 		//////////////////////////////////////////////////////////////////////
 		// fix problem with surface pattern neightborhood with boundary patterns
 		vector <EnhancedElement> tmp_elements;
-		vector < vector <unsigned int> > py_elements_face;
+		vector < vector <unsigned int> > conflicting_elements;
 		// Llenar vector octantes
 		for (unsigned int i=0; i<elements.size(); i++) {
 			tmp_elements.push_back(elements[i]);
@@ -692,15 +692,15 @@ namespace Clobscode
 			vector <unsigned int> points_ele = tmp_elements[i].getPoints();
 
 			if (points_ele.size() == 5){
-				py_elements_face.push_back(points_ele);
+				conflicting_elements.push_back(points_ele);
 			
 			}
 		}
 		//Debugging
-		for(unsigned int i=0; i<py_elements_face.size();i++){
+		for(unsigned int i=0; i<conflicting_elements.size();i++){
 			vector <Point3D> elepts;
-			for(unsigned int k=0; k<py_elements_face[i].size();k++){
-				elepts.push_back(points.at(py_elements_face[i][k]).getPoint());
+			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
+				elepts.push_back(points.at(conflicting_elements[i][k]).getPoint());
 			}
 			cout <<" --------------------- \n";
 			//print puntos
@@ -739,8 +739,8 @@ namespace Clobscode
 			
 			/*Important note: the applyBoundary function is currently considering*/
 			
-			// agregado py_elements_face como parametro
-			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf,py_elements_face)) {
+			// agregado conflicting_elements como parametro
+			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf,conflicting_elements)) {
 				newele.push_back(elements[i]);
 				continue;
 			}

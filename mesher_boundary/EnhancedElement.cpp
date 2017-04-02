@@ -151,7 +151,7 @@ namespace Clobscode
 												 vector<vector<unsigned int> > &newsub,
 												 vector<vector<unsigned int> > &newsub_out,
 												 const unsigned int &intersects,
-												 vector<vector<unsigned int> > &py_elements_face
+										vector<vector<unsigned int> > &conflicting_elements
 													){
 		
 		if(!insideBorder(meshpoints)){
@@ -245,7 +245,7 @@ namespace Clobscode
 			case 2: {
 				//std::cout << "applying template 2\n";				
 				BoundaryTemplate2 boun_t2;
-				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out);
+				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out,conflicting_elements);
 			}
 			case 3: {
 				//std::cout << "applying template 3\n";				
