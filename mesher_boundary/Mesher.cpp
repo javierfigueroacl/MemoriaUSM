@@ -696,18 +696,6 @@ namespace Clobscode
 			
 			}
 		}
-		//Debugging
-		for(unsigned int i=0; i<conflicting_elements.size();i++){
-			vector <Point3D> elepts;
-			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
-				elepts.push_back(points.at(conflicting_elements[i][k]).getPoint());
-			}
-			cout <<" --------------------- \n";
-			//print puntos
-			for (unsigned int j=0; j < elepts.size(); j++)
-				cout << elepts[j] << " <- punto xyz \n";
-				cout <<" --------------------- \n";
-		}
 		//////////////////////////////////////////////////////////////////////////////////
 		
 		for (unsigned int i=0; i<elements.size(); i++) {
