@@ -87,3 +87,7 @@ Se encontraron los nodos del octante 1
 -0.25 -0.25 -5 <- punto xyz 
 
 
+Se comprueba que los problemas estan en las caras del eje z. El patron 2a esta en su posicion original o rotado 180 grados en el eje y.
+
+Se conprueba que son 2 los octantes con el conflicto, no estan rotados y uno de ellos tiene conflictos en ambas caras, de ahi que se vean 3 caras en el visualizador.
+

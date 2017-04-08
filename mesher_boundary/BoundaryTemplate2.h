@@ -35,7 +35,8 @@ class BoundaryTemplate2 {
 						  vector<MeshPoint> &pts,
 						  vector<vector<unsigned int> > &newsubs_in,
 						  vector<vector<unsigned int> > &newsubs_out,
-						  vector<vector<unsigned int> > &conflicting_elements);
+						  vector<vector<unsigned int> > &conflicting_elements,
+						  unsigned int rotstate);
 	
 	virtual void PatternB(vector<unsigned int> &all,
 						  vector<MeshPoint> &pts,

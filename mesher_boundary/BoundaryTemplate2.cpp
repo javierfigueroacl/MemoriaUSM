@@ -27,17 +27,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[in[1]]){ // sin rotar?
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,0);
 			return true;
 		}
 		if(rotated[1] == all[in[1]]){ // rotacion en y en 180 grados?
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,1);
 			return true;
 		}
 		if(rotated[4] == all[in[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,2);
 			return true;
 		}
 		
@@ -74,11 +74,14 @@ namespace Clobscode
 									 vector<MeshPoint> &pts,
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out,
-									 vector<vector<unsigned int> > &conflicting_elements){
+									 vector<vector<unsigned int> > &conflicting_elements,
+									 unsigned int rotstate){
 		
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		
 
+		// Si no estan rotados (se analizara este caso de momento)
+		if (rotstate == 0)
 		//Recorrer elementos conflictivos de la malla
 		for(unsigned int i=0; i<conflicting_elements.size();i++){
 			vector <Point3D> elepts;
@@ -93,13 +96,13 @@ namespace Clobscode
 			int sharednode=0;
 
 			// Recorrer nodos y comparar coordenadas xyz
-			for(unsigned int j=0; j<mpts.size();j++){
+			for(unsigned int j=0; j<mpts.size();j++)
 			for(unsigned int k=0; k<elepts.size()-1;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
 				if (mpts[j][0] == elepts[k][0]) // Restriccion x
 				if (mpts[j][1] == elepts[k][1]) // Restriccion y
 				if (mpts[j][2] == elepts[k][2]) // Restriccion z
 				sharednode++;
-			}
+			
 			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
 			if (sharednode == 4){
 				cout <<" --------------------- \n";
@@ -107,7 +110,18 @@ namespace Clobscode
 				//print puntos
 				for (unsigned int l=0; l < elepts.size()-1; l++)
 				cout << elepts[l] << " <- punto xyz \n";
+				
+				for(unsigned int j=0; j<mpts.size();j++)
+				for(unsigned int k=0; k<elepts.size()-1;k++) 
+					if (mpts[j][0] == elepts[k][0]) // Restriccion x
+					if (mpts[j][1] == elepts[k][1]) // Restriccion y
+					if (mpts[j][2] == elepts[k][2]){ // Restriccion z
+						//if(pts.at(conflicting_elements[i][k]).getIOState(0) == true && pts.at(conflicting_elements[i][k]).getIOState(1) == true)
+						if(pts.at(all[j]).getIOState(0) == true && pts.at(all[j]).getIOState(1) == true)
+						cout << "nodo numero "<<j<<" del octante dentro de ambas superficies\n";
+					}
 
+				/*
 				//detectar plano en que se encuentra la cara
                                 if(elepts[0][0] == elepts[1][0] && elepts[0][0] ==elepts[2][0] && elepts[0][0] ==elepts[3][0]){
 					for (unsigned int l=0; l < mpts.size()-1; l++)
@@ -129,7 +143,9 @@ namespace Clobscode
 						cout <<" cara en plano z superior \n";
 						else if (mpts[l][2] > elepts[0][2])
 						cout <<" cara en plano z inferior \n";
-				}
+				} 
+				*/
+
 				cout <<" --------------------- \n";
 				
 			}
