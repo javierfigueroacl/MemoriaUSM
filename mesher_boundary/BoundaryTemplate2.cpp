@@ -80,8 +80,6 @@ namespace Clobscode
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		
 
-		// Si no estan rotados (se analizara este caso de momento)
-		if (rotstate == 0)
 		//Recorrer elementos conflictivos de la malla
 		for(unsigned int i=0; i<conflicting_elements.size();i++){
 			vector <Point3D> elepts;
@@ -107,22 +105,26 @@ namespace Clobscode
 			if (sharednode == 4){
 				cout <<" --------------------- \n";
 				cout <<" cara conflictiva encontrada \n";
-				//print puntos
-				for (unsigned int l=0; l < elepts.size()-1; l++)
-				cout << elepts[l] << " <- punto xyz \n";
-				
-				for(unsigned int j=0; j<mpts.size();j++)
-				for(unsigned int k=0; k<elepts.size()-1;k++) 
-					if (mpts[j][0] == elepts[k][0]) // Restriccion x
-					if (mpts[j][1] == elepts[k][1]) // Restriccion y
-					if (mpts[j][2] == elepts[k][2]){ // Restriccion z
-						//if(pts.at(conflicting_elements[i][k]).getIOState(0) == true && pts.at(conflicting_elements[i][k]).getIOState(1) == true)
-						if(pts.at(all[j]).getIOState(0) == true && pts.at(all[j]).getIOState(1) == true)
-						cout << "nodo numero "<<j<<" del octante dentro de ambas superficies\n";
-					}
 
-				/*
+				cout <<" piramide \n";
+
+				//cout << conflicting_elements[i][0] << " "<< conflicting_elements[i][1] << " "<< conflicting_elements[i][2] << " "<< conflicting_elements[i][3] << "\n";
+				//print puntos
+				for (unsigned int l=0; l < elepts.size(); l++)
+				cout << elepts[l] << "\n";
+
+				//cout <<" octante \n";
+				
+				//for (unsigned int l=0; l < mpts.size(); l++)
+				//cout << mpts[l] << " <- punto xyz \n";
+
+				//for(unsigned int j=0; j<mpts.size();j++)
+				for(unsigned int k=0; k<elepts.size()-1;k++)
+				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true)
+				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
+				
 				//detectar plano en que se encuentra la cara
+/*
                                 if(elepts[0][0] == elepts[1][0] && elepts[0][0] ==elepts[2][0] && elepts[0][0] ==elepts[3][0]){
 					for (unsigned int l=0; l < mpts.size()-1; l++)
 						if(mpts[l][0] < elepts[0][0])
@@ -140,17 +142,17 @@ namespace Clobscode
 				else if(elepts[0][2] == elepts[1][2] && elepts[0][2] ==elepts[2][2] && elepts[0][2] ==elepts[3][2]){
 					for (unsigned int l=0; l < mpts.size()-1; l++)
 						if(mpts[l][2] < elepts[0][2])
-						cout <<" cara en plano z superior \n";
+						cout <<" cara en plano z superior \n";					
 						else if (mpts[l][2] > elepts[0][2])
 						cout <<" cara en plano z inferior \n";
 				} 
-				*/
-
+				cout << "rotacion : "<<rotstate<<" \n";
+*/
 				cout <<" --------------------- \n";
 				
 			}
 		}
-		
+
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> prism2 (6,0);
 		

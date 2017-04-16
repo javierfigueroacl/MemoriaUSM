@@ -733,6 +733,47 @@ namespace Clobscode
 				continue;
 			}
 			else {
+
+				//Debugging
+				cout <<" --------2do debugging--------- \n";
+				vector <EnhancedElement> tmp_elements_2;
+				tmp_elements_2.push_back(elements[i]);
+				int vertices_in;
+
+
+				vector <unsigned int> points_ele_2 = tmp_elements_2[0].getPoints();
+				//cout << points_ele_2.size() << "<-- points_ele_2.size() \n";
+				if (points_ele_2.size() == 5){
+				vector <Point3D> elepts;
+				// Obtener elemento conflictivo
+				for(unsigned int k=0; k<points_ele_2.size();k++)
+					elepts.push_back(points.at(points_ele_2[k]).getPoint());
+
+				vertices_in = 0;
+/*
+				// Comparar con octante de prueba
+				for(unsigned int k=0; k<elepts.size();k++){
+					if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==2.25) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==2.25) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==-1.5) vertices_in++;
+					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==2.25) vertices_in++;
+					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
+					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
+					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
+					}
+				
+				cout <<vertices_in<< " <- vertices in \n"; */
+				//if (vertices_in == 4){
+					for (unsigned int k=0; k < elepts.size(); k++)
+					cout << elepts[k] << " <- punto xyz lalala \n";
+				//	}
+				}
+				////////////////////////////////////////////////////////////////////////
+
+
 				removed.push_back(elements[i]);
 			}
 			//new elements intersecting the input surface
@@ -752,7 +793,47 @@ namespace Clobscode
 				newele.push_back(ee);
 			}
 		}
-		
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//2do debugging
+/*			cout <<" --------2do debugging--------- \n";
+			vector <EnhancedElement> tmp_elements_2;
+			for (unsigned int l=0; l<elements.size(); l++) {
+				tmp_elements_2.push_back(elements[l]);
+			}
+			int vertices_in;
+			for(unsigned int l=0; l<tmp_elements_2.size();l++){
+
+			vector <unsigned int> points_ele_2 = tmp_elements_2[l].getPoints();
+
+			if (points_ele_2.size() == 6){
+				vector <Point3D> elepts;
+				// Obtener elemento conflictivo
+				for(unsigned int k=0; k<points_ele_2.size();k++)
+					elepts.push_back(points.at(points_ele_2[k]).getPoint());
+				vertices_in = 0;
+				// Comparar con octante de prueba
+				for(unsigned int k=0; k<elepts.size();k++){
+					if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==2.25) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==2.25) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==-1.5) vertices_in++;
+					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==2.25) vertices_in++;
+					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
+					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
+					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
+					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
+					}
+				
+				//cout <<vertices_in<< " <- vertices in \n";
+				if (vertices_in == 6){
+					for (unsigned int k=0; k < elepts.size(); k++)
+					cout << elepts[k] << " <- punto xyz \n";
+					}
+				}
+			} */
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//check in/out state of new inserted nodes.
 		if (!tmppts.empty()) {
 			unsigned int npts = points.size()+tmppts.size();
@@ -815,6 +896,8 @@ namespace Clobscode
 				removed.push_back(*eiter);
 			}
 		}
+
+		//////////////////////////F DFFG
 		//clear removed elements
 		removed.clear();
 		//now element std::list from Vomule mesh can be cleared, as all remaining
