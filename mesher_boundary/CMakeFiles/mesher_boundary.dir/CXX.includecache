@@ -101,6 +101,8 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
+MeshPoint.h
+/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate7.cpp
 stdafx.h

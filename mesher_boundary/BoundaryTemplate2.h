@@ -27,6 +27,7 @@ class BoundaryTemplate2 {
 								list<MeshPoint> &newpts,
 								vector<vector<unsigned int> > &newsubs_in,
 								vector<vector<unsigned int> > &newsubs_out,
+								vector<vector<unsigned int> > &invalid_elements,
 								vector<vector<unsigned int> > &conflicting_elements);
 	
   protected:
@@ -35,6 +36,7 @@ class BoundaryTemplate2 {
 						  vector<MeshPoint> &pts,
 						  vector<vector<unsigned int> > &newsubs_in,
 						  vector<vector<unsigned int> > &newsubs_out,
+						  vector<vector<unsigned int> > &invalid_elements,
 						  vector<vector<unsigned int> > &conflicting_elements,
 						  unsigned int rotstate);
 	

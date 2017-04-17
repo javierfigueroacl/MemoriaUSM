@@ -11,7 +11,9 @@ namespace Clobscode
 	
 	bool BoundaryTemplate6::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &out,
-									  vector<vector<unsigned int> > &neweles){
+									  vector<MeshPoint> &pts,
+									  vector<vector<unsigned int> > &neweles,
+									  vector<vector<unsigned int> > &conflicting_elements){
 		
 		HexRotation hrot;
 		vector<unsigned int> rotated;
@@ -23,17 +25,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[out[1]]){
-			PatternA(rotated,neweles);
+			PatternA(rotated,pts,neweles,conflicting_elements);
 			return true;
 		}
 		if(rotated[1] == all[out[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,neweles);
+			PatternA(rotated,pts,neweles,conflicting_elements);
 			return true;
 		}
 		if(rotated[4] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,neweles);
+			PatternA(rotated,pts,neweles,conflicting_elements);
 			return true;
 		}
 		
@@ -67,9 +69,83 @@ namespace Clobscode
 	
 	//w.r.t paper, this configuration counts with outside nodes 0 and 3
 	void BoundaryTemplate6::PatternA(vector<unsigned int> &all, 
-								vector<vector<unsigned int> > &eles){
+								vector<MeshPoint> &pts,
+								vector<vector<unsigned int> > &eles,
+								vector<vector<unsigned int> > &conflicting_elements){
 		
 		eles.reserve(2);
+
+		//Recorrer elementos conflictivos de la malla
+		for(unsigned int i=0; i<conflicting_elements.size();i++){
+			vector <Point3D> elepts;
+			// Obtener elemento conflictivo
+			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
+				elepts.push_back(pts.at(conflicting_elements[i][k]).getPoint());
+			}
+			// Obtener puntos del octante
+			vector <Point3D> mpts;
+			for(unsigned int j=0; j<all.size();j++)
+			mpts.push_back(pts.at(all[j]).getPoint());
+			int sharednode=0;
+
+			// Recorrer nodos y comparar coordenadas xyz
+			for(unsigned int j=0; j<mpts.size();j++)
+			for(unsigned int k=0; k<elepts.size()-1;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
+				if (mpts[j][0] == elepts[k][0]) // Restriccion x
+				if (mpts[j][1] == elepts[k][1]) // Restriccion y
+				if (mpts[j][2] == elepts[k][2]) // Restriccion z
+				sharednode++;
+			
+			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
+			if (sharednode == 4){
+				cout <<" --------------------- \n";
+				cout <<" cara conflictiva encontrada (6a) \n";
+
+				cout <<" piramide \n";
+
+				//print puntos
+				for (unsigned int l=0; l < elepts.size(); l++)
+				cout << elepts[l] << "\n";
+
+				//cout <<" octante \n";
+				
+				//for (unsigned int l=0; l < mpts.size(); l++)
+				//cout << mpts[l] << " <- punto xyz \n";
+
+				for(unsigned int k=0; k<elepts.size()-1;k++)
+				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true)
+				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
+				
+				//detectar plano en que se encuentra la cara
+/*
+                                if(elepts[0][0] == elepts[1][0] && elepts[0][0] ==elepts[2][0] && elepts[0][0] ==elepts[3][0]){
+					for (unsigned int l=0; l < mpts.size()-1; l++)
+						if(mpts[l][0] < elepts[0][0])
+						cout <<" cara en plano x superior \n";
+						else if (mpts[l][0] > elepts[0][0])
+						cout <<" cara en plano x inferior \n";
+				}
+				else if(elepts[0][1] == elepts[1][1] && elepts[0][1] ==elepts[2][1] && elepts[0][1] ==elepts[3][1]){
+					for (unsigned int l=0; l < mpts.size()-1; l++)
+						if(mpts[l][1] < elepts[0][1])
+						cout <<" cara en plano y superior \n";
+						else if (mpts[l][1] > elepts[0][1])
+						cout <<" cara en plano y inferior \n";
+				}
+				else if(elepts[0][2] == elepts[1][2] && elepts[0][2] ==elepts[2][2] && elepts[0][2] ==elepts[3][2]){
+					for (unsigned int l=0; l < mpts.size()-1; l++)
+						if(mpts[l][2] < elepts[0][2])
+						cout <<" cara en plano z superior \n";					
+						else if (mpts[l][2] > elepts[0][2])
+						cout <<" cara en plano z inferior \n";
+				} 
+				cout << "rotacion : "<<rotstate<<" \n";
+*/
+				cout <<" --------------------- \n";
+				
+			}
+		}
+
 		
 		vector<unsigned int> ele1 (6,0);
 		vector<unsigned int> ele2 (6,0);

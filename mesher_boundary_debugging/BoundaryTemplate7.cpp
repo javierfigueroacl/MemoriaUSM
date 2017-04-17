@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "SurfTemplate7.h"
+#include "BoundaryTemplate7.h"
 
 namespace Clobscode
 {
-	SurfTemplate7::SurfTemplate7(){
+	BoundaryTemplate7::BoundaryTemplate7(){
 	}
 	
-	SurfTemplate7::~SurfTemplate7(){
+	BoundaryTemplate7::~BoundaryTemplate7(){
 	}
 	
-	bool SurfTemplate7::getSubelements(vector<unsigned int> &all, 
+	bool BoundaryTemplate7::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &out,
 								          vector<MeshPoint> &pts,
 									  vector<vector<unsigned int> > &newsubs){
@@ -23,16 +23,16 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-5 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=-5 && mpts[i][1] <=0) // Restriccion y
-			if (mpts[i][2] >=-6 && mpts[i][2] <=-1.5) // Restriccion z octante 1
+			if (mpts[i][0] >=-0.5 && mpts[i][0] <=3.6) // Restriccion x
+			if (mpts[i][1] >=-0.5 && mpts[i][1] <=3.6) // Restriccion y
+			if (mpts[i][2] >=-1.5 && mpts[i][2] <=3) // Restriccion z octante 1
 				vertices_in++;
 		}
 
 		if (vertices_in == 8)
-		cout << "7a\n";
+		cout << "7a octante 1 \n";
 
-		vertices_in=0;		
+		vertices_in=0;	
 		//
 
 		vector<unsigned int> rotated,py1(5,0),py2(5,0),py3(5,0);

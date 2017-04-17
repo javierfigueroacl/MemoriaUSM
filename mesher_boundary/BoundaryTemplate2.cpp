@@ -15,6 +15,7 @@ namespace Clobscode
 										   list<MeshPoint> &newpts,
 										   vector<vector<unsigned int> > &newsubs_in,
 										   vector<vector<unsigned int> > &newsubs_out,
+										   vector<vector<unsigned int> > &invalid_elements,
 										   vector<vector<unsigned int> > &conflicting_elements){
 		
 		HexRotation hrot;
@@ -26,18 +27,18 @@ namespace Clobscode
 		rotated = hrot.rotate(all,in[0]);
 		
 		//Possible cases for PatternA
-		if(rotated[3] == all[in[1]]){ // sin rotar?
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,0);
+		if(rotated[3] == all[in[1]]){
+			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,0);
 			return true;
 		}
-		if(rotated[1] == all[in[1]]){ // rotacion en y en 180 grados?
+		if(rotated[1] == all[in[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,1);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,1);
 			return true;
 		}
 		if(rotated[4] == all[in[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,conflicting_elements,2);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,2);
 			return true;
 		}
 		
@@ -74,6 +75,7 @@ namespace Clobscode
 									 vector<MeshPoint> &pts,
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out,
+									 vector<vector<unsigned int> > &invalid_elements,
 									 vector<vector<unsigned int> > &conflicting_elements,
 									 unsigned int rotstate){
 		
@@ -104,11 +106,10 @@ namespace Clobscode
 			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
 			if (sharednode == 4){
 				cout <<" --------------------- \n";
-				cout <<" cara conflictiva encontrada \n";
+				cout <<" cara conflictiva encontrada (2a) \n";
 
 				cout <<" piramide \n";
 
-				//cout << conflicting_elements[i][0] << " "<< conflicting_elements[i][1] << " "<< conflicting_elements[i][2] << " "<< conflicting_elements[i][3] << "\n";
 				//print puntos
 				for (unsigned int l=0; l < elepts.size(); l++)
 				cout << elepts[l] << "\n";
@@ -117,11 +118,32 @@ namespace Clobscode
 				
 				//for (unsigned int l=0; l < mpts.size(); l++)
 				//cout << mpts[l] << " <- punto xyz \n";
-
-				//for(unsigned int j=0; j<mpts.size();j++)
+				int tnode=0;
 				for(unsigned int k=0; k<elepts.size()-1;k++)
-				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true)
+				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
 				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
+				tnode++;
+				}
+				if (tnode == 1){
+				invalid_elements.push_back(conflicting_elements[i]);
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				
+				tetra1[0] = conflicting_elements[i][0];
+				tetra1[1] = conflicting_elements[i][1];
+				tetra1[2] = conflicting_elements[i][3];
+				tetra1[3] = conflicting_elements[i][4];
+
+				tetra2[0] = conflicting_elements[i][2];
+				tetra2[1] = conflicting_elements[i][1];
+				tetra2[2] = conflicting_elements[i][3];
+				tetra2[3] = conflicting_elements[i][4];
+
+				newsubs_out.push_back(tetra1);
+				newsubs_out.push_back(tetra2);
+
+				}
 				
 				//detectar plano en que se encuentra la cara
 /*

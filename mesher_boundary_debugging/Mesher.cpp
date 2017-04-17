@@ -568,7 +568,7 @@ namespace Clobscode
 		list<EnhancedElement>::iterator eiter;
 		list<MeshPoint> tmppts;
 		list<MeshPoint>::iterator piter;
-
+/*
 		//Debugging
 		vector <EnhancedElement> octantes;
 		// Llenar vector octantes
@@ -609,7 +609,7 @@ namespace Clobscode
 		}
 
 		// 
-		
+		*/
 		for (unsigned int i=0; i<elements.size(); i++) {
 			if (!elements[i].outsideBorder(points)) {
 				newele.push_back(elements[i]);
@@ -744,23 +744,21 @@ namespace Clobscode
 			//cout << octpts.size() << "<- vector nodos octante \n";
 			//Recorrer vector coordenadas punto
 			for (unsigned int j=0; j < octpts.size(); j++){
-				if (octpts[j][0] >=-5 && octpts[j][0] <=0) // Restriccion x
-				if (octpts[j][1] >=-5 && octpts[j][1] <=0) // Restriccion y
-				//if (octpts[j][2] >=-2 && octpts[j][2] <=3) // Restriccion z octante 2
-				if (octpts[j][2] ==-1.5) // Ver nodos que comparten la cara z=-1.5
+				if (octpts[j][0] == -0.25) // Restriccion x
+				if (octpts[j][1] == -0.25) // Restriccion y
+				if (octpts[j][2] == -1.5) // Restriccion z
 					vertices_in++;
 				
 			}
 			//if (vertices_in == 8){ // Si los 8 vertices estan en el rango, se encontro el octante sin patron
-			if (vertices_in == 4){ // Si tiene los 4 vertices de la cara, se encontro el octante que comparte cara con oct 2
+			if (vertices_in == 1){ // Si tiene los 4 vertices de la cara, se encontro el octante que comparte cara con oct 2
 				cout << "octante encontrado \n";
 			//print puntos octante
 			for (unsigned int j=0; j < octpts.size(); j++)
 				cout << octpts[j] << " <- punto xyz \n";		
 			}
 		}
-
-		//*/
+*/
 		
 		for (unsigned int i=0; i<elements.size(); i++) {
 			

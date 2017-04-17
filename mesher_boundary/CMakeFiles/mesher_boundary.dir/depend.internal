@@ -36,6 +36,8 @@ CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate6.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate6.h
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
+ /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
+ /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate7.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate7.cpp

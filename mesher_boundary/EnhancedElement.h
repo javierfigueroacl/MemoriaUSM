@@ -48,6 +48,7 @@ namespace Clobscode
 											list<MeshPoint> &newpts,
 											vector<vector<unsigned int> > &newsub,
 											vector<vector<unsigned int> > &newsub_out,
+											vector<vector<unsigned int> > &invalid_elements,
 											const unsigned int &intersects,
 											vector<vector<unsigned int> > &conflicting_elements);
 		

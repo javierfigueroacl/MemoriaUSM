@@ -683,6 +683,7 @@ namespace Clobscode
 		// fix problem with surface pattern neightborhood with boundary patterns
 		vector <EnhancedElement> tmp_elements;
 		vector < vector <unsigned int> > conflicting_elements;
+		vector < vector <unsigned int> > invalid_elements;
 		// Llenar vector octantes
 		for (unsigned int i=0; i<elements.size(); i++) {
 			tmp_elements.push_back(elements[i]);
@@ -727,13 +728,13 @@ namespace Clobscode
 			
 			/*Important note: the applyBoundary function is currently considering*/
 			
-			// agregado conflicting_elements como parametro
-			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf,conflicting_elements)) {
+			// agregados invalid_elements y conflicting_elements como parametros
+			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,invalid_elements,intersected_surf,conflicting_elements)) {
 				newele.push_back(elements[i]);
 				continue;
 			}
 			else {
-
+/*
 				//Debugging
 				cout <<" --------2do debugging--------- \n";
 				vector <EnhancedElement> tmp_elements_2;
@@ -749,7 +750,7 @@ namespace Clobscode
 				for(unsigned int k=0; k<points_ele_2.size();k++)
 					elepts.push_back(points.at(points_ele_2[k]).getPoint());
 
-				vertices_in = 0;
+				vertices_in = 0; */
 /*
 				// Comparar con octante de prueba
 				for(unsigned int k=0; k<elepts.size();k++){
@@ -766,16 +767,26 @@ namespace Clobscode
 					}
 				
 				cout <<vertices_in<< " <- vertices in \n"; */
+/*
 				//if (vertices_in == 4){
 					for (unsigned int k=0; k < elepts.size(); k++)
-					cout << elepts[k] << " <- punto xyz lalala \n";
+					cout << elepts[k] << " <- punto xyz \n";
 				//	}
 				}
 				////////////////////////////////////////////////////////////////////////
 
+*/
 
 				removed.push_back(elements[i]);
 			}
+
+			// remove invalid elements produced by conflict between surface patterns and boundary patterns
+			for (unsigned int j=0; j<invalid_elements.size(); j++) {
+				EnhancedElement ee(invalid_elements[j],n_meshes);
+				ee.setMaxDistance(old_md);
+				removed.push_back(ee);
+			}
+
 			//new elements intersecting the input surface
 			for (unsigned int j=0; j<replace.size(); j++) {
 				EnhancedElement ee(replace[j],n_meshes);

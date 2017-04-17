@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "BoundaryTemplate2.h"
-#include <string.h>
 
 namespace Clobscode
 {
@@ -88,16 +87,16 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-5 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=-5 && mpts[i][1] <=0) // Restriccion y
-			if (mpts[i][2] >=-6 && mpts[i][2] <=-1.5) // Restriccion z octante 1
+			if (mpts[i][0] >=-0.5 && mpts[i][0] <=3.6) // Restriccion x
+			if (mpts[i][1] >=-0.5 && mpts[i][1] <=3.6) // Restriccion y
+			if (mpts[i][2] >=-1.5 && mpts[i][2] <=3) // Restriccion z octante 1
 				vertices_in++;
 		}
 
 		//cout << vertices_in << "<-  vertices octante 1 in\n";
 
 		if (vertices_in == 8)
-		cout << "2a octante 1 \n";
+		cout << "2a nuevo! \n";
 
 		vertices_in=0;		
 		//
@@ -141,9 +140,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-5 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=-5 && mpts[i][1] <=0) // Restriccion y
-			if (mpts[i][2] >=-6 && mpts[i][2] <=-1.5) // Restriccion z octante 1
+			if (mpts[i][0] >=-0.5 && mpts[i][0] <=3.6) // Restriccion x
+			if (mpts[i][1] >=-0.5 && mpts[i][1] <=3.6) // Restriccion y
+			if (mpts[i][2] >=-1.5 && mpts[i][2] <=3) // Restriccion z octante 1
 				vertices_in++;
 		}
 
@@ -272,9 +271,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-5 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=-5 && mpts[i][1] <=0) // Restriccion y
-			if (mpts[i][2] >=-6 && mpts[i][2] <=-1.5) // Restriccion z octante 1
+			if (mpts[i][0] >=-0.5 && mpts[i][0] <=3.6) // Restriccion x
+			if (mpts[i][1] >=-0.5 && mpts[i][1] <=3.6) // Restriccion y
+			if (mpts[i][2] >=-1.5 && mpts[i][2] <=3) // Restriccion z octante 1
 				vertices_in++;
 		}
 

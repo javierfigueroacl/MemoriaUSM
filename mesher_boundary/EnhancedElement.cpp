@@ -89,11 +89,11 @@ namespace Clobscode
 			case 0:{
 				/*If at this point, the element has 0 node inside,
 				 it might be tangencial to input mesh, in which case
-				 it should be removed, or represent a feature of
+				 it should be invalid_elements, or represent a feature of
 				 the domain (e.g. all nodes outside, but there is
 				 something like a pipeline crossing it). This algorithm
 				 isn't yet "future sensitive", therefore the element
-				 is simply removed.
+				 is simply invalid_elements.
 				 */
 				return false;
 			}
@@ -150,6 +150,7 @@ namespace Clobscode
 												 list<MeshPoint> &newpts,
 												 vector<vector<unsigned int> > &newsub,
 												 vector<vector<unsigned int> > &newsub_out,
+												 vector<vector<unsigned int> > &invalid_elements,
 												 const unsigned int &intersects,
 										vector<vector<unsigned int> > &conflicting_elements
 													){
@@ -229,11 +230,11 @@ namespace Clobscode
 			case 0:{
 				/*If at this point, the element has 0 node inside,
 				 it might be tangencial to input mesh, in which case
-				 it should be removed, or represent a feature of
+				 it should be invalid_elements, or represent a feature of
 				 the domain (e.g. all nodes outside, but there is
 				 something like a pipeline crossing it). This algorithm
 				 isn't yet "future sensitive", therefore the element
-				 is simply removed.
+				 is simply invalid_elements.
 				 */
 				return false;
 			}
@@ -245,7 +246,7 @@ namespace Clobscode
 			case 2: {
 				//std::cout << "applying template 2\n";				
 				BoundaryTemplate2 boun_t2;
-				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out,conflicting_elements);
+				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out,invalid_elements,conflicting_elements);
 			}
 			case 3: {
 				//std::cout << "applying template 3\n";				
@@ -263,7 +264,7 @@ namespace Clobscode
 			}
 			case 6: {
 				BoundaryTemplate6 boun_t6;
-				return boun_t6.getSubelements(pointindex,outpts,newsub);
+				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,conflicting_elements);
 			}
 			case 7: {
 				BoundaryTemplate7 boun_t7;

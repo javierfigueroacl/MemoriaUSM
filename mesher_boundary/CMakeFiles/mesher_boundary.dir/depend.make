@@ -35,6 +35,8 @@ CMakeFiles/mesher_boundary.dir/BoundaryTemplate5.cpp.o: stdafx.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: BoundaryTemplate6.cpp
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: BoundaryTemplate6.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: HexRotation.h
+CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: MeshPoint.h
+CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: Point3D.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate6.cpp.o: stdafx.h
 
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate7.cpp.o: BoundaryTemplate7.cpp

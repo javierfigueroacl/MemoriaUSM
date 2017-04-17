@@ -89,5 +89,58 @@ Se encontraron los nodos del octante 1
 
 Se comprueba que los problemas estan en las caras del eje z. El patron 2a esta en su posicion original o rotado 180 grados en el eje y.
 
-Se conprueba que son 2 los octantes con el conflicto, no estan rotados y uno de ellos tiene conflictos en ambas caras, de ahi que se vean 3 caras en el visualizador.
+Se conprueba que son 2 los octantes con el conflicto y uno de ellos tiene conflictos en ambas caras, de ahi que se vean 3 caras en el visualizador. El otro octante tiene un patron desconocido. Se investigará a cual corresponde.
+
+Se comprueba que de las 10 piramides conflictivas que aparecian en el debugging, 9 son eliminadas y 1 genera una de las caras invalidas encontradas.
+
+posibles elementos de las caras desconocidas:
+
+octante encontrado 
+3.52932 3.53122 -1.5 <- punto xyz 
+3.5 -0.25 -1.5 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+-0.25 3.5 -1.5 <- punto xyz 
+3.52932 3.53122 -5.25 <- punto xyz 
+octante encontrado 
+-0.25 3.5 -1.5 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+-0.25 -0.25 -5 <- punto xyz 
+-0.25 3.5 -5 <- punto xyz 
+3.52932 3.53122 -5.25 <- punto xyz 
+octante encontrado 
+3.5 -0.25 -5 <- punto xyz 
+-0.25 -0.25 -5 <- punto xyz 
+-0.25 -0.25 -1.5 <- punto xyz 
+3.5 -0.25 -1.5 <- punto xyz 
+3.52932 3.53122 -5.25 <- punto xyz
+
+buscar en los rangos
+x: -0.5 3.6
+y: -0.5 3.6
+z: -6 3
+
+Patrones de la cara o baldosa z inferior:
+
+7a superficie, en el rango:
+x: -0.5 3.6
+y: -0.5 3.6
+z: -5.5 -1.5
+
+6a interno, en el rango:
+x: -0.5 3.6
+y: -0.5 3.6
+z: -1.5 3
+
+Patrones de la cara o baldosa 7 superior:
+6a interno, en el rango:
+x: -0.5 3.6
+y: -0.5 3.6
+z: -1.5 2.25
+
+7a superficie, en el rango:
+x: -0.5 3.6
+y: -0.5 3.6
+z: 2.25 6
+
+
 
