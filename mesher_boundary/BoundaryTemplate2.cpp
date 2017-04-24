@@ -97,7 +97,7 @@ namespace Clobscode
 
 			// Recorrer nodos y comparar coordenadas xyz
 			for(unsigned int j=0; j<mpts.size();j++)
-			for(unsigned int k=0; k<elepts.size()-1;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
+			for(unsigned int k=0; k<elepts.size()-2;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
 				if (mpts[j][0] == elepts[k][0]) // Restriccion x
 				if (mpts[j][1] == elepts[k][1]) // Restriccion y
 				if (mpts[j][2] == elepts[k][2]) // Restriccion z
@@ -108,8 +108,7 @@ namespace Clobscode
 				cout <<" --------------------- \n";
 				cout <<" cara conflictiva encontrada (2a) \n";
 
-				cout <<" piramide \n";
-
+				cout <<" piramide "<<conflicting_elements[i][5]<<"\n";
 				//print puntos
 				for (unsigned int l=0; l < elepts.size(); l++)
 				cout << elepts[l] << "\n";
@@ -119,7 +118,7 @@ namespace Clobscode
 				//for (unsigned int l=0; l < mpts.size(); l++)
 				//cout << mpts[l] << " <- punto xyz \n";
 				int tnode=0;
-				for(unsigned int k=0; k<elepts.size()-1;k++)
+				for(unsigned int k=0; k<elepts.size()-2;k++)
 				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
 				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
 				tnode++;
@@ -140,8 +139,8 @@ namespace Clobscode
 				tetra2[2] = conflicting_elements[i][3];
 				tetra2[3] = conflicting_elements[i][4];
 
-				newsubs_out.push_back(tetra1);
-				newsubs_out.push_back(tetra2);
+				newsubs_in.push_back(tetra1);
+				newsubs_in.push_back(tetra2);
 
 				}
 				

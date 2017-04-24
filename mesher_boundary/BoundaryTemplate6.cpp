@@ -90,7 +90,7 @@ namespace Clobscode
 
 			// Recorrer nodos y comparar coordenadas xyz
 			for(unsigned int j=0; j<mpts.size();j++)
-			for(unsigned int k=0; k<elepts.size()-1;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
+			for(unsigned int k=0; k<elepts.size()-2;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
 				if (mpts[j][0] == elepts[k][0]) // Restriccion x
 				if (mpts[j][1] == elepts[k][1]) // Restriccion y
 				if (mpts[j][2] == elepts[k][2]) // Restriccion z
@@ -112,7 +112,7 @@ namespace Clobscode
 				//for (unsigned int l=0; l < mpts.size(); l++)
 				//cout << mpts[l] << " <- punto xyz \n";
 
-				for(unsigned int k=0; k<elepts.size()-1;k++)
+				for(unsigned int k=0; k<elepts.size()-2;k++)
 				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true)
 				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
 				
