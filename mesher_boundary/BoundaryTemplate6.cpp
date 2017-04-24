@@ -13,6 +13,8 @@ namespace Clobscode
 									  vector<unsigned int> &out,
 									  vector<MeshPoint> &pts,
 									  vector<vector<unsigned int> > &neweles,
+									  vector<vector<unsigned int> > &newsubs_out,
+									  vector<vector<unsigned int> > &invalid_elements,
 									  vector<vector<unsigned int> > &conflicting_elements){
 		
 		HexRotation hrot;
@@ -25,17 +27,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[out[1]]){
-			PatternA(rotated,pts,neweles,conflicting_elements);
+			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
 			return true;
 		}
 		if(rotated[1] == all[out[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,neweles,conflicting_elements);
+			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
 			return true;
 		}
 		if(rotated[4] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,neweles,conflicting_elements);
+			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
 			return true;
 		}
 		
@@ -71,6 +73,8 @@ namespace Clobscode
 	void BoundaryTemplate6::PatternA(vector<unsigned int> &all, 
 								vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles,
+								vector<vector<unsigned int> > &newsubs_out,
+								vector<vector<unsigned int> > &invalid_elements,
 								vector<vector<unsigned int> > &conflicting_elements){
 		
 		eles.reserve(2);
@@ -101,8 +105,7 @@ namespace Clobscode
 				cout <<" --------------------- \n";
 				cout <<" cara conflictiva encontrada (6a) \n";
 
-				cout <<" piramide \n";
-
+				cout <<" piramide "<<conflicting_elements[i][5]<<"\n";
 				//print puntos
 				for (unsigned int l=0; l < elepts.size(); l++)
 				cout << elepts[l] << "\n";
@@ -111,37 +114,47 @@ namespace Clobscode
 				
 				//for (unsigned int l=0; l < mpts.size(); l++)
 				//cout << mpts[l] << " <- punto xyz \n";
-
+				int tnode=0,outnode=0;
 				for(unsigned int k=0; k<elepts.size()-2;k++)
-				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true)
+				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
 				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
-				
-				//detectar plano en que se encuentra la cara
-/*
-                                if(elepts[0][0] == elepts[1][0] && elepts[0][0] ==elepts[2][0] && elepts[0][0] ==elepts[3][0]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][0] < elepts[0][0])
-						cout <<" cara en plano x superior \n";
-						else if (mpts[l][0] > elepts[0][0])
-						cout <<" cara en plano x inferior \n";
+				tnode++;
 				}
-				else if(elepts[0][1] == elepts[1][1] && elepts[0][1] ==elepts[2][1] && elepts[0][1] ==elepts[3][1]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][1] < elepts[0][1])
-						cout <<" cara en plano y superior \n";
-						else if (mpts[l][1] > elepts[0][1])
-						cout <<" cara en plano y inferior \n";
+				else{
+				outnode=k;
+	}
+				if (tnode == 3){
+				invalid_elements.push_back(conflicting_elements[i]);
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				if (outnode == 1 or outnode==3){
+				tetra1[0] = conflicting_elements[i][0];
+				tetra1[1] = conflicting_elements[i][1];
+				tetra1[2] = conflicting_elements[i][3];
+				tetra1[3] = conflicting_elements[i][4];
+
+				tetra2[0] = conflicting_elements[i][2];
+				tetra2[1] = conflicting_elements[i][1];
+				tetra2[2] = conflicting_elements[i][3];
+				tetra2[3] = conflicting_elements[i][4];
 				}
-				else if(elepts[0][2] == elepts[1][2] && elepts[0][2] ==elepts[2][2] && elepts[0][2] ==elepts[3][2]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][2] < elepts[0][2])
-						cout <<" cara en plano z superior \n";					
-						else if (mpts[l][2] > elepts[0][2])
-						cout <<" cara en plano z inferior \n";
-				} 
-				cout << "rotacion : "<<rotstate<<" \n";
-*/
-				cout <<" --------------------- \n";
+				else{
+
+				tetra1[0] = conflicting_elements[i][0];
+				tetra1[1] = conflicting_elements[i][1];
+				tetra1[2] = conflicting_elements[i][2];
+				tetra1[3] = conflicting_elements[i][4];
+
+				tetra2[0] = conflicting_elements[i][0];
+				tetra2[1] = conflicting_elements[i][3];
+				tetra2[2] = conflicting_elements[i][2];
+				tetra2[3] = conflicting_elements[i][4];
+				}
+
+				eles.push_back(tetra1);
+				eles.push_back(tetra2);
+				}
 				
 			}
 		}

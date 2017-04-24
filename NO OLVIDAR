@@ -142,5 +142,5 @@ x: -0.5 3.6
 y: -0.5 3.6
 z: 2.25 6
 
-
+Se aplico un filtro a la lista de elementos conflictivos, se redujo de 64 a 16
 

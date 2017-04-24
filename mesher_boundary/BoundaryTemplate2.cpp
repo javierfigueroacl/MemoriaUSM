@@ -105,29 +105,21 @@ namespace Clobscode
 			
 			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
 			if (sharednode == 4){
-				cout <<" --------------------- \n";
-				cout <<" cara conflictiva encontrada (2a) \n";
-
-				cout <<" piramide "<<conflicting_elements[i][5]<<"\n";
-				//print puntos
-				for (unsigned int l=0; l < elepts.size(); l++)
-				cout << elepts[l] << "\n";
 
 				//cout <<" octante \n";
-				
-				//for (unsigned int l=0; l < mpts.size(); l++)
-				//cout << mpts[l] << " <- punto xyz \n";
-				int tnode=0;
+				int tnode=0,innode=0;
 				for(unsigned int k=0; k<elepts.size()-2;k++)
 				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
-				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
 				tnode++;
+				innode=k;
 				}
 				if (tnode == 1){
 				invalid_elements.push_back(conflicting_elements[i]);
 
 				vector<unsigned int> tetra1 (4,0);
 				vector<unsigned int> tetra2 (4,0);
+
+				if (innode == 0 or innode == 2){
 				
 				tetra1[0] = conflicting_elements[i][0];
 				tetra1[1] = conflicting_elements[i][1];
@@ -138,6 +130,22 @@ namespace Clobscode
 				tetra2[1] = conflicting_elements[i][1];
 				tetra2[2] = conflicting_elements[i][3];
 				tetra2[3] = conflicting_elements[i][4];
+				}
+				else{
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				
+				tetra1[0] = conflicting_elements[i][0];
+				tetra1[1] = conflicting_elements[i][1];
+				tetra1[2] = conflicting_elements[i][2];
+				tetra1[3] = conflicting_elements[i][4];
+
+				tetra2[0] = conflicting_elements[i][0];
+				tetra2[1] = conflicting_elements[i][3];
+				tetra2[2] = conflicting_elements[i][2];
+				tetra2[3] = conflicting_elements[i][4];
+				}
 
 				newsubs_in.push_back(tetra1);
 				newsubs_in.push_back(tetra2);
@@ -169,7 +177,6 @@ namespace Clobscode
 				} 
 				cout << "rotacion : "<<rotstate<<" \n";
 */
-				cout <<" --------------------- \n";
 				
 			}
 		}

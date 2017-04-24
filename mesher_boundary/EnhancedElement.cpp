@@ -264,7 +264,7 @@ namespace Clobscode
 			}
 			case 6: {
 				BoundaryTemplate6 boun_t6;
-				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,conflicting_elements);
+				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,newsub_out,invalid_elements,conflicting_elements);
 			}
 			case 7: {
 				BoundaryTemplate7 boun_t7;

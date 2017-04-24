@@ -690,26 +690,25 @@ namespace Clobscode
 		//Crear lista de posiciones de elementos conflictivos
 		vector<unsigned int> conpos;
 
-		// Llenar vector octantes
-		for (unsigned int i=0; i<elements.size(); i++) {
-			tmp_elements.push_back(elements[i]);
-		}
 		// Recorrer vector octantes
 		for(unsigned int i=0; i<elements.size();i++){
 			vector <unsigned int> points_ele = elements[i].getPoints();
-			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
-			//for(unsigned int k=0; k<points_ele.size()-;k++)
-			//	if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
-			//}
 			if (points_ele.size() == 5){
+			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
+			int innode=0;
+			for(unsigned int k=0; k<points_ele.size()-1;k++)
+				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				innode++;
+				}
+			if (innode == 1 or innode == 3){
 			// Se agrega la posicion del elemento
 			points_ele.push_back(i);
 			conflicting_elements.push_back(points_ele);
 			}
+			}
 		}
-		//////////////////////////////////////////////////////////////////////////////////
-		unsigned int tnew=0;
-		
+		//////////////////////////////////////////////////////////////////////////////////	
+
 		for (unsigned int i=0; i<elements.size(); i++) {
 			
 			if (!elements[i].insideBorder(points)) {
@@ -745,8 +744,9 @@ namespace Clobscode
 				continue;
 			}
 			else {
-/*
+
 				//Debugging
+				/*
 				cout <<" --------2do debugging--------- \n";
 				vector <EnhancedElement> tmp_elements_2;
 				tmp_elements_2.push_back(elements[i]);
@@ -777,14 +777,16 @@ namespace Clobscode
 
 				removed.push_back(elements[i]);
 			}
-			/*
+
 			// remove invalid elements produced by conflict between surface patterns and boundary patterns
+			/*
 			for (unsigned int j=0; j<invalid_elements.size(); j++) {
 				EnhancedElement ee(invalid_elements[j],n_meshes);
 				ee.setMaxDistance(old_md);
 				removed.push_back(ee);
 			}
 			*/
+
 			//new elements intersecting the input surface
 			for (unsigned int j=0; j<replace.size(); j++) {
 				EnhancedElement ee(replace[j],n_meshes);
@@ -795,25 +797,13 @@ namespace Clobscode
 			//they are directly inserted to newele list.
 
 			// Guardar Lista Posiciones de elementos que son divididos y cantidad de nuevos elementos, para convertir posiciones
+			
 			vector <unsigned int > tmpregnewele;
-			tmpregnewele.push_back(i);
-			tmpregnewele.push_back(newinside.size()-1);
-			regnewele.push_back(tmpregnewele);
-
-			//Agregar al contador de total de nuevos elementos
-			/*cout << " ---------------------- \n";
-			cout << newinside.size() << " <-newinside.size() \n";
-			for(unsigned int k=0;k<invalid_elements.size();k++){
-				if(invalid_elements[k][5] > i){
-					invalid_elements[k][5]+=newinside.size()-1;
+			if (newinside.size() != 1){
+				tmpregnewele.push_back(i);
+				tmpregnewele.push_back(newinside.size()-1);
+				regnewele.push_back(tmpregnewele);
 			}
-			}
-			for(unsigned int k=0;k<conpos.size();k++)
-				if(conpos[k] > i){
-					conpos[k]+=newinside.size()-1;
-			}
-			cout << " ---------------------- \n";*/
-			//}
 
 			for (unsigned int j=0; j<newinside.size(); j++) {
 				EnhancedElement ee(newinside[j],n_meshes);
@@ -828,14 +818,15 @@ namespace Clobscode
 		// Convertir posiciones ele a posiciones newele
 		for(unsigned int k=0;k<regnewele.size();k++)
 		for(unsigned int l=0;l<invalid_elements.size();l++)
-				if(invalid_elements[l][5] > regnewele[k][0]){
+				if(invalid_elements[l][5] > regnewele[k][0])
 					invalid_elements[l][5]+=regnewele[k][1];
-			}
+
+
 		for(unsigned int k=0;k<regnewele.size();k++)
 		for(unsigned int l=0;l<conpos.size();l++)
-				if(conpos[l] > regnewele[k][0]){
+				if(conpos[l] > regnewele[k][0])
 					conpos[l]+=regnewele[k][1];
-			}
+
 
 		// Crear lista de posiciones de elementos conflictivos
 		vector<unsigned int> elepos;
@@ -853,29 +844,28 @@ namespace Clobscode
 			elepos.push_back(invalid_elements[k][5]);
 		}
 
+		// Ordenar de menor a mayor
+		sort(elepos.begin(),elepos.end());
+
 		for(unsigned int k=0;k<elepos.size();k++){
 			cout << elepos[k] << " <- elepos[k] \n";
 		}
-		sort(elepos.begin(),elepos.end());
 
 		// Iterar para borrar elementos conflictivos
 		list<EnhancedElement>::iterator itc;
-		//for (itc=newele.begin(); itc!=newele.end(); itc++)
-		//cout << *itc << " ";
-		//cout << " \n";
+
 		unsigned int pos =0;
 		unsigned int l=0;
 		for (itc=newele.begin(); itc!=newele.end(); itc++) {
-		//cout << l << "<- l \n";
-		//cout << pos << "<- pos \n";
         	if (elepos[l] == pos) {
             		l++;
 			//cout << *itc << " \n";
             		itc = newele.erase(itc);
-        	}
+			itc--;
+        		}
         	if (l==elepos.size()) {
             		break;
-        	}
+        		}
         	pos++;
     		} 
 
