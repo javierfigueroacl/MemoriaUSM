@@ -81,7 +81,7 @@ namespace Clobscode
 		
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		
-
+/*
 		//Recorrer elementos conflictivos de la malla
 		for(unsigned int i=0; i<conflicting_elements.size();i++){
 			vector <Point3D> elepts;
@@ -150,36 +150,9 @@ namespace Clobscode
 				newsubs_in.push_back(tetra1);
 				newsubs_in.push_back(tetra2);
 
-				}
-				
-				//detectar plano en que se encuentra la cara
-/*
-                                if(elepts[0][0] == elepts[1][0] && elepts[0][0] ==elepts[2][0] && elepts[0][0] ==elepts[3][0]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][0] < elepts[0][0])
-						cout <<" cara en plano x superior \n";
-						else if (mpts[l][0] > elepts[0][0])
-						cout <<" cara en plano x inferior \n";
-				}
-				else if(elepts[0][1] == elepts[1][1] && elepts[0][1] ==elepts[2][1] && elepts[0][1] ==elepts[3][1]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][1] < elepts[0][1])
-						cout <<" cara en plano y superior \n";
-						else if (mpts[l][1] > elepts[0][1])
-						cout <<" cara en plano y inferior \n";
-				}
-				else if(elepts[0][2] == elepts[1][2] && elepts[0][2] ==elepts[2][2] && elepts[0][2] ==elepts[3][2]){
-					for (unsigned int l=0; l < mpts.size()-1; l++)
-						if(mpts[l][2] < elepts[0][2])
-						cout <<" cara en plano z superior \n";					
-						else if (mpts[l][2] > elepts[0][2])
-						cout <<" cara en plano z inferior \n";
-				} 
-				cout << "rotacion : "<<rotstate<<" \n";
-*/
-				
+				}			
 			}
-		}
+		} */
 
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> prism2 (6,0);

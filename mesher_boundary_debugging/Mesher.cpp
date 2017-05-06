@@ -132,9 +132,17 @@ namespace Clobscode
 		//that rely inside the overall geometry, but are close
 		//to an intern feature
 		projectCloseToInsideBoundaryNodes(pClientData,pClientPointProjectorFunc);
+
+		// AGREGADO POR JAVIER
+		//label nodes and elements, then remove outside elements
+		labelNodesAndElements(pClientData,pClientPointTestFunc);
 		
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
+
+		// AGREGADO POR JAVIER
+		//label nodes and elements, then remove outside elements
+		labelNodesAndElements(pClientData,pClientPointTestFunc);
 		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
@@ -611,6 +619,7 @@ namespace Clobscode
 		// 
 		*/
 		for (unsigned int i=0; i<elements.size(); i++) {
+
 			if (!elements[i].outsideBorder(points)) {
 				newele.push_back(elements[i]);
 				continue;
@@ -720,48 +729,46 @@ namespace Clobscode
 		list<unsigned int> in_to_check;
 		list<unsigned int>::iterator e_in_iter;
 
-/*
-		//Debugging
-		vector <EnhancedElement> octantes;
-		// Llenar vector octantes
-		for (unsigned int i=0; i<elements.size(); i++) {
-			octantes.push_back(elements[i]);
-		}
-
-		int vertices_in=0;
-		// Recorrer vector octantes
-		for(unsigned int i=0; i<octantes.size();i++){
-			//cout << octantes.size() << "<- cantidad de octantes \n";
-			vector <unsigned int> puntos_oct = octantes[i].getPoints();
-			vector <Point3D> octpts;
-			//cout << puntos_oct.size() << "<- cantidad de nodos octante \n";
-			// Llenar vector coordenadas punto
-			for(unsigned int k=0; k<puntos_oct.size();k++){
-			octpts.push_back(points.at(puntos_oct[k]).getPoint());
-			}
-
-			vertices_in = 0;
-			//cout << octpts.size() << "<- vector nodos octante \n";
-			//Recorrer vector coordenadas punto
-			for (unsigned int j=0; j < octpts.size(); j++){
-				if (octpts[j][0] == -0.25) // Restriccion x
-				if (octpts[j][1] == -0.25) // Restriccion y
-				if (octpts[j][2] == -1.5) // Restriccion z
-					vertices_in++;
-				
-			}
-			//if (vertices_in == 8){ // Si los 8 vertices estan en el rango, se encontro el octante sin patron
-			if (vertices_in == 1){ // Si tiene los 4 vertices de la cara, se encontro el octante que comparte cara con oct 2
-				cout << "octante encontrado \n";
-			//print puntos octante
-			for (unsigned int j=0; j < octpts.size(); j++)
-				cout << octpts[j] << " <- punto xyz \n";		
-			}
-		}
-*/
 		
 		for (unsigned int i=0; i<elements.size(); i++) {
-			
+/*
+		//Debugging
+
+			vector <unsigned int> points_ele_2 = elements[i].getPoints();
+
+				vector <Point3D> elepts;
+				// Obtener elemento conflictivo
+				for(unsigned int k=0; k<points_ele_2.size();k++)
+					elepts.push_back(points.at(points_ele_2[k]).getPoint());
+				int vertices_in = 0;
+				// Comparar con octante de prueba
+				for(unsigned int k=0; k<elepts.size();k++){
+					if (elepts[k][0]==-1.375 and elepts[k][1]==-3.25 and elepts[k][2]==-0.75) vertices_in++;
+					else if ((elepts[k][0]<-3.51 and elepts[k][0] > -3.53) and (elepts[k][1]<-3.53 and elepts[k][1] > -3.54) and elepts[k][2]==-0.75) vertices_in++;
+					else if (elepts[k][0]==-3.25 and elepts[k][1]==-1.375 and elepts[k][2]==-0.75) vertices_in++;
+					else if (elepts[k][0]==-1.375 and elepts[k][1]==-1.375 and elepts[k][2]==-0.75) vertices_in++;
+					}
+				
+				if (vertices_in == 4){
+					cout << "octante encontrado, elemento "<< i << "\n";
+					for (unsigned int k=0; k < elepts.size(); k++){
+						if(points.at(points_ele_2[k]).getIOState(0) == true and points.at(points_ele_2[k]).getIOState(1) == true){
+cout << "punto "<< k << " dentro de ambas superficies \n";
+}
+else if (points.at(points_ele_2[k]).getIOState(0) == true and points.at(points_ele_2[k]).getIOState(1) == false){
+cout << "punto "<< k << " dentro de superficie 1 \n";
+}
+else if (points.at(points_ele_2[k]).getIOState(0) == false and points.at(points_ele_2[k]).getIOState(1) == true){
+cout << "punto "<< k << " dentro de superficie 2 \n";
+}
+else if (points.at(points_ele_2[k]).getIOState(0) == false and points.at(points_ele_2[k]).getIOState(1) == false)
+cout << "punto "<< k << " fuera de ambas sueprficies \n";
+						cout << elepts[k] << " <- punto xyz \n";
+				}
+			} */
+			if (i==168) cout << "octante 168 encontrado tras aplicar patrones \n";
+
+			 //AQUI ESTA EL ERROR, UN OCTANTE QUE DEBERIA SER DIVIDIDO ENTRA AQUI Y NO LO ES	
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
 				continue;
@@ -795,8 +802,10 @@ namespace Clobscode
 				continue;
 			}
 			else {
+			if (i==87) cout << "octante 87 encontrado tras aplicar patrones \n";
 				removed.push_back(elements[i]);
 			}
+
 			//new elements intersecting the input surface
 			for (unsigned int j=0; j<replace.size(); j++) {
 				EnhancedElement ee(replace[j],n_meshes);

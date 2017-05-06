@@ -136,11 +136,10 @@ namespace Clobscode
 		
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
-
-		//agregado por javier
+	
 		//label nodes and elements, then remove outside elements
-		labelNodesAndElements(pClientData,pClientPointTestFunc);
-		
+		labelNodesAndElements(pClientData,pClientPointTestFunc);	
+
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
 		
@@ -692,159 +691,28 @@ namespace Clobscode
 		// Lista Posiciones de elementos que son divididos y cantidad de nuevos elementos, para convertir posiciones
 		vector < vector <unsigned int> > regnewele;
 		//Crear lista de posiciones de elementos conflictivos
-		vector<unsigned int> conpos;	
+		vector<unsigned int> conpos;
 
-		for (unsigned int i=0; i<elements.size(); i++) {
-
-		double old_md = elements[i].getMaxDistance();
-			
-			// Corregir elementos conflictivos con patrones internos
+		// Recorrer vector octantes
+		for(unsigned int i=0; i<elements.size();i++){
 			vector <unsigned int> points_ele = elements[i].getPoints();
 			if (points_ele.size() == 5){
 			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
-			int tnode=0,innode=0,outnode=0;
+			int innode=0;
 			for(unsigned int k=0; k<points_ele.size()-1;k++)
 				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
-				innode=k;
-				tnode++;
+				innode++;
 				}
-				else{
-				outnode=k;
-				}
-			vector<unsigned int> tetra1 (4,0);
-			vector<unsigned int> tetra2 (4,0);
-			if (tnode == 1){
-
-			if (innode == 0 or innode == 2){
-				
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
-			}
-			else{	
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
-			}
-			/*cout <<" octante \n";
-			vector <Point3D> elepts;
-			// Obtener elemento conflictivo
-			for(unsigned int k=0; k<points_ele.size();k++){
-				elepts.push_back(points.at(points_ele[k]).getPoint());
-			}
-			for(unsigned int k=0; k<elepts.size();k++){
-				cout << elepts[k] << "<- elepts[k] \n";
-			}*/
-
-			EnhancedElement ee1(tetra1,n_meshes);
-			ee1.setMaxDistance(old_md);
-			tmpele.push_back(ee1);
-			EnhancedElement ee2(tetra2,n_meshes);
-			ee2.setMaxDistance(old_md);
-			tmpele.push_back(ee2);
-
+			if (innode == 1 or innode == 3){
+			// Se agrega la posicion del elemento
 			points_ele.push_back(i);
-			invalid_elements.push_back(points_ele);
+			conflicting_elements.push_back(points_ele);
 			}
-			else if (tnode == 2){
-			unsigned int stnode[4],okcon=0;
-
-			for(unsigned int k=0; k<points_ele.size()-1;k++)
-				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
-				stnode[k]=1;
-				}
-				else{
-				stnode[k]=0;
-				}
-
-			if (stnode[0]==1 and stnode[2]==1){
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
-				okcon=1;
 			}
-			else if (stnode[1]==1 and stnode[3]==1){
+		}
+		//////////////////////////////////////////////////////////////////////////////////	
 
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
-				okcon=1;
-			}
-
-			if (okcon==1){
-				EnhancedElement ee3(tetra1,n_meshes);
-				ee3.setMaxDistance(old_md);
-				tmpele.push_back(ee3);
-				EnhancedElement ee4(tetra2,n_meshes);
-				ee4.setMaxDistance(old_md);
-				tmpele.push_back(ee4);
-
-				points_ele.push_back(i);
-				invalid_elements.push_back(points_ele);
-			}
-
-			}
-			else if (tnode == 3){
-				if (outnode == 1 or outnode==3){
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
-				}
-				else{
-
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
-				}
-
-			EnhancedElement ee5(tetra1,n_meshes);
-			ee5.setMaxDistance(old_md);
-			tmpele.push_back(ee5);
-			EnhancedElement ee6(tetra2,n_meshes);
-			ee6.setMaxDistance(old_md);
-			tmpele.push_back(ee6);
-
-			points_ele.push_back(i);
-			invalid_elements.push_back(points_ele);
-			}
-			
-			}
+		for (unsigned int i=0; i<elements.size(); i++) {
 			
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
@@ -867,8 +735,9 @@ namespace Clobscode
 				newele.push_back(elements[i]);
 				continue;
 			}
-
-		vector<vector<unsigned int> > replace, newinside;
+			
+			vector<vector<unsigned int> > replace, newinside;
+			double old_md = elements[i].getMaxDistance();
 
 			//Important note: the applyBoundary function is currently considering
 			
