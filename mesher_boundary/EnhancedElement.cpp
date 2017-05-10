@@ -169,14 +169,17 @@ namespace Clobscode
 		//Note: label as outside every node that is outside a given
 		//input surface. Erase the parameter instersects. 
 		
-		for (unsigned int i=0; i<pointindex.size(); i++){
-			if(meshpoints.at(pointindex[i]).getIOState(intersects))
+/*		for (unsigned int i=0; i<pointindex.size(); i++){
+//			if(meshpoints.at(pointindex[i]).getIOState(intersects))
+// Agregado por Javier
+			if(meshpoints.at(pointindex[i]).getIOState(0) and meshpoints.at(pointindex[i]).getIOState(1))
 				tmpin.push_back(i);
 			else
 				tmpout.push_back(i);
-		}
-		
-		/*for (unsigned int i=0; i<pointindex.size(); i++){
+		}*/
+	
+// Inicio Descomentado por Javier	
+		for (unsigned int i=0; i<pointindex.size(); i++){
 			bool inside_all = true;
 			for (unsigned int j=0; j<border.size(); j++) {
 				//consider only input meshes this element intersect
@@ -193,7 +196,9 @@ namespace Clobscode
 			else {
 				tmpout.push_back(i);
 			}
-		}*/
+		}
+
+// Fin Descomentado por Javier
 		
 		//save the points in a std::vector for quick acces
 		inpts.reserve(tmpin.size());

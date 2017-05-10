@@ -23,14 +23,18 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-4 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=-4 && mpts[i][1] <=0) // Restriccion y
-			if (mpts[i][2] >=-3 && mpts[i][2] <=2) // Restriccion z octante 1
+			if (mpts[i][0] >=-6 && mpts[i][0] <=0) // Restriccion x
+			if (mpts[i][1] >=2 && mpts[i][1] <=4.8) // Restriccion y
+			if (mpts[i][2] >=-5 && mpts[i][2] <=-2) // Restriccion z octante 1
 				vertices_in++;
 		}
 
-		if (vertices_in == 8)
+		if (vertices_in == 8){
 		cout << "7a nuevo lalda!\n";
+
+		for(unsigned int i=0; i<mpts.size();i++)
+			cout << mpts[i] << "<- puntos xyz \n";
+		}
 
 		vertices_in=0;		
 		//

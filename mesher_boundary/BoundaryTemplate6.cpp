@@ -79,8 +79,8 @@ namespace Clobscode
 		
 		eles.reserve(2);
 
-/*
 
+/*
 		//Recorrer elementos conflictivos de la malla
 		for(unsigned int i=0; i<conflicting_elements.size();i++){
 			vector <Point3D> elepts;
@@ -159,8 +159,8 @@ namespace Clobscode
 				}
 				
 			}
-		}
-		*/
+		}*/
+		
 		vector<unsigned int> ele1 (6,0);
 		vector<unsigned int> ele2 (6,0);
 		

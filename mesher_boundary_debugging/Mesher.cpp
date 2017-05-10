@@ -142,18 +142,18 @@ namespace Clobscode
 
 		// AGREGADO POR JAVIER
 		//label nodes and elements, then remove outside elements
-		labelNodesAndElements(pClientData,pClientPointTestFunc);
+		//labelNodesAndElements(pClientData,pClientPointTestFunc);
 		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
 		
 		//move close to boundary octants (mixed-elements at this stage)
-		//detectSurfaceElements();
-		//removeOnSurface();
+		detectSurfaceElements();
+		removeOnSurface();
 		
 		//project nodes of the boundary elements into the surface
-		//linkElementsToNodes();
-		//shrinkToBoundary(pClientData,pClientPointProjectorFunc);
+		linkElementsToNodes();
+		shrinkToBoundary(pClientData,pClientPointProjectorFunc);
 		 
 		 
 		//save the data of the mesh*/
@@ -765,10 +765,7 @@ else if (points.at(points_ele_2[k]).getIOState(0) == false and points.at(points_
 cout << "punto "<< k << " fuera de ambas sueprficies \n";
 						cout << elepts[k] << " <- punto xyz \n";
 				}
-			} */
-			if (i==168) cout << "octante 168 encontrado tras aplicar patrones \n";
-
-			 //AQUI ESTA EL ERROR, UN OCTANTE QUE DEBERIA SER DIVIDIDO ENTRA AQUI Y NO LO ES	
+			} */	
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
 				continue;
@@ -802,7 +799,6 @@ cout << "punto "<< k << " fuera de ambas sueprficies \n";
 				continue;
 			}
 			else {
-			if (i==87) cout << "octante 87 encontrado tras aplicar patrones \n";
 				removed.push_back(elements[i]);
 			}
 

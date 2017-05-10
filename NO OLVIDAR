@@ -87,7 +87,7 @@ Se encontraron los nodos del octante 1
 -0.25 -0.25 -5 <- punto xyz 
 
 
-Se comprueba que los problemas estan en las caras del eje z. El patron 2a esta en su posicion original o rotado 180 grados en el eje y.
+Se comprueba que los problemas estan en las caras del eje z.
 
 Se conprueba que son 2 los octantes con el conflicto y uno de ellos tiene conflictos en ambas caras, de ahi que se vean 3 caras en el visualizador. El otro octante tiene un patron desconocido. Se investigará a cual corresponde.
 
@@ -142,11 +142,14 @@ x: -0.5 3.6
 y: -0.5 3.6
 z: 2.25 6
 
-Se aplico un filtro a la lista de elementos conflictivos, se redujo de 64 a 16
+Solucion NO GENERAL:Se aplico un filtro a la lista de elementos conflictivos, se redujo de 64 a 16
+
+Solución GENERAL: Se aplica filtro a todos los elementos en base a IOState, no hay necesidad de entrar al ver los patrones, ya que es posible anticipar si la cara debería ser dividida por un patron interno, por lo que se elimina el elemento de la cara conflictiva y se reemplaza por los elementos que generen una diagonal en el sentido respectivo.
 
 ----------------------------------------------------------------------------------
 Casos nivel 4:
 
+Caso 1:
 x: [-4,0]
 y: [-4,0]
 z (octante 1 y 2): [-3,2]
@@ -165,4 +168,71 @@ Cara en conflicto
 -3.52122 -3.53882 -0.75
 -3.25 -1.375 -0.75
 -1.375 -1.375 -0.75
+
+Este caso se produjo debido a que el vector border del octante, que contiene true o false dependiendo si se encuentra en la malla i o no, estaba desactualizado. El octante en problemas tenía para ambas mallas falso, lo que significaba que se encontraba fuera de ambas mallas, cuando esto había dejado de ser cierto en operaciones anteriores a applyboundarytemplates. La solución fue actualizar el vector border de todos los elementos antes de ingresar a dicha función. Se solucionaron todos los casos con dicho problema.
+
+Caso 2:
+X (octante 1 y 2): [-5.5,0]
+y: [-4,0]
+z: [-5,-1]
+
+7a nuevo lalda!
+-5.125 -3.25 -5<- puntos xyz 
+-5.125 -3.25 -2.625<- puntos xyz 
+-3.52122 -3.53882 -2.625<- puntos xyz 
+-3.52122 -3.53882 -4.5<- puntos xyz 
+-4.83119 -1.27954 -4.5<- puntos xyz 
+-4.83119 -1.27954 -2.625<- puntos xyz 
+-3.25 -1.375 -2.625<- puntos xyz 
+-3.25 -1.375 -5<- puntos xyz 
+6a octante 1 
+-3.52122 -3.53882 -2.625<- puntos xyz 
+-1.375 -3.25 -2.625<- puntos xyz 
+-1.375 -3.25 -5<- puntos xyz 
+-3.52122 -3.53882 -4.5<- puntos xyz 
+-3.25 -1.375 -2.625<- puntos xyz 
+-1.375 -1.375 -2.625<- puntos xyz 
+-1.375 -1.375 -5<- puntos xyz 
+-3.25 -1.375 -5<- puntos xyz 
+
+cara en conflicto
+
+-3.52122 -3.53882 -2.625<- puntos xyz 
+-3.52122 -3.53882 -4.5<- puntos xyz 
+-3.25 -1.375 -2.625<- puntos xyz 
+-3.25 -1.375 -5<- puntos xyz 
+
+Este caso se produjo por un error en el etiquetado de nodos como "interno" y "externo" en los patrones internos, se etiquetaban como si hubiese sólo una superficie y se veía si el nodo estaba dentro o no de ella, en el caso de los patrones internos, se debe considerar un nodo interno cuando está dentro de ambas superficies. Esto generó que para el caso encontrado, se aplicara un patrón 6a interno en lugar de uno 3X.
+
+Caso 3:
+X (octante 1 y 2): [-6,0]
+y: [2,4.8]
+z: [-5,-2]
+
+6a externo 
+-5.125 4.25 -5<- puntos xyz 
+-5.125 4.25 -2.625<- puntos xyz 
+-5.125 2.375 -2.625<- puntos xyz 
+-5.125 2.375 -5<- puntos xyz 
+-3.03928 3.95997 -4.5<- puntos xyz 
+-3.03928 3.95997 -2.625<- puntos xyz 
+-3.25 2.375 -2.625<- puntos xyz 
+-3.25 2.375 -5<- puntos xyz 
+3a interno 
+-1.375 2.375 -2.625<- puntos xyz 
+-3.25 2.375 -2.625<- puntos xyz 
+-3.03928 3.95997 -2.625<- puntos xyz 
+-1.50723 4.765 -2.625<- puntos xyz 
+-1.375 2.375 -5<- puntos xyz 
+-3.25 2.375 -5<- puntos xyz 
+-3.03928 3.95997 -4.5<- puntos xyz 
+-1.375 4.25 -5<- puntos xyz 
+
+cara conflictiva:
+-3.03928 3.95997 -4.5<- puntos xyz 
+-3.03928 3.95997 -2.625<- puntos xyz 
+-3.25 2.375 -2.625<- puntos xyz 
+-3.25 2.375 -5<- puntos xyz 
+
+En este caso el elemento conflictivo es el hexaedro del 6a, que debe ser dividido para que respete las reglas de los patrones internos. Se usará el mismo criterio que las pirámides, pero en este caso, se dividirá en una pirámide y dos tetraedros.
 

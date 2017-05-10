@@ -684,8 +684,6 @@ namespace Clobscode
 		list<unsigned int> in_to_check;
 		list<unsigned int>::iterator e_in_iter;
 
-		//////////////////////////////////////////////////////////////////////
-		// fix problem with surface pattern neightborhood with boundary patterns
 		vector <EnhancedElement> tmp_elements;
 		vector < vector <unsigned int> > conflicting_elements;
 		vector < vector <unsigned int> > invalid_elements;
@@ -696,10 +694,43 @@ namespace Clobscode
 
 		for (unsigned int i=0; i<elements.size(); i++) {
 
-		double old_md = elements[i].getMaxDistance();
-			
+			double old_md = elements[i].getMaxDistance();
+
+			//////////////////////////////////////////////////////////////////////
+			// fix problem with surface pattern neightborhood with boundary patterns
 			// Corregir elementos conflictivos con patrones internos
 			vector <unsigned int> points_ele = elements[i].getPoints();
+
+			//Debugging ////////////////////////////////////////////////////////////////////
+				vector <Point3D> elepts;
+				// Obtener elemento conflictivo
+				for(unsigned int k=0; k<points_ele.size();k++)
+					elepts.push_back(points.at(points_ele[k]).getPoint());
+				unsigned int vertices_in = 0;
+				// Comparar con octante de prueba
+				for(unsigned int k=0; k<elepts.size();k++){
+					if (elepts[k][0]==-3.25 and elepts[k][1]==2.375 and elepts[k][2]==-2.625) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==2.25) vertices_in++;
+					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==-1.5) vertices_in++;
+					else if ((elepts[k][0]<-3 and elepts[k][0] > -3.1) and (elepts[k][1]>3.9 and elepts[k][1] < 4) and elepts[k][2]==-4.5) vertices_in++;
+					else if ((elepts[k][0]<-3 and elepts[k][0] > -3.1) and (elepts[k][1]>3.9 and elepts[k][1] < 4) and elepts[k][2]==-2.625) vertices_in++;
+					else if (elepts[k][0]==-3.25 and elepts[k][1]==2.375 and elepts[k][2]==-5) vertices_in++;
+					}
+				
+				if (vertices_in == 4){
+					cout << "\n Elemento encontrado \n";
+					for (unsigned int k=0; k < elepts.size(); k++){
+					cout << elepts[k] << " <- punto xyz \n";
+					if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true)
+					cout << "nodo "<< k << " dentro de ambas superficies\n";
+					else if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == false)
+					cout << "nodo "<< k << " dentro de superficie 1\n";
+					else if(points.at(points_ele[k]).getIOState(0) == false and points.at(points_ele[k]).getIOState(1) == true)
+					cout << "nodo "<< k << " dentro de superficie 2\n";
+					}
+				}
+			///////////////////////////////////////////////////////////////////////////////////////
+
 			if (points_ele.size() == 5){
 			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
 			int tnode=0,innode=0,outnode=0;
@@ -713,9 +744,10 @@ namespace Clobscode
 				}
 			vector<unsigned int> tetra1 (4,0);
 			vector<unsigned int> tetra2 (4,0);
+
 			if (tnode == 1){
 
-			if (innode == 0 or innode == 2){
+				if (innode == 0 or innode == 2){
 				
 				tetra1[0] = points_ele[0];
 				tetra1[1] = points_ele[1];
@@ -726,8 +758,8 @@ namespace Clobscode
 				tetra2[1] = points_ele[1];
 				tetra2[2] = points_ele[3];
 				tetra2[3] = points_ele[4];
-			}
-			else{	
+				}
+				else{	
 				tetra1[0] = points_ele[0];
 				tetra1[1] = points_ele[1];
 				tetra1[2] = points_ele[2];
@@ -737,31 +769,23 @@ namespace Clobscode
 				tetra2[1] = points_ele[3];
 				tetra2[2] = points_ele[2];
 				tetra2[3] = points_ele[4];
-			}
-			/*cout <<" octante \n";
-			vector <Point3D> elepts;
-			// Obtener elemento conflictivo
-			for(unsigned int k=0; k<points_ele.size();k++){
-				elepts.push_back(points.at(points_ele[k]).getPoint());
-			}
-			for(unsigned int k=0; k<elepts.size();k++){
-				cout << elepts[k] << "<- elepts[k] \n";
-			}*/
+				}
 
-			EnhancedElement ee1(tetra1,n_meshes);
-			ee1.setMaxDistance(old_md);
-			tmpele.push_back(ee1);
-			EnhancedElement ee2(tetra2,n_meshes);
-			ee2.setMaxDistance(old_md);
-			tmpele.push_back(ee2);
+				EnhancedElement ee1(tetra1,n_meshes);
+				ee1.setMaxDistance(old_md);
+				tmpele.push_back(ee1);
+				EnhancedElement ee2(tetra2,n_meshes);
+				ee2.setMaxDistance(old_md);
+				tmpele.push_back(ee2);
 
-			points_ele.push_back(i);
-			invalid_elements.push_back(points_ele);
+				points_ele.push_back(i);
+				invalid_elements.push_back(points_ele);
+				continue;
 			}
 			else if (tnode == 2){
-			unsigned int stnode[4],okcon=0;
+				unsigned int stnode[4],okcon=0;
 
-			for(unsigned int k=0; k<points_ele.size()-1;k++)
+				for(unsigned int k=0; k<points_ele.size()-1;k++)
 				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
 				stnode[k]=1;
 				}
@@ -769,7 +793,7 @@ namespace Clobscode
 				stnode[k]=0;
 				}
 
-			if (stnode[0]==1 and stnode[2]==1){
+				if (stnode[0]==1 and stnode[2]==1){
 				tetra1[0] = points_ele[0];
 				tetra1[1] = points_ele[1];
 				tetra1[2] = points_ele[3];
@@ -780,8 +804,8 @@ namespace Clobscode
 				tetra2[2] = points_ele[3];
 				tetra2[3] = points_ele[4];
 				okcon=1;
-			}
-			else if (stnode[1]==1 and stnode[3]==1){
+				}
+				else if (stnode[1]==1 and stnode[3]==1){
 
 				tetra1[0] = points_ele[0];
 				tetra1[1] = points_ele[1];
@@ -793,9 +817,9 @@ namespace Clobscode
 				tetra2[2] = points_ele[2];
 				tetra2[3] = points_ele[4];
 				okcon=1;
-			}
+				}
 
-			if (okcon==1){
+				if (okcon==1){
 				EnhancedElement ee3(tetra1,n_meshes);
 				ee3.setMaxDistance(old_md);
 				tmpele.push_back(ee3);
@@ -805,7 +829,8 @@ namespace Clobscode
 
 				points_ele.push_back(i);
 				invalid_elements.push_back(points_ele);
-			}
+				continue;
+				}
 
 			}
 			else if (tnode == 3){
@@ -842,9 +867,11 @@ namespace Clobscode
 
 			points_ele.push_back(i);
 			invalid_elements.push_back(points_ele);
+			continue;
 			}
 			
 			}
+			///////////////////////////////////////////////////////////////
 			
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
@@ -868,7 +895,7 @@ namespace Clobscode
 				continue;
 			}
 
-		vector<vector<unsigned int> > replace, newinside;
+			vector<vector<unsigned int> > replace, newinside;
 
 			//Important note: the applyBoundary function is currently considering
 			
@@ -912,14 +939,6 @@ namespace Clobscode
 				removed.push_back(elements[i]);
 			}
 
-			// remove invalid elements produced by conflict between surface patterns and boundary patterns
-			/*
-			for (unsigned int j=0; j<invalid_elements.size(); j++) {
-				EnhancedElement ee(invalid_elements[j],n_meshes);
-				ee.setMaxDistance(old_md);
-				removed.push_back(ee);
-			}
-			*/
 
 			//new elements intersecting the input surface
 			for (unsigned int j=0; j<replace.size(); j++) {
@@ -948,60 +967,6 @@ namespace Clobscode
 				newele.push_back(ee);
 			}
 		}
-		
-		// Convertir posiciones ele a posiciones newele
-		for(unsigned int k=0;k<regnewele.size();k++)
-		for(unsigned int l=0;l<invalid_elements.size();l++)
-				if(invalid_elements[l][5] > regnewele[k][0])
-					invalid_elements[l][5]+=regnewele[k][1];
-
-
-		for(unsigned int k=0;k<regnewele.size();k++)
-		for(unsigned int l=0;l<conpos.size();l++)
-				if(conpos[l] > regnewele[k][0])
-					conpos[l]+=regnewele[k][1];
-
-
-		// Crear lista de posiciones de elementos conflictivos
-		vector<unsigned int> elepos;
-		int find;
-		cout << invalid_elements.size() << " <-invalid_elements.size() \n";
-		for(unsigned int k=0;k<invalid_elements.size();k++){
-			find=0;
-			// Verificar si se encuentra un elemento conflictivo que sera desechado
-			for(unsigned int l=0;l<conpos.size();l++){
-			if(invalid_elements[k][5] == conpos[l])
-			find=1;
-			}
-			// Si no es así, agregar a la lista
-			if(find==0)
-			elepos.push_back(invalid_elements[k][5]);
-		}
-
-		// Ordenar de menor a mayor
-		sort(elepos.begin(),elepos.end());
-
-		for(unsigned int k=0;k<elepos.size();k++){
-			cout << elepos[k] << " <- elepos[k] \n";
-		}
-
-		// Iterar para borrar elementos conflictivos
-		list<EnhancedElement>::iterator itc;
-
-		unsigned int pos =0;
-		unsigned int l=0;
-		for (itc=newele.begin(); itc!=newele.end(); itc++) {
-        	if (elepos[l] == pos) {
-            		l++;
-			//cout << *itc << " \n";
-            		itc = newele.erase(itc);
-			itc--;
-        		}
-        	if (l==elepos.size()) {
-            		break;
-        		}
-        	pos++;
-    		} 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//2do debugging

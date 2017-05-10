@@ -136,7 +136,8 @@ namespace Clobscode
 		
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
-	
+		
+		// Agregado por Javier
 		//label nodes and elements, then remove outside elements
 		labelNodesAndElements(pClientData,pClientPointTestFunc);	
 

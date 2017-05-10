@@ -165,15 +165,15 @@ namespace Clobscode
 		
 		//Note: label as outside every node that is outside a given
 		//input surface. Erase the parameter instersects. 
-		
+			
 		for (unsigned int i=0; i<pointindex.size(); i++){
 			if(meshpoints.at(pointindex[i]).getIOState(intersects))
 				tmpin.push_back(i);
 			else
 				tmpout.push_back(i);
 		}
-		
-		/*for (unsigned int i=0; i<pointindex.size(); i++){
+		/*
+		for (unsigned int i=0; i<pointindex.size(); i++){
 			bool inside_all = true;
 			for (unsigned int j=0; j<border.size(); j++) {
 				//consider only input meshes this element intersect
