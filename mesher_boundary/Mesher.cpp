@@ -718,7 +718,7 @@ namespace Clobscode
 					}
 				
 				if (vertices_in == 4){
-					cout << "\n Elemento encontrado \n";
+					cout << "\n Elemento encontrado "<<i<<" \n";
 					for (unsigned int k=0; k < elepts.size(); k++){
 					cout << elepts[k] << " <- punto xyz \n";
 					if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true)
@@ -794,6 +794,7 @@ namespace Clobscode
 				}
 
 				if (stnode[0]==1 and stnode[2]==1){
+
 				tetra1[0] = points_ele[0];
 				tetra1[1] = points_ele[1];
 				tetra1[2] = points_ele[3];
@@ -913,6 +914,7 @@ namespace Clobscode
 					tmppts.push_back(mp);
 
 					if(stnode[0] == 1 or stnode[4] == 1) {
+
 					tetra1[0] = points_ele[0];
 					tetra1[1] = points_ele[3];
 					tetra1[2] = points_ele[1];
@@ -943,8 +945,8 @@ namespace Clobscode
 					else{
 					pyr[0] = points_ele[0];
 					pyr[1] = points_ele[2];
-					pyr[2] = points_ele[3];
-					pyr[3] = points_ele[5];
+					pyr[2] = points_ele[5];
+					pyr[3] = points_ele[3];
 					pyr[4]= mid;
 
 					EnhancedElement ee1(pyr,n_meshes);
@@ -981,10 +983,11 @@ namespace Clobscode
 						tmpele.push_back(ee2);
 						}
 					else {
+
 						pyr[0] = points_ele[0];
 						pyr[1] = points_ele[2];
-						pyr[2] = points_ele[3];
-						pyr[3] = points_ele[5];
+						pyr[2] = points_ele[5];
+						pyr[3] = points_ele[3];
 						pyr[4]= mid;
 
 						EnhancedElement ee1(pyr,n_meshes);

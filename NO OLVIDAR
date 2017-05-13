@@ -28,7 +28,11 @@ Para compilar primero debes ejecutar make en la carpeta mesher_services y luego 
 %> make
 
 Eso va a generar el ejecutable mesher_boundary. Dentro de esa misma carpeta van dos inputs para prueba (cilindro y caja). Para generar una malla de nivel de refinamiento 3 (cantidad recursiva de veces de aplicar Octree) ejecutar:
+
+Caso cilindro-caja:
 ./mesher_boundary cylinder.mdl hex_en.mdl 3 mi_malla_output
+Caso femur-protesis:
+./mesher_boundary FEMUR.mdl PROST.mdl 3 femur_protesis
 
 1. Fijarse que la ventana activa de geomview sea la de la cámara.
 2. presionar las teclas: “ae”. Eso activará la visualización de arcos.
@@ -38,6 +42,7 @@ Eso va a generar el ejecutable mesher_boundary. Dentro de esa misma carpeta van 
 
 
 Donde el 3 es por nivel de refinamiento y “mi_malla_output” es el nombre de salida. Para visualizar el resultado debes llamar al visualizador (viewer) pasándole como parámetro la malla recién generada:
+
 %> path/viewer -m mi_malla_output.m3d
 
 donde path es el path al viewer.
@@ -45,7 +50,12 @@ donde path es el path al viewer.
 ------------------------------------------------------------
 cd Documentos
 cd Memoria
+
+
+Caso cilindro-caja:
 ./viewer -m mi_malla_output.m3d
+Caso femur-protesis:
+./viewer -m femur_protesis.m3d
 
 Los octantes que dan error (hay dos baldosas visibles paralelas, esas no, la tercera) están en las coordenadas:
 
@@ -235,4 +245,29 @@ cara conflictiva:
 -3.25 2.375 -5<- puntos xyz 
 
 En este caso el elemento conflictivo es el hexaedro del 6a, que debe ser dividido para que respete las reglas de los patrones internos. Se usará el mismo criterio que las pirámides, pero en este caso, se dividirá en una pirámide y dos tetraedros.
+
+Caso 4:
+
+El problema del caso 4 fue en el patron 3a interno, que estaba mal implementado, la ultima pirámide estaba contruida así:
+
+		//managing outside elements	
+		pyramid2[0] = all[4];
+		pyramid2[1] = all[7];
+		pyramid2[2] = all[6];
+		pyramid2[3] = all[5];
+		pyramid2[4] = all[2];
+		
+		newsubs_out.push_back(pyramid3);
+
+La variable pyramid3 no tenía nada, ya que el error fue llenar la piramide anterior con los elementos que le correspondían (puso por error 2 en lugar de 3), se corrigio así:
+
+		//managing outside elements
+		//Agregado por javier, originalmente decia "pyramid2[0] =...", lo cambie por "pyramid3[0]=..."	
+		pyramid3[0] = all[4];
+		pyramid3[1] = all[7];
+		pyramid3[2] = all[6];
+		pyramid3[3] = all[5];
+		pyramid3[4] = all[2];
+		
+		newsubs_out.push_back(pyramid3);
 

@@ -183,12 +183,13 @@ namespace Clobscode
 		newsubs_in.push_back(pyramid1);
 		newsubs_in.push_back(pyramid2);
 		
-		//managing outside elements		
-		pyramid2[0] = all[4];
-		pyramid2[1] = all[7];
-		pyramid2[2] = all[6];
-		pyramid2[3] = all[5];
-		pyramid2[4] = all[2];
+		//managing outside elements
+		//Agregado por javier, originalmente decia "pyramid2[0] =...", lo cambie por "pyramid3[0]=..."	
+		pyramid3[0] = all[4];
+		pyramid3[1] = all[7];
+		pyramid3[2] = all[6];
+		pyramid3[3] = all[5];
+		pyramid3[4] = all[2];
 		
 		newsubs_out.push_back(pyramid3);
 		
