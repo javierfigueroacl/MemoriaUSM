@@ -871,6 +871,208 @@ namespace Clobscode
 			}
 			
 			}
+
+			else if (points_ele.size() == 6){
+				unsigned int stnode[6],okcon=0,tnode1=0,tnode2=0,tnode=0;
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				vector<unsigned int> tetra3 (4,0);
+				vector<unsigned int> tetra4 (4,0);
+				vector<unsigned int> tetra5 (4,0);
+				vector<unsigned int> tetra6 (4,0);
+				vector<unsigned int> pyr (5,0);
+
+				// label nodes
+				for(unsigned int k=0; k<points_ele.size();k++)
+				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				stnode[k]=1;
+				}
+				else{
+				stnode[k]=0;
+				}
+
+				// count total nodes in two prism's faces
+				// face 1
+				//tnode1 = stnode[0]+stnode[1]+stnode[3]+stnode[4];
+				// face 2
+				//tnode2 = stnode[0]+stnode[2]+stnode[3]+stnode[5];
+				
+				tnode= stnode[0]+stnode[1]+stnode[2]+stnode[3]+stnode[4]+stnode[5];
+
+				// in this case, the prism will be split in 2 pyramid and 2 tetras and then 1 pyramid in two tetras
+				//
+				if (tnode == 1){				
+					//adding new mid node.
+					Point3D middle;
+					unsigned int mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					if(stnode[0] == 1 or stnode[4] == 1) {
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[3];
+					tetra1[2] = points_ele[1];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[3];
+					tetra2[1] = points_ele[4];
+					tetra2[2] = points_ele[1];
+					tetra2[3] = mid;	
+					if(stnode[0] == 1){
+						tetra3[0] = points_ele[0];
+						tetra3[1] = points_ele[2];
+						tetra3[2] = points_ele[3];
+						tetra3[3] = mid;
+
+						tetra4[0] = points_ele[2];
+						tetra4[1] = points_ele[3];
+						tetra4[2] = points_ele[5];
+						tetra4[3] = mid;	
+
+						EnhancedElement ee1(tetra3,n_meshes);
+						ee1.setMaxDistance(old_md);
+						tmpele.push_back(ee1);
+						EnhancedElement ee2(tetra4,n_meshes);
+						ee2.setMaxDistance(old_md);
+						tmpele.push_back(ee2);					
+						}
+					else{
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[2];
+					pyr[2] = points_ele[3];
+					pyr[3] = points_ele[5];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(pyr,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+						}
+					}
+					else if (stnode[1] == 1 or stnode[3] == 1){
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[1];
+					tetra1[2] = points_ele[4];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[0];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[4];
+					tetra2[3] = mid;
+					if(stnode[3] == 1){
+						tetra3[0] = points_ele[0];
+						tetra3[1] = points_ele[3];
+						tetra3[2] = points_ele[5];
+						tetra3[3] = mid;
+
+						tetra4[0] = points_ele[0];
+						tetra4[1] = points_ele[2];
+						tetra4[2] = points_ele[5];
+						tetra4[3] = mid;	
+
+						EnhancedElement ee1(tetra3,n_meshes);
+						ee1.setMaxDistance(old_md);
+						tmpele.push_back(ee1);
+						EnhancedElement ee2(tetra4,n_meshes);
+						ee2.setMaxDistance(old_md);
+						tmpele.push_back(ee2);
+						}
+					else {
+						pyr[0] = points_ele[0];
+						pyr[1] = points_ele[2];
+						pyr[2] = points_ele[3];
+						pyr[3] = points_ele[5];
+						pyr[4]= mid;
+
+						EnhancedElement ee1(pyr,n_meshes);
+						ee1.setMaxDistance(old_md);
+						tmpele.push_back(ee1);
+						}
+					}
+					else if (stnode[5] == 1 or stnode[2] == 1){
+					if(stnode[5] == 1){
+						tetra1[0] = points_ele[0];
+						tetra1[1] = points_ele[2];
+						tetra1[2] = points_ele[3];
+						tetra1[3] = mid;
+
+						tetra2[0] = points_ele[2];
+						tetra2[1] = points_ele[3];
+						tetra2[2] = points_ele[5];
+						tetra2[3] = mid;	
+					}
+					else{
+						tetra1[0] = points_ele[0];
+						tetra1[1] = points_ele[3];
+						tetra1[2] = points_ele[5];
+						tetra1[3] = mid;
+
+						tetra2[0] = points_ele[0];
+						tetra2[1] = points_ele[2];
+						tetra2[2] = points_ele[5];
+						tetra2[3] = mid;	
+					}
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+					}
+
+				
+				//insert tetra1 y tetra2, that are generated in all cases, with changes
+				EnhancedElement ee4(tetra1,n_meshes);
+				ee4.setMaxDistance(old_md);
+				tmpele.push_back(ee4);
+
+				EnhancedElement ee5(tetra2,n_meshes);
+				ee5.setMaxDistance(old_md);
+				tmpele.push_back(ee5);
+
+				// two tetras that are always generated and are the same
+				tetra5[0] = points_ele[3];
+				tetra5[1] = points_ele[4];
+				tetra5[2] = points_ele[5];
+				tetra5[3] = mid;
+
+				tetra6[0] = points_ele[0];
+				tetra6[1] = points_ele[1];
+				tetra6[2] = points_ele[2];
+				tetra6[3] = mid;
+
+				EnhancedElement ee6(tetra5,n_meshes);
+				ee6.setMaxDistance(old_md);
+				tmpele.push_back(ee6);
+
+				EnhancedElement ee7(tetra6,n_meshes);
+				ee7.setMaxDistance(old_md);
+				tmpele.push_back(ee7);
+
+				// last pyramid to keep consistency in diagonal face
+
+				pyr[0] = points_ele[1];
+				pyr[1] = points_ele[2];
+				pyr[2] = points_ele[5];
+				pyr[3] = points_ele[4];
+				pyr[4]= mid;
+
+				EnhancedElement ee8(pyr,n_meshes);
+				ee8.setMaxDistance(old_md);
+				tmpele.push_back(ee8);
+
+				continue;
+				} 
+
+
+			}
 			///////////////////////////////////////////////////////////////
 			
 			if (!elements[i].insideBorder(points)) {
