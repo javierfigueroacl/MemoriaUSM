@@ -154,10 +154,10 @@ namespace Clobscode
 												 const unsigned int &intersects,
 										vector<vector<unsigned int> > &conflicting_elements
 													){
-		
-		if(!insideBorder(meshpoints)){
+		//COMENTADO POR JAVIER
+		/*if(!insideBorder(meshpoints)){
 			return false;
-		}
+		}*/
 		
 		std::vector<unsigned int> inpts, outpts;
 		std::list<unsigned int> tmpin;
@@ -235,11 +235,11 @@ namespace Clobscode
 			case 0:{
 				/*If at this point, the element has 0 node inside,
 				 it might be tangencial to input mesh, in which case
-				 it should be invalid_elements, or represent a feature of
+				 it should be invalid, or represent a feature of
 				 the domain (e.g. all nodes outside, but there is
 				 something like a pipeline crossing it). This algorithm
 				 isn't yet "future sensitive", therefore the element
-				 is simply invalid_elements.
+				 is simply invalid.
 				 */
 				return false;
 			}

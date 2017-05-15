@@ -172,9 +172,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-6 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=2 && mpts[i][1] <=4.8) // Restriccion y
-			if (mpts[i][2] >=-5 && mpts[i][2] <=-2) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
+			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
 				vertices_in++;
 		}
 
@@ -206,13 +206,13 @@ namespace Clobscode
 		
 		newsubs_in.push_back(pyramid1);
 		newsubs_in.push_back(pyramid2);
-		
+		//Arreglado por Javier
 		//managing outside elements		
-		pyramid2[0] = all[4];
-		pyramid2[1] = all[7];
-		pyramid2[2] = all[6];
-		pyramid2[3] = all[5];
-		pyramid2[4] = all[2];
+		pyramid3[0] = all[4];
+		pyramid3[1] = all[7];
+		pyramid3[2] = all[6];
+		pyramid3[3] = all[5];
+		pyramid3[4] = all[2];
 		
 		newsubs_out.push_back(pyramid3);
 		
@@ -245,9 +245,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-6 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=2 && mpts[i][1] <=4.8) // Restriccion y
-			if (mpts[i][2] >=-5 && mpts[i][2] <=-2) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
+			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
 				vertices_in++;
 		}
 
@@ -307,9 +307,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-6 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=2 && mpts[i][1] <=4.8) // Restriccion y
-			if (mpts[i][2] >=-5 && mpts[i][2] <=-2) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
+			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
 				vertices_in++;
 		}
 
@@ -370,9 +370,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-6 && mpts[i][0] <=0) // Restriccion x
-			if (mpts[i][1] >=2 && mpts[i][1] <=4.8) // Restriccion y
-			if (mpts[i][2] >=-5 && mpts[i][2] <=-2) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
+			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
 				vertices_in++;
 		}
 

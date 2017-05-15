@@ -132,17 +132,13 @@ namespace Clobscode
 		//that rely inside the overall geometry, but are close
 		//to an intern feature
 		projectCloseToInsideBoundaryNodes(pClientData,pClientPointProjectorFunc);
-
-		// AGREGADO POR JAVIER
-		//label nodes and elements, then remove outside elements
-		labelNodesAndElements(pClientData,pClientPointTestFunc);
 		
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
 
 		// AGREGADO POR JAVIER
 		//label nodes and elements, then remove outside elements
-		//labelNodesAndElements(pClientData,pClientPointTestFunc);
+		labelNodesAndElements(pClientData,pClientPointTestFunc);
 		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);

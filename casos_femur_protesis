@@ -1,0 +1,70 @@
+Caso cilindro-caja:
+./mesher_boundary cylinder.mdl hex_en.mdl 4 mi_malla_output
+./viewer -m mi_malla_output.m3d
+Caso femur-protesis:
+./mesher_boundary FEMUR.mdl PROST.mdl 4 femur_protesis
+./viewer -m femur_protesis.m3d
+
+-- Nivel 4 --
+
+Caso 1: 
+x: [-60,-30]
+y: [-20,-5]
+z: [25,50]
+
+Elementos involucrados:
+
+4a externo <- i=147
+-56.3136 -19.403 36.2065<- puntos xyz 
+-56.3136 -19.403 48.5568<- puntos xyz 
+-43.9633 -19.403 48.5568<- puntos xyz 
+-43.9633 -19.403 36.2065<- puntos xyz 
+-55.8981 -7.01613 36.3407<- puntos xyz 
+-58.9102 -7.27726 48.0725<- puntos xyz 
+-43.9633 -7.05271 48.5568<- puntos xyz 
+-43.9658 -10.6054 36.1394<- puntos xyz
+
+Este caso se origina por hexaedros generados por patrones de superficie (octantes no divididos en realidad) que dado que tienen puntos fuera de ambas superficies, son ignorados por los patrones internos, lo cual genera inconsistencias. Lo que se hizo fue abarcar exclusivamente los hexaedros que tuvieran algun nodo fuera de toda superficie y algun nodo en ambas superficies, permitiéndoles que se les implemente un patrón interno, de forma de eliminar inconsistencias con elementos vecinos:
+
+Archivos modificados:
+enhancedelements.cpp:
+		//COMENTADO POR JAVIER
+		/*if(!insideBorder(meshpoints)){
+			return false;
+		}*/
+
+mesher.cpp:
+
+			else if (points_ele.size() == 8){
+				bool inall=false,outall=false;
+				for(unsigned int k=0; k<points_ele.size();k++)
+				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				inall=true;
+				}
+				else if(points.at(points_ele[k]).getIOState(0) == false and points.at(points_ele[k]).getIOState(1) == false){
+				outall=true;
+				}
+
+				if(inall== true and outall==true) surf_conf=true;
+			
+			}
+			///////////////////////////////////////////////////////////////
+
+			//IF AGREGADO POR JAVIER
+			if(surf_conf == false)
+			if (!elements[i].insideBorder(points)) {
+				newele.push_back(elements[i]);
+				continue;
+			}
+			
+			//IF AGREGADO POR JAVIER
+			bool found = false;
+			unsigned int intersected_surf;
+			for (unsigned int j=0; j<n_meshes; j++) {
+				if (elements[i].getBorderState(j)) {
+					intersected_surf = j;
+					found = true;
+					break;
+				}
+			}
+

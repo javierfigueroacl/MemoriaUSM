@@ -709,15 +709,19 @@ namespace Clobscode
 				unsigned int vertices_in = 0;
 				// Comparar con octante de prueba
 				for(unsigned int k=0; k<elepts.size();k++){
-					if (elepts[k][0]==-3.25 and elepts[k][1]==2.375 and elepts[k][2]==-2.625) vertices_in++;
+					if ((elepts[k][0]<-56 and elepts[k][0]>-57) and (elepts[k][1]<-19 and elepts[k][1]>-20) and (elepts[k][2]>36 and elepts[k][2]<37)) vertices_in++;
+					else if ((elepts[k][0]<-56 and elepts[k][0]>-57) and (elepts[k][1]<-19 and elepts[k][1]>-20) and (elepts[k][2]>48 and elepts[k][2]<49)) vertices_in++;
+					else if ((elepts[k][0]<-43 and elepts[k][0]>-44) and (elepts[k][1]<-19 and elepts[k][1]>-20) and (elepts[k][2]>48 and elepts[k][2]<49)) vertices_in++;
+					else if ((elepts[k][0]<-43 and elepts[k][0]>-44) and (elepts[k][1]<-19 and elepts[k][1]>-20) and (elepts[k][2]>36 and elepts[k][2]<37)) vertices_in++;
 					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==2.25) vertices_in++;
 					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==-1.5) vertices_in++;
-					else if ((elepts[k][0]<-3 and elepts[k][0] > -3.1) and (elepts[k][1]>3.9 and elepts[k][1] < 4) and elepts[k][2]==-4.5) vertices_in++;
-					else if ((elepts[k][0]<-3 and elepts[k][0] > -3.1) and (elepts[k][1]>3.9 and elepts[k][1] < 4) and elepts[k][2]==-2.625) vertices_in++;
-					else if (elepts[k][0]==-3.25 and elepts[k][1]==2.375 and elepts[k][2]==-5) vertices_in++;
+					else if ((elepts[k][0]<-55 and elepts[k][0] > -56) and (elepts[k][1]<-7 and elepts[k][1]>-8) and (elepts[k][2]>36 and elepts[k][2]<37)) vertices_in++;
+					else if ((elepts[k][0]<-58 and elepts[k][0] > -59) and (elepts[k][1]<-7 and elepts[k][1]>-8) and (elepts[k][2]>48 and elepts[k][2]<49)) vertices_in++;
+					else if ((elepts[k][0]<-43 and elepts[k][0] > -44) and (elepts[k][1]<-7 and elepts[k][1]>-8) and (elepts[k][2]>48 and elepts[k][2]<49)) vertices_in++;
+					else if ((elepts[k][0]<-43 and elepts[k][0] > -44) and (elepts[k][1]<-10 and elepts[k][1]>-11) and (elepts[k][2]>36 and elepts[k][2]<37)) vertices_in++;
 					}
 				
-				if (vertices_in == 4){
+				if (vertices_in == 8){
 					cout << "\n Elemento encontrado "<<i<<" \n";
 					for (unsigned int k=0; k < elepts.size(); k++){
 					cout << elepts[k] << " <- punto xyz \n";
@@ -730,6 +734,8 @@ namespace Clobscode
 					}
 				}
 			///////////////////////////////////////////////////////////////////////////////////////
+
+			bool surf_conf=false;
 
 			if (points_ele.size() == 5){
 			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
@@ -1076,13 +1082,30 @@ namespace Clobscode
 
 
 			}
-			///////////////////////////////////////////////////////////////
+
+			else if (points_ele.size() == 8){
+				bool inall=false,outall=false;
+				for(unsigned int k=0; k<points_ele.size();k++)
+				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				inall=true;
+				}
+				else if(points.at(points_ele[k]).getIOState(0) == false and points.at(points_ele[k]).getIOState(1) == false){
+				outall=true;
+				}
+
+				if(inall== true and outall==true) surf_conf=true;
 			
+			}
+			///////////////////////////////////////////////////////////////
+
+			//IF AGREGADO POR JAVIER
+			if(surf_conf == false)
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
 				continue;
 			}
 			
+			//IF AGREGADO POR JAVIER
 			bool found = false;
 			unsigned int intersected_surf;
 			for (unsigned int j=0; j<n_meshes; j++) {
@@ -1092,13 +1115,16 @@ namespace Clobscode
 					break;
 				}
 			}
-			
+
+			//Debugging
+			if(surf_conf == false)
 			if (!found) {
 				std::cout << "Warning in Mesher::applyBoundaryTemplates :";
 				std::cout << " element doesn't intersect inner surface\n";
 				newele.push_back(elements[i]);
 				continue;
 			}
+
 
 			vector<vector<unsigned int> > replace, newinside;
 

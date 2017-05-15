@@ -30,9 +30,9 @@ Para compilar primero debes ejecutar make en la carpeta mesher_services y luego 
 Eso va a generar el ejecutable mesher_boundary. Dentro de esa misma carpeta van dos inputs para prueba (cilindro y caja). Para generar una malla de nivel de refinamiento 3 (cantidad recursiva de veces de aplicar Octree) ejecutar:
 
 Caso cilindro-caja:
-./mesher_boundary cylinder.mdl hex_en.mdl 3 mi_malla_output
+./mesher_boundary cylinder.mdl hex_en.mdl 4 mi_malla_output
 Caso femur-protesis:
-./mesher_boundary FEMUR.mdl PROST.mdl 3 femur_protesis
+./mesher_boundary FEMUR.mdl PROST.mdl 4 femur_protesis
 
 1. Fijarse que la ventana activa de geomview sea la de la cámara.
 2. presionar las teclas: “ae”. Eso activará la visualización de arcos.
@@ -212,7 +212,7 @@ cara en conflicto
 -3.25 -1.375 -2.625<- puntos xyz 
 -3.25 -1.375 -5<- puntos xyz 
 
-Este caso se produjo por un error en el etiquetado de nodos como "interno" y "externo" en los patrones internos, se etiquetaban como si hubiese sólo una superficie y se veía si el nodo estaba dentro o no de ella, en el caso de los patrones internos, se debe considerar un nodo interno cuando está dentro de ambas superficies. Esto generó que para el caso encontrado, se aplicara un patrón 6a interno en lugar de uno 3X.
+Este caso se produjo por un error en el etiquetado de nodos como "interno" y "externo" en los patrones internos, se etiquetaban como si hubiese sólo una superficie y se veía si el nodo estaba dentro o no de ella, en el caso de los patrones internos, se debe considerar un nodo interno cuando está dentro de ambas superficies. Esto generó que para el caso encontrado, se aplicara un patrón 6a interno en lugar de uno 3X. Se corrigio en EnhancedElements.cpp, descomentando una parte y comentando otra.
 
 Caso 3:
 X (octante 1 y 2): [-6,0]
