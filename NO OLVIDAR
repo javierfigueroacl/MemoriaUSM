@@ -181,6 +181,11 @@ Cara en conflicto
 
 Este caso se produjo debido a que el vector border del octante, que contiene true o false dependiendo si se encuentra en la malla i o no, estaba desactualizado. El octante en problemas tenía para ambas mallas falso, lo que significaba que se encontraba fuera de ambas mallas, cuando esto había dejado de ser cierto en operaciones anteriores a applyboundarytemplates. La solución fue actualizar el vector border de todos los elementos antes de ingresar a dicha función. Se solucionaron todos los casos con dicho problema.
 
+archivo cambiado: mesher.cpp
+
+se agrega: labelNodesAndElements(pClientData,pClientPointTestFunc);
+antes de: applyBoundaryTemplates(pClientData,pClientPointTestFunc);
+
 Caso 2:
 X (octante 1 y 2): [-5.5,0]
 y: [-4,0]
@@ -213,6 +218,34 @@ cara en conflicto
 -3.25 -1.375 -5<- puntos xyz 
 
 Este caso se produjo por un error en el etiquetado de nodos como "interno" y "externo" en los patrones internos, se etiquetaban como si hubiese sólo una superficie y se veía si el nodo estaba dentro o no de ella, en el caso de los patrones internos, se debe considerar un nodo interno cuando está dentro de ambas superficies. Esto generó que para el caso encontrado, se aplicara un patrón 6a interno en lugar de uno 3X. Se corrigio en EnhancedElements.cpp, descomentando una parte y comentando otra.
+
+archivo cambiado: EnhancedElements.cpp
+se descomentó:	
+		for (unsigned int i=0; i<pointindex.size(); i++){
+			bool inside_all = true;
+			for (unsigned int j=0; j<border.size(); j++) {
+				//consider only input meshes this element intersect
+				if (!border[j]) {
+					continue;
+				}
+				if (!meshpoints.at(pointindex[i]).getIOState(j)) {
+					inside_all = false;
+				}
+			}
+			if (inside_all) {
+				tmpin.push_back(i);
+			}
+			else {
+				tmpout.push_back(i);
+			}
+		}
+
+se comentó:
+		  for (unsigned int i=0; i<pointindex.size(); i++){
+			if(meshpoints.at(pointindex[i]).getIOState(0) and meshpoints.at(pointindex[i]).getIOState(1))
+				tmpin.push_back(i);
+			else
+				tmpout.push_back(i);
 
 Caso 3:
 X (octante 1 y 2): [-6,0]

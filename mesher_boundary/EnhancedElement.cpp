@@ -170,8 +170,6 @@ namespace Clobscode
 		//input surface. Erase the parameter instersects. 
 		
 /*		for (unsigned int i=0; i<pointindex.size(); i++){
-//			if(meshpoints.at(pointindex[i]).getIOState(intersects))
-// Agregado por Javier
 			if(meshpoints.at(pointindex[i]).getIOState(0) and meshpoints.at(pointindex[i]).getIOState(1))
 				tmpin.push_back(i);
 			else

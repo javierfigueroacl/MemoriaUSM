@@ -27,7 +27,7 @@ Elementos involucrados:
 Este caso se origina por hexaedros generados por patrones de superficie (octantes no divididos en realidad) que dado que tienen puntos fuera de ambas superficies, son ignorados por los patrones internos, lo cual genera inconsistencias. Lo que se hizo fue abarcar exclusivamente los hexaedros que tuvieran algun nodo fuera de toda superficie y algun nodo en ambas superficies, permitiéndoles que se les implemente un patrón interno, de forma de eliminar inconsistencias con elementos vecinos:
 
 Archivos modificados:
-enhancedelements.cpp:
+enhancedelements.cpp, se comentó en bool EnhancedElement::applyBoundaryTemplates:
 		//COMENTADO POR JAVIER
 		/*if(!insideBorder(meshpoints)){
 			return false;
@@ -67,4 +67,17 @@ mesher.cpp:
 					break;
 				}
 			}
+			//IF AGREGADO POR JAVIER
+			if(surf_conf == false)
+			if (!found) {
+				std::cout << "Warning in Mesher::applyBoundaryTemplates :";
+				std::cout << " element doesn't intersect inner surface\n";
+				newele.push_back(elements[i]);
+				continue;
+			}
+
+Caso 2: 
+x: [-60,-40]
+y: [-20,10]
+z: [45,70]
 

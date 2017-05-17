@@ -83,16 +83,23 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
-			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-40) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=45 && mpts[i][2] <=70) // Restriccion z octante 1
 				vertices_in++;
 		}
 
 		if (vertices_in == 8){
 		cout << "6a externo \n";
-		for(unsigned int i=0; i<mpts.size();i++)
+		for(unsigned int i=0; i<mpts.size();i++){
 			cout << mpts[i] << "<- puntos xyz \n";
+			if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de ambas superficies\n";
+			else if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == false)
+					cout << "nodo "<< i << " dentro de superficie 1\n";
+			else if(pts.at(all[i]).getIOState(0) == false and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de superficie 2\n";
+		}
 		}
 
 		vertices_in=0;		
@@ -136,9 +143,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
-			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-40) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=45 && mpts[i][2] <=70) // Restriccion z octante 1
 				vertices_in++;
 		}
 
@@ -201,9 +208,9 @@ namespace Clobscode
 		mpts.push_back(pts.at(all[i]).getPoint());
 
 		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-60 && mpts[i][0] <=-30) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=-5) // Restriccion y
-			if (mpts[i][2] >=25 && mpts[i][2] <=50) // Restriccion z octante 1
+			if (mpts[i][0] >=-60 && mpts[i][0] <=-40) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=45 && mpts[i][2] <=70) // Restriccion z octante 1
 				vertices_in++;
 		}
 
