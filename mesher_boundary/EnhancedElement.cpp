@@ -213,8 +213,9 @@ namespace Clobscode
 		}
 		
 		if (pointindex.size()==5) {
-			BoundaryTemplatePyramid btpy;
-			return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
+			return false;
+			//BoundaryTemplatePyramid btpy;
+			//return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
 		}
 		
 		if (pointindex.size()==6) {

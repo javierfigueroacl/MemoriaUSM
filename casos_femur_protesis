@@ -81,3 +81,83 @@ x: [-60,-40]
 y: [-20,10]
 z: [45,70]
 
+Se expandió los casos de prismas a 2 nodos en ambas superficies.
+
+Caso 3:
+
+x:[-50,-25]
+y:[-20,10]
+z:[5,30]
+
+5a 
+-43.4588 -6.97377 11.8757<- puntos xyz 
+nodo 0 dentro de superficie 1
+-34.5202 -7.05271 12.9595<- puntos xyz 
+nodo 1 dentro de superficie 2
+-29.5801 -7.05271 22.8398<- puntos xyz 
+nodo 2 dentro de superficie 2
+-44.0262 -10.314 23.761<- puntos xyz 
+nodo 3 dentro de superficie 1
+-43.9633 -19.403 11.5059<- puntos xyz 
+nodo 4 dentro de superficie 1
+-31.613 -19.403 11.5059<- puntos xyz 
+-31.613 -19.403 23.8562<- puntos xyz 
+-43.9633 -19.403 23.8562<- puntos xyz 
+
+
+6a externo 
+-29.5801 5.29759 22.8398<- puntos xyz 
+-43.916 2.65381 23.75<- puntos xyz 
+nodo 1 dentro de superficie 1
+-42.0876 2.45157 12.866<- puntos xyz 
+nodo 2 dentro de superficie 1
+-31.3961 7.32947 9.68314<- puntos xyz 
+-29.5801 -7.05271 22.8398<- puntos xyz 
+nodo 4 dentro de superficie 2
+-44.0262 -10.314 23.761<- puntos xyz 
+nodo 5 dentro de superficie 1
+-43.4588 -6.97377 11.8757<- puntos xyz 
+nodo 6 dentro de superficie 1
+-34.5202 -7.05271 12.9595<- puntos xyz 
+nodo 7 dentro de superficie 2
+
+Cara conflictiva:
+-43.4588 -6.97377 11.8757<- puntos xyz 
+-34.5202 -7.05271 12.9595<- puntos xyz 
+-29.5801 -7.05271 22.8398<- puntos xyz 
+-44.0262 -10.314 23.761<- puntos xyz
+
+ Elemento encontrado 123 
+-29.5801 -7.05271 22.8398 <- punto xyz 
+nodo 0 dentro de superficie 2
+-44.0262 -10.314 23.761 <- punto xyz 
+nodo 1 dentro de superficie 1
+-29.5801 5.29759 22.8398 <- punto xyz 
+-34.5202 -7.05271 12.9595 <- punto xyz 
+nodo 3 dentro de ambas superficies
+-43.4588 -6.97377 11.8757 <- punto xyz 
+nodo 4 dentro de ambas superficies
+-31.3961 7.32947 9.68314 <- punto xyz 
+123 d 
+
+El problema en este caso fueron los patrones especiales en el mesher originar que trabajaban las piramides, prismas y tetraedros que reciben en applyBoundaryTemplates. No tengo certeza de la función real de estos patrones, pero al parecer intentaban enfrentar los casos inválidos entre patrones externos y internos entre estos elementos. Sin embargo, dichas funciones generan errores ya que dividian elementos que no correspondían ser divididos. Al comentar dicho patron para las pirámides, el problema se solucionó.
+
+Archivos modificados:
+enhancedelements.cpp, se hizo un cambio en bool EnhancedElement::applyBoundaryTemplates:
+
+Original:
+
+		if (pointindex.size()==5) {
+			BoundaryTemplatePyramid btpy;
+			return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
+		}
+
+Cambio:
+
+		if (pointindex.size()==5) {
+			return false;
+			//BoundaryTemplatePyramid btpy;
+			//return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
+		}
+
+
