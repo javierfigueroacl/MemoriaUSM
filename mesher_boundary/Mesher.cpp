@@ -894,12 +894,6 @@ namespace Clobscode
 				else{
 				stnode[k]=0;
 				}
-
-				// count total nodes in two prism's faces
-				// face 1
-				//tnode1 = stnode[0]+stnode[1]+stnode[3]+stnode[4];
-				// face 2
-				//tnode2 = stnode[0]+stnode[2]+stnode[3]+stnode[5];
 				
 				tnode= stnode[0]+stnode[1]+stnode[2]+stnode[3]+stnode[4]+stnode[5];
 
@@ -1272,8 +1266,6 @@ namespace Clobscode
 					}
 					/* Case /| */
 					else if (stnode[0] == 1 and stnode[2] == 1){
-
-					if(i == 123) cout << "123 a \n";
 					//adding new mid node.
 					Point3D middle;
 					mid=0;
@@ -1315,7 +1307,6 @@ namespace Clobscode
 
 					/* Case \| */
 					else if (stnode[3] == 1 and stnode[5] == 1){
-					if(i == 123) cout << "123 b \n";
 					//adding new mid node.
 					Point3D middle;
 					mid=0;
@@ -1356,7 +1347,6 @@ namespace Clobscode
 					}
 					/* Case |\ */
 					else if (stnode[0] == 1 and stnode[1] == 1){
-					if(i == 123) cout << "123 c \n";
 					//adding new mid node.
 					Point3D middle;
 					mid=0;
@@ -1397,7 +1387,6 @@ namespace Clobscode
 					}
 					/* Case |/ */
 					else if (stnode[4] == 1 and stnode[3] == 1){
-					if(i == 123) cout << "123 d \n";
 					//adding new mid node.
 					Point3D middle;
 					mid=0;
@@ -1471,6 +1460,299 @@ namespace Clobscode
 
 				}
 
+				if (tnode == 3){
+				bool ck_invalid = false;
+				unsigned int mid=0;
+				/* Case /|\ */
+				if ((stnode[0] == 1 and stnode[4] == 1 and stnode[1] == 1) or (stnode[0] == 1 and stnode[5] == 1 and stnode[2] == 1) or (stnode[4] == 1 and stnode[0] == 1 and stnode[5] == 1)){
+					cout << "caso 1 \n";
+					//adding new mid node.
+					Point3D middle;
+					//unsigned int mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					cout << mid << "<- mid primer caso\n";
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[3];
+					tetra1[2] = points_ele[1];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[3];
+					tetra2[1] = points_ele[4];
+					tetra2[2] = points_ele[1];
+					tetra2[3] = mid;
+
+					tetra3[0] = points_ele[0];
+					tetra3[1] = points_ele[2];
+					tetra3[2] = points_ele[3];
+					tetra3[3] = mid;
+
+					tetra4[0] = points_ele[2];
+					tetra4[1] = points_ele[3];
+					tetra4[2] = points_ele[5];
+					tetra4[3] = mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(tetra3,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+					EnhancedElement ee4(tetra4,n_meshes);
+					ee4.setMaxDistance(old_md);
+					tmpele.push_back(ee4);
+
+					ck_invalid=true;
+					}
+				/* Case \|/ */
+				if ((stnode[1] == 1 and stnode[4] == 1 and stnode[3] == 1) or (stnode[3] == 1 and stnode[5] == 1 and stnode[2] == 1) or (stnode[1] == 1 and stnode[3] == 1 and stnode[2] == 1)){
+					cout << "caso 2 \n";
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+					cout << mid << "<- mid segundo caso\n";
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[1];
+					tetra1[2] = points_ele[4];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[0];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[4];
+					tetra2[3] = mid;
+
+					tetra3[0] = points_ele[0];
+					tetra3[1] = points_ele[3];
+					tetra3[2] = points_ele[5];
+					tetra3[3] = mid;
+
+					tetra4[0] = points_ele[0];
+					tetra4[1] = points_ele[2];
+					tetra4[2] = points_ele[5];
+					tetra4[3] = mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(tetra3,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+					EnhancedElement ee4(tetra4,n_meshes);
+					ee4.setMaxDistance(old_md);
+					tmpele.push_back(ee4);
+
+					ck_invalid=true;
+					}
+				/* Case \| */
+				if ((stnode[0] == 1 and stnode[1] == 1 and stnode[3] == 1) or (stnode[5] == 1 and stnode[2] == 1 and stnode[1] == 1) or (stnode[3] == 1 and stnode[5] == 1 and stnode[1] == 1)){
+					cout << "caso 3 \n";
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[2];
+					tetra1[2] = points_ele[3];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[2];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[5];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+					ck_invalid=true;
+					}
+				/* Case |/ */
+				if ((stnode[0] == 1 and stnode[2] == 1 and stnode[3] == 1) or (stnode[4] == 1 and stnode[1] == 1 and stnode[2] == 1) or (stnode[4] == 1 and stnode[3] == 1 and stnode[2] == 1)){
+					cout << "caso 4 \n";
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[3];
+					tetra1[2] = points_ele[5];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[0];
+					tetra2[1] = points_ele[2];
+					tetra2[2] = points_ele[5];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+					ck_invalid=true;
+					}
+				/* Case /| */
+				if ((stnode[0] == 1 and stnode[3] == 1 and stnode[4] == 1) or (stnode[5] == 1 and stnode[2] == 1 and stnode[4] == 1) or (stnode[0] == 1 and stnode[2] == 1 and stnode[4] == 1)){
+					cout << "caso 5 \n";
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[3];
+					tetra1[2] = points_ele[1];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[3];
+					tetra2[1] = points_ele[4];
+					tetra2[2] = points_ele[1];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[2];
+					pyr[2] = points_ele[5];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+					ck_invalid=true;
+					}
+				/* Case |\ */
+				if ((stnode[0] == 1 and stnode[3] == 1 and stnode[5] == 1) or (stnode[4] == 1 and stnode[1] == 1 and stnode[5] == 1) or (stnode[0] == 1 and stnode[1] == 1 and stnode[5] == 1)){
+					cout << "caso 6 \n";
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[2];
+					tetra1[2] = points_ele[3];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[2];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[5];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+					ck_invalid=true;
+					}
+
+				if (ck_invalid==true){
+					cout << mid << "<- mid final\n";
+					// two tetras that are always generated and are the same
+					tetra5[0] = points_ele[3];
+					tetra5[1] = points_ele[4];
+					tetra5[2] = points_ele[5];
+					tetra5[3] = mid;
+
+					tetra6[0] = points_ele[0];
+					tetra6[1] = points_ele[1];
+					tetra6[2] = points_ele[2];
+					tetra6[3] = mid;
+
+					// last pyramid to keep consistency in diagonal face
+
+					pyr[0] = points_ele[1];
+					pyr[1] = points_ele[2];
+					pyr[2] = points_ele[5];
+					pyr[3] = points_ele[4];
+					pyr[4]= mid;
+
+					EnhancedElement ee5(tetra5,n_meshes);
+					ee5.setMaxDistance(old_md);
+					tmpele.push_back(ee5);
+					EnhancedElement ee6(tetra6,n_meshes);
+					ee6.setMaxDistance(old_md);
+					tmpele.push_back(ee6);
+					EnhancedElement ee7(pyr,n_meshes);
+					ee7.setMaxDistance(old_md);
+					tmpele.push_back(ee7);
+					continue;
+					}
+				}
 
 			}
 

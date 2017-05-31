@@ -157,6 +157,8 @@ MeshPoint.h
 /home/javier/Documentos/Memoria/mesher_boundary/CoteMarek.h
 string.h
 -
+cstring
+-
 TriMesh.h
 /home/javier/Documentos/Memoria/mesher_boundary/TriMesh.h
 ../mesher_services/Mesh.h
@@ -259,7 +261,11 @@ FEMesh.h
 /home/javier/Documentos/Memoria/mesher_boundary/FEMesh.h
 CoteMarek.h
 /home/javier/Documentos/Memoria/mesher_boundary/CoteMarek.h
+cstdlib
+-
 string
+-
+cstring
 -
 cctype
 -
