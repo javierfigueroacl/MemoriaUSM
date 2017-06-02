@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "HexRotation.h"
+#include "MeshPoint.h"
 
 using std::vector;
 
@@ -18,6 +19,7 @@ namespace Clobscode
 		
 		virtual bool getSubelements(vector<unsigned int> &all, 
 									vector<unsigned int> &in,
+								          vector<MeshPoint> &pts,
 									vector<vector<unsigned int> > &neweles);
 		
 	};

@@ -89,29 +89,29 @@ namespace Clobscode
 			case 0:{
 				/*If at this point, the element has 0 node inside,
 				 it might be tangencial to input mesh, in which case
-				 it should be invalid_elements, or represent a feature of
+				 it should be removed, or represent a feature of
 				 the domain (e.g. all nodes outside, but there is
 				 something like a pipeline crossing it). This algorithm
 				 isn't yet "future sensitive", therefore the element
-				 is simply invalid_elements.
+				 is simply removed.
 				 */
 				return false;
 			}
 			case 1: {
 				SurfTemplate1 surf_t1;
-				return surf_t1.getSubelements(pointindex,inpts,newsub);
+				return surf_t1.getSubelements(pointindex,inpts,meshpoints,newsub);
 			}
 			case 2: {
 				SurfTemplate2 surf_t2;
-				return surf_t2.getSubelements(pointindex,inpts,newsub);
+				return surf_t2.getSubelements(pointindex,inpts,meshpoints,newsub);
 			}
 			case 3: {
 				SurfTemplate3 surf_t3;
-				return surf_t3.getSubelements(pointindex,inpts,newsub);
+				return surf_t3.getSubelements(pointindex,inpts,meshpoints,newsub);
 			}
 			case 4: {
 				SurfTemplate4 surf_t4;
-				return surf_t4.getSubelements(pointindex,inpts,newsub);
+				return surf_t4.getSubelements(pointindex,inpts,meshpoints,newsub);
 			}
 			case 5: {
 				SurfTemplate5 surf_t5;
@@ -120,11 +120,11 @@ namespace Clobscode
 			}
 			case 6: {
 				SurfTemplate6 surf_t6;
-				return surf_t6.getSubelements(pointindex,outpts,newsub);
+				return surf_t6.getSubelements(pointindex,outpts,meshpoints,newsub);
 			}
 			case 7: {
 				SurfTemplate7 surf_t7;
-				return surf_t7.getSubelements(pointindex,outpts,newsub);
+				return surf_t7.getSubelements(pointindex,outpts,meshpoints,newsub);
 			}
 			case 8: {
 				//If this happens the element is inside the overall
@@ -150,14 +150,11 @@ namespace Clobscode
 												 list<MeshPoint> &newpts,
 												 vector<vector<unsigned int> > &newsub,
 												 vector<vector<unsigned int> > &newsub_out,
-												 vector<vector<unsigned int> > &invalid_elements,
-												 const unsigned int &intersects,
-										vector<vector<unsigned int> > &conflicting_elements
-													){
-		//COMENTADO POR JAVIER
-		/*if(!insideBorder(meshpoints)){
+												 const unsigned int &intersects){
+		
+		if(!insideBorder(meshpoints)){
 			return false;
-		}*/
+		}
 		
 		std::vector<unsigned int> inpts, outpts;
 		std::list<unsigned int> tmpin;
@@ -168,15 +165,14 @@ namespace Clobscode
 		
 		//Note: label as outside every node that is outside a given
 		//input surface. Erase the parameter instersects. 
-		
-/*		for (unsigned int i=0; i<pointindex.size(); i++){
-			if(meshpoints.at(pointindex[i]).getIOState(0) and meshpoints.at(pointindex[i]).getIOState(1))
+			
+		/*for (unsigned int i=0; i<pointindex.size(); i++){
+			if(meshpoints.at(pointindex[i]).getIOState(intersects))
 				tmpin.push_back(i);
 			else
 				tmpout.push_back(i);
 		}*/
-	
-// Inicio Descomentado por Javier	
+		
 		for (unsigned int i=0; i<pointindex.size(); i++){
 			bool inside_all = true;
 			for (unsigned int j=0; j<border.size(); j++) {
@@ -195,8 +191,6 @@ namespace Clobscode
 				tmpout.push_back(i);
 			}
 		}
-
-// Fin Descomentado por Javier
 		
 		//save the points in a std::vector for quick acces
 		inpts.reserve(tmpin.size());
@@ -213,9 +207,8 @@ namespace Clobscode
 		}
 		
 		if (pointindex.size()==5) {
-			return false;
-			//BoundaryTemplatePyramid btpy;
-			//return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
+			BoundaryTemplatePyramid btpy;
+			return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
 		}
 		
 		if (pointindex.size()==6) {
@@ -234,11 +227,11 @@ namespace Clobscode
 			case 0:{
 				/*If at this point, the element has 0 node inside,
 				 it might be tangencial to input mesh, in which case
-				 it should be invalid, or represent a feature of
+				 it should be removed, or represent a feature of
 				 the domain (e.g. all nodes outside, but there is
 				 something like a pipeline crossing it). This algorithm
 				 isn't yet "future sensitive", therefore the element
-				 is simply invalid.
+				 is simply removed.
 				 */
 				return false;
 			}
@@ -250,16 +243,16 @@ namespace Clobscode
 			case 2: {
 				//std::cout << "applying template 2\n";				
 				BoundaryTemplate2 boun_t2;
-				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out,invalid_elements,conflicting_elements);
+				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out);
 			}
 			case 3: {
 				//std::cout << "applying template 3\n";				
 				BoundaryTemplate3 boun_t3;
-				return boun_t3.getSubelements(pointindex,inpts,newsub,newsub_out);
+				return boun_t3.getSubelements(pointindex,inpts,meshpoints,newsub,newsub_out);
 			}
 			case 4: {
 				BoundaryTemplate4 boun_t4;
-				return boun_t4.getSubelements(pointindex,inpts,newsub,newsub_out);
+				return boun_t4.getSubelements(pointindex,inpts,meshpoints,newsub,newsub_out);
 			}
 			case 5: {
 				BoundaryTemplate5 boun_t5;
@@ -268,11 +261,11 @@ namespace Clobscode
 			}
 			case 6: {
 				BoundaryTemplate6 boun_t6;
-				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,newsub_out,invalid_elements,conflicting_elements);
+				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub);
 			}
 			case 7: {
 				BoundaryTemplate7 boun_t7;
-				return boun_t7.getSubelements(pointindex,outpts,newsub);
+				return boun_t7.getSubelements(pointindex,outpts,meshpoints,newsub);
 			}
 			case 8: {
 				//If this happens the element is inside the overall

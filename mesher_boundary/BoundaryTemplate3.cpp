@@ -11,6 +11,7 @@ namespace Clobscode
 	
 	bool BoundaryTemplate3::getSubelements(vector<unsigned int> &all, 
 										   vector<unsigned int> &in,
+										   vector<MeshPoint> &pts,
 										   vector<vector<unsigned int> > &newsubs_in,
 										   vector<vector<unsigned int> > &newsubs_out){
 		
@@ -62,34 +63,34 @@ namespace Clobscode
 		if(edge2){
 			if(rotated[1] == all[in[2]]){
 				//the pattern is A and no rotation is needed
-				PatternA(rotated,newsubs_in,newsubs_out);
+				PatternA(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else if(rotated[2] == all[in[2]]){
 				//the pattern is A and Positive Y rotation is needed
 				rotated = hrot.rotatePosY(rotated);
-				PatternA(rotated,newsubs_in,newsubs_out);
+				PatternA(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else if(rotated[4] == all[in[2]]){
 				rotated = hrot.rotateNegX(rotated);
 				rotated = hrot.rotateNegY(rotated);
-				PatternA(rotated,newsubs_in,newsubs_out);
+				PatternA(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else if(rotated[7] == all[in[2]]){
 				rotated = hrot.rotateNegZ(rotated);
 				rotated = hrot.rotateNegX(rotated);
 				rotated = hrot.rotateNegY(rotated);
-				PatternA(rotated,newsubs_in,newsubs_out);
+				PatternA(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else if(rotated[5] == all[in[2]]){
-				PatternB(rotated,newsubs_in,newsubs_out);
+				PatternB(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else if(rotated[6] == all[in[2]]){
-				PatternC(rotated,newsubs_in,newsubs_out);
+				PatternC(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else{
@@ -110,26 +111,26 @@ namespace Clobscode
 		   (rotated[6] == all[in[1]] || rotated[6] == all[in[2]])){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegX(rotated);
-			PatternB(rotated,newsubs_in,newsubs_out);
+			PatternB(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if((rotated[5] == all[in[1]] || rotated[5] == all[in[2]]) &&
 		   (rotated[7] == all[in[1]] || rotated[7] == all[in[2]])){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegX(rotated);
-			PatternD(rotated,newsubs_in,newsubs_out);
+			PatternD(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if((rotated[5] == all[in[1]] || rotated[5] == all[in[2]]) &&
 		   (rotated[2] == all[in[1]] || rotated[2] == all[in[2]])){
-			PatternD(rotated,newsubs_in,newsubs_out);
+			PatternD(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if((rotated[6] == all[in[1]] || rotated[6] == all[in[2]]) &&
 		   (rotated[7] == all[in[1]] || rotated[7] == all[in[2]])){
 			rotated = hrot.rotateNegZ(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternB(rotated,newsubs_in,newsubs_out);
+			PatternB(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if((rotated[6] == all[in[1]] || rotated[6] == all[in[2]]) &&
@@ -137,14 +138,14 @@ namespace Clobscode
 			rotated = hrot.rotateNegZ(rotated);
 			rotated = hrot.rotatePosY(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternC(rotated,newsubs_in,newsubs_out);
+			PatternC(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if((rotated[7] == all[in[1]] || rotated[7] == all[in[2]]) &&
 		   (rotated[2] == all[in[1]] || rotated[2] == all[in[2]])){
 			rotated = hrot.rotatePosY(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternD(rotated,newsubs_in,newsubs_out);
+			PatternD(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		
@@ -156,12 +157,35 @@ namespace Clobscode
 	
 	
 	//Pattern C in paper
-	void BoundaryTemplate3::PatternA(vector<unsigned int> &all, 
+	void BoundaryTemplate3::PatternA(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts, 
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out){
 		
 		newsubs_in.reserve(2);
 		newsubs_out.reserve(1);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8){
+		cout << "3a interno \n";
+		for(unsigned int i=0; i<mpts.size();i++)
+			cout << mpts[i] << "<- puntos xyz \n";
+		}
+
+		vertices_in=0;	
+		//
 		
 		vector<unsigned int> pyramid1 (5,0);
 		vector<unsigned int> pyramid2 (5,0);
@@ -182,9 +206,8 @@ namespace Clobscode
 		
 		newsubs_in.push_back(pyramid1);
 		newsubs_in.push_back(pyramid2);
-		
-		//managing outside elements
-		//Agregado por javier, originalmente decia "pyramid2[0] =...", lo cambie por "pyramid3[0]=..."	
+		//Arreglado por Javier
+		//managing outside elements		
 		pyramid3[0] = all[4];
 		pyramid3[1] = all[7];
 		pyramid3[2] = all[6];
@@ -199,7 +222,8 @@ namespace Clobscode
 	/*In the paper the following 2 patterns are sumarized in just one: 
 	 pattern 3B */
 	
-	void BoundaryTemplate3::PatternB(vector<unsigned int> &all, 
+	void BoundaryTemplate3::PatternB(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts, 
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out){
 		
@@ -213,6 +237,25 @@ namespace Clobscode
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> pyramid1 (5,0);
 		vector<unsigned int> tetra1 (4,0);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "3b octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		//managing inside elements
 		prism1[0] = all[0];
@@ -240,7 +283,8 @@ namespace Clobscode
 		
 	}
 	
-	void BoundaryTemplate3::PatternC(vector<unsigned int> &all, 
+	void BoundaryTemplate3::PatternC(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts, 
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out){
 		
@@ -255,6 +299,25 @@ namespace Clobscode
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> pyramid1 (5,0);
 		vector<unsigned int> tetra1 (4,0);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "3c octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		//managing inside elements
 		prism1[0] = all[0];
@@ -283,21 +346,39 @@ namespace Clobscode
 	}
 	
 	//Pattern A in paper
-	void BoundaryTemplate3::PatternD(vector<unsigned int> &all, 
+	void BoundaryTemplate3::PatternD(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts, 
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out){
 		
 		
 		newsubs_in.reserve(4);
-		newsubs_in.clear();
+		//newsubs_in.clear();
 		newsubs_out.reserve(1);
-		newsubs_out.clear();
+		//newsubs_out.clear();
 		
 		vector<unsigned int> tetra1 (4,0);
 		vector<unsigned int> tetra2 (4,0);
 		vector<unsigned int> tetra3 (4,0);
 		vector<unsigned int> tetra4 (4,0);
 		vector<unsigned int> tetra5 (4,0);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "3d octante 1 \n";	
+		//
 		
 		//managing inside elements		
 		tetra1[0] = all[0];

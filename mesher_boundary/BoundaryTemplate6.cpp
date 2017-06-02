@@ -11,11 +11,8 @@ namespace Clobscode
 	
 	bool BoundaryTemplate6::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &out,
-									  vector<MeshPoint> &pts,
-									  vector<vector<unsigned int> > &neweles,
-									  vector<vector<unsigned int> > &newsubs_out,
-									  vector<vector<unsigned int> > &invalid_elements,
-									  vector<vector<unsigned int> > &conflicting_elements){
+								          vector<MeshPoint> &pts,
+									  vector<vector<unsigned int> > &neweles){
 		
 		HexRotation hrot;
 		vector<unsigned int> rotated;
@@ -27,39 +24,39 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[out[1]]){
-			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
+			PatternA(rotated,pts,neweles);
 			return true;
 		}
 		if(rotated[1] == all[out[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
+			PatternA(rotated,pts,neweles);
 			return true;
 		}
 		if(rotated[4] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,neweles,newsubs_out,invalid_elements,conflicting_elements);
+			PatternA(rotated,pts,neweles);
 			return true;
 		}
 		
 		//Possible cases for PatternB
 		if(rotated[2] == all[out[1]]){
-			PatternB(rotated,neweles);
+			PatternB(rotated,pts,neweles);
 			return true;
 		}
 		if(rotated[5] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
 			rotated = hrot.rotateNegY(rotated);
-			PatternB(rotated,neweles);
+			PatternB(rotated,pts,neweles);
 			return true;
 		}
 		if(rotated[7] == all[out[1]]){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegY(rotated);
-			PatternB(rotated,neweles);
+			PatternB(rotated,pts,neweles);
 			return true;
 		}
 		if(rotated[6] == all[out[1]]){
-			PatternC(rotated,neweles);
+			PatternC(rotated,pts,neweles); // maybe PatternB?
 			return true;
 		}
 		
@@ -72,94 +69,31 @@ namespace Clobscode
 	//w.r.t paper, this configuration counts with outside nodes 0 and 3
 	void BoundaryTemplate6::PatternA(vector<unsigned int> &all, 
 								vector<MeshPoint> &pts,
-								vector<vector<unsigned int> > &eles,
-								vector<vector<unsigned int> > &newsubs_out,
-								vector<vector<unsigned int> > &invalid_elements,
-								vector<vector<unsigned int> > &conflicting_elements){
+								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(2);
 
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
 
-/*
-		//Recorrer elementos conflictivos de la malla
-		for(unsigned int i=0; i<conflicting_elements.size();i++){
-			vector <Point3D> elepts;
-			// Obtener elemento conflictivo
-			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
-				elepts.push_back(pts.at(conflicting_elements[i][k]).getPoint());
-			}
-			// Obtener puntos del octante
-			vector <Point3D> mpts;
-			for(unsigned int j=0; j<all.size();j++)
-			mpts.push_back(pts.at(all[j]).getPoint());
-			int sharednode=0;
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
 
-			// Recorrer nodos y comparar coordenadas xyz
-			for(unsigned int j=0; j<mpts.size();j++)
-			for(unsigned int k=0; k<elepts.size()-2;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
-				if (mpts[j][0] == elepts[k][0]) // Restriccion x
-				if (mpts[j][1] == elepts[k][1]) // Restriccion y
-				if (mpts[j][2] == elepts[k][2]) // Restriccion z
-				sharednode++;
-			
-			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
-			if (sharednode == 4){
-				cout <<" --------------------- \n";
-				cout <<" cara conflictiva encontrada (6a) \n";
+		if (vertices_in == 8){
+		cout << "6a interno \n";
+		for(unsigned int i=0; i<mpts.size();i++)
+			cout << mpts[i] << "<- puntos xyz \n";
+		}
 
-				cout <<" piramide "<<conflicting_elements[i][5]<<"\n";
-				//print puntos
-				for (unsigned int l=0; l < elepts.size(); l++)
-				cout << elepts[l] << "\n";
-
-				//cout <<" octante \n";
-				
-				//for (unsigned int l=0; l < mpts.size(); l++)
-				//cout << mpts[l] << " <- punto xyz \n";
-				int tnode=0,outnode=0;
-				for(unsigned int k=0; k<elepts.size()-2;k++)
-				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
-				cout << "nodo numero "<<k<<" de la cara (piramide) dentro de ambas superficies\n";
-				tnode++;
-				}
-				else{
-				outnode=k;
-	}
-				if (tnode == 3){
-				invalid_elements.push_back(conflicting_elements[i]);
-
-				vector<unsigned int> tetra1 (4,0);
-				vector<unsigned int> tetra2 (4,0);
-				if (outnode == 1 or outnode==3){
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][3];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][2];
-				tetra2[1] = conflicting_elements[i][1];
-				tetra2[2] = conflicting_elements[i][3];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-				else{
-
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][2];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][0];
-				tetra2[1] = conflicting_elements[i][3];
-				tetra2[2] = conflicting_elements[i][2];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-
-				eles.push_back(tetra1);
-				eles.push_back(tetra2);
-				}
-				
-			}
-		}*/
+		vertices_in=0;	
+		//
 		
 		vector<unsigned int> ele1 (6,0);
 		vector<unsigned int> ele2 (6,0);
@@ -185,9 +119,29 @@ namespace Clobscode
 	
 	//w.r.t paper, this configuration counts with outside nodes 0 and 2
 	void BoundaryTemplate6::PatternB(vector<unsigned int> &all, 
+								vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(5);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "6b octante 1 \n";
+
+		vertices_in=0;
+		//
 		vector<unsigned int> ele1(5,0);
 		vector<unsigned int> ele2(4,0);
 		vector<unsigned int> ele3(4,0);
@@ -229,9 +183,30 @@ namespace Clobscode
 	}
 	
 	void BoundaryTemplate6::PatternC(vector<unsigned int> &all, 
+								vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(6);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "6c octante 1 \n";
+
+		vertices_in=0;	
+		//
+
 		vector<unsigned int> ele1(4,0);
 		vector<unsigned int> ele2(4,0);
 		vector<unsigned int> ele3(4,0);

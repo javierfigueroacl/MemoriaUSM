@@ -77,7 +77,7 @@ namespace Clobscode
 				rotated = hrot.rotatePosZ(rotated);
 				rotated = hrot.rotatePosY(rotated);
 			}
-			PatternB(rotated,neweles);
+			PatternB(rotated,pts,neweles);
 			return true;
 		}
 		else if(total==6){
@@ -88,7 +88,7 @@ namespace Clobscode
 					break;
 				}
 			rotated = hrot.rotate(all,pivote);
-			PatternC(rotated,neweles);
+			PatternC(rotated,pts,neweles);
 			return true;
 		}
 		else{
@@ -160,6 +160,35 @@ namespace Clobscode
 		/*  this pattern needs ipc has the hexahedra must be split in 6 piramids first,
 		 *  then 3 of them will be replaced by 6 tetras. 
 		 */
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8){
+		cout << "5a \n";
+		for(unsigned int i=0; i<mpts.size();i++){
+			cout << mpts[i] << "<- puntos xyz \n";
+			if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de ambas superficies\n";
+			else if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == false)
+					cout << "nodo "<< i << " dentro de superficie 1\n";
+			else if(pts.at(all[i]).getIOState(0) == false and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de superficie 2\n";
+		}
+		}
+
+		vertices_in=0;		
+		//
 		
 		Point3D middle;
 		unsigned int mid=0;
@@ -243,7 +272,7 @@ namespace Clobscode
 	}
 	
 	//Pattern B in paper
-	void SurfTemplate5::PatternB(vector<unsigned int> &all,
+	void SurfTemplate5::PatternB(vector<unsigned int> &all, vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
@@ -251,6 +280,35 @@ namespace Clobscode
 		vector<unsigned int> ele2(5,0);
 		vector<unsigned int> ele3(4,0);
 		vector<unsigned int> ele4(4,0);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8){
+		cout << "5b\n";
+		for(unsigned int i=0; i<mpts.size();i++){
+			cout << mpts[i] << "<- puntos xyz \n";
+			if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de ambas superficies\n";
+			else if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == false)
+					cout << "nodo "<< i << " dentro de superficie 1\n";
+			else if(pts.at(all[i]).getIOState(0) == false and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de superficie 2\n";
+		}
+		}
+
+		vertices_in=0;		
+		//
 		
 		ele1[0] = all[5];
 		ele1[1] = all[6];
@@ -282,10 +340,39 @@ namespace Clobscode
 	}
 	
 	//Pattern A in paper
-	void SurfTemplate5::PatternC(vector<unsigned int> &all, 
+	void SurfTemplate5::PatternC(vector<unsigned int> &all,  vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(5);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8){
+		cout << "5c \n";
+		for(unsigned int i=0; i<mpts.size();i++){
+			cout << mpts[i] << "<- puntos xyz \n";
+			if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de ambas superficies\n";
+			else if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == false)
+					cout << "nodo "<< i << " dentro de superficie 1\n";
+			else if(pts.at(all[i]).getIOState(0) == false and pts.at(all[i]).getIOState(1) == true)
+					cout << "nodo "<< i << " dentro de superficie 2\n";
+		}
+		}
+
+		vertices_in=0;		
+		//
 		
 		vector<unsigned int> ele1(4,0);
 		vector<unsigned int> ele2(4,0);

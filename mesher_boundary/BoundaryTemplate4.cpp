@@ -11,6 +11,7 @@ namespace Clobscode
 	
 	bool BoundaryTemplate4::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &in,
+										   vector<MeshPoint> &pts,
 										   vector<vector<unsigned int> > &newsubs_in,
 										   vector<vector<unsigned int> > &newsubs_out){
 		
@@ -36,13 +37,13 @@ namespace Clobscode
 		}
 		//pattern A will send back the same Hexahedra
 		if(total==8){
-			PatternA(all,newsubs_in);
+			PatternA(all,pts,newsubs_in);
 			return true;
 		}
 		//pattern G has only one possible configuration
 		else if(total==0){
 			rotated = hrot.rotate(all,in[0]);
-			PatternG(rotated,newsubs_in);
+			PatternG(rotated,pts,newsubs_in);
 			return true;
 		}
 		else if(total==4){
@@ -64,18 +65,18 @@ namespace Clobscode
 				   || rotated[4]==all[in[3]]){
 					
 					rotated = hrot.rotatePosZ(rotated);
-					PatternF(rotated,newsubs_in);
+					PatternF(rotated,pts,newsubs_in);
 					return true;
 				}
 				if(rotated[1]==all[in[1]] || rotated[1]==all[in[2]] 
 				   || rotated[1]==all[in[3]]){
 					
 					rotated = hrot.rotateNegY(rotated);
-					PatternF(rotated,newsubs_in);
+					PatternF(rotated,pts,newsubs_in);
 					return true;
 				}
 				
-				PatternF(rotated,newsubs_in);
+				PatternF(rotated,pts,newsubs_in);
 				return true;
 			}
 			else{
@@ -103,17 +104,17 @@ namespace Clobscode
 				   (rotated[3]==all[one1] && rotated[4]==all[one2]) ){
 					rotated = hrot.rotateNegX(rotated);
 					rotated = hrot.rotateNegY(rotated);
-					PatternB(rotated,newsubs_in);
+					PatternB(rotated,pts,newsubs_in);
 					return true;
 				}
 				if((rotated[4]==all[one1] && rotated[1]==all[one2]) ||
 				   (rotated[1]==all[one1] && rotated[4]==all[one2]) ){
 					rotated = hrot.rotatePosZ(rotated);
 					rotated = hrot.rotatePosY(rotated);
-					PatternB(rotated,newsubs_in);
+					PatternB(rotated,pts,newsubs_in);
 					return true;
 				}
-				PatternB(rotated,newsubs_in);
+				PatternB(rotated,pts,newsubs_in);
 				return true;
 			}
 		}
@@ -131,7 +132,7 @@ namespace Clobscode
 			}
 			if(D){
 				rotated = hrot.rotate(all,in[connect3]);
-				PatternD(rotated,newsubs_in,newsubs_out);
+				PatternD(rotated,pts,newsubs_in,newsubs_out);
 				return true;
 			}
 			else{
@@ -162,11 +163,11 @@ namespace Clobscode
 					rotated = hrot.rotateNegY(rotated);
 				}
 				if(rotated[4]==all[one1] || rotated[4]==all[one2]){
-					PatternE(rotated,newsubs_in);
+					PatternE(rotated,pts,newsubs_in);
 					return true;
 				}
 				else{
-					PatternC(rotated,newsubs_in);
+					PatternC(rotated,pts,newsubs_in);
 					return true;
 				}
 			}
@@ -226,20 +227,61 @@ namespace Clobscode
 	}
 	
 	//Pattern G in paper
-	void BoundaryTemplate4::PatternA(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternA(vector<unsigned int> &all,
+								vector<MeshPoint> &pts, 
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(1);
 		eles.push_back(all);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4a octante 1 \n";
+
+		vertices_in=0;		
+		//
 		
 	}
 	
 	
 	//Pattern C in paper
-	void BoundaryTemplate4::PatternB(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternB(vector<unsigned int> &all,
+								vector<MeshPoint> &pts,  
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4b octante 1 \n";
+
+		vertices_in=0;		
+		//
+
 		vector<unsigned int> ele1(5,0);
 		vector<unsigned int> ele2(5,0);
 		vector<unsigned int> ele3(4,0);
@@ -275,10 +317,30 @@ namespace Clobscode
 	}
 	
 	//Pattern E in paper
-	void BoundaryTemplate4::PatternC(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternC(vector<unsigned int> &all,
+								vector<MeshPoint> &pts,  
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4c octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		vector<unsigned int> ele1(5,0);
 		vector<unsigned int> ele2(5,0);
@@ -315,11 +377,31 @@ namespace Clobscode
 	}
 	
 	//Pattern D in paper
-	void BoundaryTemplate4::PatternD(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternD(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts,  
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out){
 		
 		newsubs_in.reserve(4);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4d octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		vector<unsigned int> ele1(4,0);
 		vector<unsigned int> ele2(4,0);
@@ -365,10 +447,30 @@ namespace Clobscode
 	}
 	
 	//Pattern  F in paper
-	void BoundaryTemplate4::PatternE(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternE(vector<unsigned int> &all,
+								vector<MeshPoint> &pts,  
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4e octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		vector<unsigned int> ele1(5,0);
 		vector<unsigned int> ele2(5,0);
@@ -405,10 +507,31 @@ namespace Clobscode
 	}
 	
 	//Pattern B in paper
-	void BoundaryTemplate4::PatternF(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternF(vector<unsigned int> &all,
+								vector<MeshPoint> &pts,  
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(2);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4f octante 1 \n";
+
+		vertices_in=0;	
+		//
+
 		vector<unsigned int> pri1(6,0),pri2(6,0);
 		
 		pri1[0]=all[0];
@@ -431,10 +554,31 @@ namespace Clobscode
 	}
 	
 	//Pattern A in paper
-	void BoundaryTemplate4::PatternG(vector<unsigned int> &all, 
+	void BoundaryTemplate4::PatternG(vector<unsigned int> &all,
+								vector<MeshPoint> &pts,  
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(5);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "4g octante 1 \n";
+
+		vertices_in=0;	
+		//
+
 		vector<unsigned int> tet1(4,0),tet2(4,0),tet3(4,0),tet4(4,0),tet5(4,0);
 		
 		tet1[0]=all[0];

@@ -14,9 +14,7 @@ namespace Clobscode
 										   vector<MeshPoint> &pts,
 										   list<MeshPoint> &newpts,
 										   vector<vector<unsigned int> > &newsubs_in,
-										   vector<vector<unsigned int> > &newsubs_out,
-										   vector<vector<unsigned int> > &invalid_elements,
-										   vector<vector<unsigned int> > &conflicting_elements){
+										   vector<vector<unsigned int> > &newsubs_out){
 		
 		HexRotation hrot;
 		vector<unsigned int> rotated;
@@ -28,17 +26,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[in[1]]){
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,0);
+			PatternA(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if(rotated[1] == all[in[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,1);
+			PatternA(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		if(rotated[4] == all[in[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,2);
+			PatternA(rotated,pts,newsubs_in,newsubs_out);
 			return true;
 		}
 		
@@ -71,91 +69,37 @@ namespace Clobscode
 		return false;
 	}
 	
-	void BoundaryTemplate2::PatternA(vector<unsigned int> &all, 
-									 vector<MeshPoint> &pts,
+	void BoundaryTemplate2::PatternA(vector<unsigned int> &all,
+									 vector<MeshPoint> &pts, 
 									 vector<vector<unsigned int> > &newsubs_in,
-									 vector<vector<unsigned int> > &newsubs_out,
-									 vector<vector<unsigned int> > &invalid_elements,
-									 vector<vector<unsigned int> > &conflicting_elements,
-									 unsigned int rotstate){
+									 vector<vector<unsigned int> > &newsubs_out){
 		
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		
-/*
-		//Recorrer elementos conflictivos de la malla
-		for(unsigned int i=0; i<conflicting_elements.size();i++){
-			vector <Point3D> elepts;
-			// Obtener elemento conflictivo
-			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
-				elepts.push_back(pts.at(conflicting_elements[i][k]).getPoint());
-			}
-			// Obtener puntos del octante
-			vector <Point3D> mpts;
-			for(unsigned int j=0; j<all.size();j++)
-			mpts.push_back(pts.at(all[j]).getPoint());
-			int sharednode=0;
-
-			// Recorrer nodos y comparar coordenadas xyz
-			for(unsigned int j=0; j<mpts.size();j++)
-			for(unsigned int k=0; k<elepts.size()-2;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
-				if (mpts[j][0] == elepts[k][0]) // Restriccion x
-				if (mpts[j][1] == elepts[k][1]) // Restriccion y
-				if (mpts[j][2] == elepts[k][2]) // Restriccion z
-				sharednode++;
-			
-			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
-			if (sharednode == 4){
-
-				//cout <<" octante \n";
-				int tnode=0,innode=0;
-				for(unsigned int k=0; k<elepts.size()-2;k++)
-				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
-				tnode++;
-				innode=k;
-				}
-				if (tnode == 1){
-				invalid_elements.push_back(conflicting_elements[i]);
-
-				vector<unsigned int> tetra1 (4,0);
-				vector<unsigned int> tetra2 (4,0);
-
-				if (innode == 0 or innode == 2){
-				
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][3];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][2];
-				tetra2[1] = conflicting_elements[i][1];
-				tetra2[2] = conflicting_elements[i][3];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-				else{
-
-				vector<unsigned int> tetra1 (4,0);
-				vector<unsigned int> tetra2 (4,0);
-				
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][2];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][0];
-				tetra2[1] = conflicting_elements[i][3];
-				tetra2[2] = conflicting_elements[i][2];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-
-				newsubs_in.push_back(tetra1);
-				newsubs_in.push_back(tetra2);
-
-				}			
-			}
-		} */
-
+		
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> prism2 (6,0);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		//cout << vertices_in << "<-  vertices octante 1 in\n";
+
+		if (vertices_in == 8)
+		cout << "2a nuevo! \n";
+
+		vertices_in=0;		
+		//
 		
 		//managing inside elements
 		prism1[0] = all[0];
@@ -168,11 +112,11 @@ namespace Clobscode
 		
 		//managing outside elements		
 		prism2[0] = all[1];
-		prism2[1] = all[4];
-		prism2[2] = all[5];
-		prism2[3] = all[2];
-		prism2[4] = all[7];
-		prism2[5] = all[6];		
+        	prism2[1] = all[4];
+        	prism2[2] = all[5];
+        	prism2[3] = all[2];
+        	prism2[4] = all[7];
+        	prism2[5] = all[6]; 		
 		newsubs_out.push_back(prism2);
 	}
 	
@@ -188,6 +132,25 @@ namespace Clobscode
 		//and all the rest of the elements as outside.
 		newsubs_in.reserve(6);
 		newsubs_out.reserve(5);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "2b octante 1 \n";
+
+		vertices_in=0;	
+		//
 		
 		//adding new hex mid node.
 		Point3D middle;
@@ -300,6 +263,24 @@ namespace Clobscode
 		//and all the rest of the elements as outside.
 		newsubs_in.reserve(6);
 		newsubs_out.reserve(6);
+
+		//Debugging
+		int vertices_in=0;
+		vector <Point3D> mpts;
+		for(unsigned int i=0; i<all.size();i++)
+		mpts.push_back(pts.at(all[i]).getPoint());
+
+		for(unsigned int i=0; i<mpts.size();i++){
+			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
+			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
+			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
+				vertices_in++;
+		}
+
+		if (vertices_in == 8)
+		cout << "2c octante 1 \n";
+
+		vertices_in=0;
 		
 		//adding new hex mid node.
 		Point3D middle;
