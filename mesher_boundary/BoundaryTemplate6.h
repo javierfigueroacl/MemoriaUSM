@@ -20,17 +20,24 @@ namespace Clobscode
 		virtual bool getSubelements(vector<unsigned int> &all, 
 									vector<unsigned int> &out,
 									vector<MeshPoint> &pts,
-									vector<vector<unsigned int> > &neweles);
+									vector<vector<unsigned int> > &neweles,
+									vector<vector<unsigned int> > &newsubs_out,
+									vector<vector<unsigned int> > &invalid_elements,
+									vector<vector<unsigned int> > &conflicting_elements);
 		
 	protected:
 		
-		virtual void PatternA(vector<unsigned int> &all, vector<MeshPoint> &pts, 
+		virtual void PatternA(vector<unsigned int> &all, 
+							  vector<MeshPoint> &pts,
+							  vector<vector<unsigned int> > &neweles,
+							  vector<vector<unsigned int> > &newsubs_out,
+							  vector<vector<unsigned int> > &invalid_elements,
+							  vector<vector<unsigned int> > &conflicting_elements);
+		
+		virtual void PatternB(vector<unsigned int> &all, 
 							  vector<vector<unsigned int> > &neweles);
 		
-		virtual void PatternB(vector<unsigned int> &all, vector<MeshPoint> &pts,
-							  vector<vector<unsigned int> > &neweles);
-		
-		virtual void PatternC(vector<unsigned int> &all, vector<MeshPoint> &pts,
+		virtual void PatternC(vector<unsigned int> &all, 
 							  vector<vector<unsigned int> > &neweles);
 		
 	};

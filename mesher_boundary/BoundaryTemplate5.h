@@ -39,11 +39,9 @@ namespace Clobscode
 							  vector<vector<unsigned int> > &neweles);
 		
 		virtual void PatternB(vector<unsigned int> &all, 
-							  vector<MeshPoint> &pts,
 							  vector<vector<unsigned int> > &neweles);
 		
 		virtual void PatternC(vector<unsigned int> &all, 
-							  vector<MeshPoint> &pts,
 							  vector<vector<unsigned int> > &neweles);
 		
 		virtual vector<unsigned int> searchPivote(vector<unsigned int> &doubles);

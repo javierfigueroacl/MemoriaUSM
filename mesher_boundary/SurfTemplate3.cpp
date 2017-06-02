@@ -11,7 +11,6 @@ namespace Clobscode
 	
 	bool SurfTemplate3::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &in,
-								          vector<MeshPoint> &pts,
 									  vector<vector<unsigned int> > &neweles){
 		
 		HexRotation hrot;
@@ -62,34 +61,34 @@ namespace Clobscode
 		if(edge2){
 			if(rotated[1] == all[in[2]]){
 				//the pattern is A and no rotation is needed
-				PatternA(rotated,pts,neweles);
+				PatternA(rotated,neweles);
 				return true;
 			}
 			else if(rotated[2] == all[in[2]]){
 				//the pattern is A and Positive Y rotation is needed
 				rotated = hrot.rotatePosY(rotated);
-				PatternA(rotated,pts,neweles);
+				PatternA(rotated,neweles);
 				return true;
 			}
 			else if(rotated[4] == all[in[2]]){
 				rotated = hrot.rotateNegX(rotated);
 				rotated = hrot.rotateNegY(rotated);
-				PatternA(rotated,pts,neweles);
+				PatternA(rotated,neweles);
 				return true;
 			}
 			else if(rotated[7] == all[in[2]]){
 				rotated = hrot.rotateNegZ(rotated);
 				rotated = hrot.rotateNegX(rotated);
 				rotated = hrot.rotateNegY(rotated);
-				PatternA(rotated,pts,neweles);
+				PatternA(rotated,neweles);
 				return true;
 			}
 			else if(rotated[5] == all[in[2]]){
-				PatternB(rotated,pts,neweles);
+				PatternB(rotated,neweles);
 				return true;
 			}
 			else if(rotated[6] == all[in[2]]){
-				PatternC(rotated,pts,neweles);
+				PatternC(rotated,neweles);
 				return true;
 			}
 			else{
@@ -110,26 +109,26 @@ namespace Clobscode
 		   (rotated[6] == all[in[1]] || rotated[6] == all[in[2]])){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegX(rotated);
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		if((rotated[5] == all[in[1]] || rotated[5] == all[in[2]]) &&
 		   (rotated[7] == all[in[1]] || rotated[7] == all[in[2]])){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegX(rotated);
-			PatternD(rotated,pts,neweles);
+			PatternD(rotated,neweles);
 			return true;
 		}
 		if((rotated[5] == all[in[1]] || rotated[5] == all[in[2]]) &&
 		   (rotated[2] == all[in[1]] || rotated[2] == all[in[2]])){
-			PatternD(rotated,pts,neweles);
+			PatternD(rotated,neweles);
 			return true;
 		}
 		if((rotated[6] == all[in[1]] || rotated[6] == all[in[2]]) &&
 		   (rotated[7] == all[in[1]] || rotated[7] == all[in[2]])){
 			rotated = hrot.rotateNegZ(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		if((rotated[6] == all[in[1]] || rotated[6] == all[in[2]]) &&
@@ -137,14 +136,14 @@ namespace Clobscode
 			rotated = hrot.rotateNegZ(rotated);
 			rotated = hrot.rotatePosY(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternC(rotated,pts,neweles);
+			PatternC(rotated,neweles);
 			return true;
 		}
 		if((rotated[7] == all[in[1]] || rotated[7] == all[in[2]]) &&
 		   (rotated[2] == all[in[1]] || rotated[2] == all[in[2]])){
 			rotated = hrot.rotatePosY(rotated);
 			rotated = hrot.rotatePosY(rotated);
-			PatternD(rotated,pts,neweles);
+			PatternD(rotated,neweles);
 			return true;
 		}
 		
@@ -157,29 +156,9 @@ namespace Clobscode
 	
 	//Pattern C in paper
 	void SurfTemplate3::PatternA(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts, 
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(2);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "3a\n";
-
-		vertices_in=0;		
-		//
 		
 		vector<unsigned int> ele1 (5,0);
 		vector<unsigned int> ele2 (5,0);
@@ -214,7 +193,6 @@ namespace Clobscode
 	 pattern 3B */
 	
 	void SurfTemplate3::PatternB(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts, 
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(3);
@@ -225,25 +203,6 @@ namespace Clobscode
 		vector<unsigned int> ele1(6,0);
 		vector<unsigned int> ele2(5,0);
 		vector<unsigned int> ele3(4,0);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "3b\n";
-
-		vertices_in=0;		
-		//
 		
 		ele1[0] = all[0];
 		ele1[1] = all[4];
@@ -270,7 +229,6 @@ namespace Clobscode
 	}
 	
 	void SurfTemplate3::PatternC(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts, 
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(3);
@@ -278,25 +236,6 @@ namespace Clobscode
 		 * is presented on the region. For this reason, a pyramid is added
 		 * to avoid holes
 		 */
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "3c\n";
-
-		vertices_in=0;		
-		//
 		vector<unsigned int> ele1(6,0);
 		vector<unsigned int> ele2(5,0);
 		vector<unsigned int> ele3(4,0);
@@ -327,29 +266,9 @@ namespace Clobscode
 	
 	//Pattern A in paper
 	void SurfTemplate3::PatternD(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts, 
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "3d\n";
-
-		vertices_in=0;		
-		//
 		
 		vector<unsigned int> ele1(4,0);
 		vector<unsigned int> ele2(4,0);

@@ -11,7 +11,6 @@ namespace Clobscode
 	
 	bool SurfTemplate6::getSubelements(vector<unsigned int> &all, 
 									  vector<unsigned int> &out,
-								          vector<MeshPoint> &pts,
 									  vector<vector<unsigned int> > &neweles){
 		
 		HexRotation hrot;
@@ -24,39 +23,39 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[out[1]]){
-			PatternA(rotated,pts,neweles);
+			PatternA(rotated,neweles);
 			return true;
 		}
 		if(rotated[1] == all[out[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,neweles);
+			PatternA(rotated,neweles);
 			return true;
 		}
 		if(rotated[4] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,neweles);
+			PatternA(rotated,neweles);
 			return true;
 		}
 		
 		//Possible cases for PatternB
 		if(rotated[2] == all[out[1]]){
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		if(rotated[5] == all[out[1]]){
 			rotated = hrot.rotatePosZ(rotated);
 			rotated = hrot.rotateNegY(rotated);
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		if(rotated[7] == all[out[1]]){
 			rotated = hrot.rotateNegX(rotated);
 			rotated = hrot.rotateNegY(rotated);
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		if(rotated[6] == all[out[1]]){
-			PatternC(rotated,pts,neweles);
+			PatternC(rotated,neweles);
 			return true;
 		}
 		
@@ -68,42 +67,12 @@ namespace Clobscode
 	
 	//w.r.t paper, this configuration counts with outside nodes 0 and 3
 	void SurfTemplate6::PatternA(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(2);
 		
 		vector<unsigned int> ele1 (6,0);
 		vector<unsigned int> ele2 (6,0);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8){
-		cout << "6a externo \n";
-		for(unsigned int i=0; i<mpts.size();i++){
-			cout << mpts[i] << "<- puntos xyz \n";
-			if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == true)
-					cout << "nodo "<< i << " dentro de ambas superficies\n";
-			else if(pts.at(all[i]).getIOState(0) == true and pts.at(all[i]).getIOState(1) == false)
-					cout << "nodo "<< i << " dentro de superficie 1\n";
-			else if(pts.at(all[i]).getIOState(0) == false and pts.at(all[i]).getIOState(1) == true)
-					cout << "nodo "<< i << " dentro de superficie 2\n";
-		}
-		}
-
-		vertices_in=0;		
-		//
 		
 		ele1[0] = all[4];
 		ele1[1] = all[5];
@@ -126,7 +95,6 @@ namespace Clobscode
 	
 	//w.r.t paper, this configuration counts with outside nodes 0 and 2
 	void SurfTemplate6::PatternB(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(5);
@@ -135,25 +103,6 @@ namespace Clobscode
 		vector<unsigned int> ele3(4,0);
 		vector<unsigned int> ele4(4,0);
 		vector<unsigned int> ele5(4,0);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "6b\n";
-
-		vertices_in=0;		
-		//
 		
 		ele1[0] = all[4];
 		ele1[1] = all[7];
@@ -190,7 +139,6 @@ namespace Clobscode
 	}
 	
 	void SurfTemplate6::PatternC(vector<unsigned int> &all, 
-							        vector<MeshPoint> &pts,
 								vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(6);
@@ -200,25 +148,6 @@ namespace Clobscode
 		vector<unsigned int> ele4(4,0);
 		vector<unsigned int> ele5(4,0);
 		vector<unsigned int> ele6(4,0);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "6c\n";
-
-		vertices_in=0;		
-		//
 		
 		ele1[0] = all[0];
 		ele1[1] = all[5];

@@ -19,25 +19,7 @@ namespace Clobscode
 			return false;
 		}
 		
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "1a (interno)\n";
-
-		vertices_in=0;		
-		//
-
+		
 		//this template will split the hex in 6 pyramids and then
 		//three of them into two tetras each.
 		//Three of these six tetras will be considered as inside 
@@ -55,7 +37,8 @@ namespace Clobscode
 		MeshPoint mp(middle, pts[0].getNumberOfInputMeshes());
 		mid = pts.size() + newpts.size();
 		newpts.push_back(mp);
-
+		
+		
 		//creating element and auxiliary vectors
 		vector<unsigned int> tetra1(4,0),rotated;
 		vector<unsigned int> tetra2(4,0);

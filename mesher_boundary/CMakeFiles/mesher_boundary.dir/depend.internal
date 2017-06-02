@@ -19,15 +19,11 @@ CMakeFiles/mesher_boundary.dir/BoundaryTemplate3.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate3.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate3.h
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate4.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate4.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate4.h
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplate5.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate5.cpp
@@ -47,8 +43,6 @@ CMakeFiles/mesher_boundary.dir/BoundaryTemplate7.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate7.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate7.h
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/BoundaryTemplatePrism.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplatePrism.cpp
@@ -189,29 +183,21 @@ CMakeFiles/mesher_boundary.dir/Point3D.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate1.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate1.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate1.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate2.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate2.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate2.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate3.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate3.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate3.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate4.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate4.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate4.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
@@ -224,15 +210,11 @@ CMakeFiles/mesher_boundary.dir/SurfTemplate5.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate6.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate6.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate6.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h
 CMakeFiles/mesher_boundary.dir/SurfTemplate7.cpp.o
  /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
- /home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
- /home/javier/Documentos/Memoria/mesher_boundary/Point3D.h
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate7.cpp
  /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate7.h
  /home/javier/Documentos/Memoria/mesher_boundary/stdafx.h

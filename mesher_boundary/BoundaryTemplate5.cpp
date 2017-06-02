@@ -77,7 +77,7 @@ namespace Clobscode
 				rotated = hrot.rotatePosZ(rotated);
 				rotated = hrot.rotatePosY(rotated);
 			}
-			PatternB(rotated,pts,neweles);
+			PatternB(rotated,neweles);
 			return true;
 		}
 		else if(total==6){
@@ -88,7 +88,7 @@ namespace Clobscode
 					break;
 				}
 			rotated = hrot.rotate(all,pivote);
-			PatternC(rotated,pts,neweles);
+			PatternC(rotated,neweles);
 			return true;
 		}
 		else{
@@ -156,25 +156,6 @@ namespace Clobscode
 									 vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(9);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "5a octante 1 \n";
-
-		vertices_in=0;	
-		//
 		
 		/*  this pattern needs ipc has the hexahedra must be split in 6 piramids first,
 		 *  then 3 of them will be replaced by 6 tetras. 
@@ -261,30 +242,10 @@ namespace Clobscode
 	}
 	
 	//Pattern B in paper
-	void BoundaryTemplate5::PatternB(vector<unsigned int> &all, vector<MeshPoint> &pts,
+	void BoundaryTemplate5::PatternB(vector<unsigned int> &all,
 									 vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(4);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "5b octante 1 \n";
-
-		vertices_in=0;		
-		//
-
 		vector<unsigned int> ele1(5,0);
 		vector<unsigned int> ele2(5,0);
 		vector<unsigned int> ele3(4,0);
@@ -320,29 +281,10 @@ namespace Clobscode
 	}
 	
 	//Pattern A in paper
-	void BoundaryTemplate5::PatternC(vector<unsigned int> &all, vector<MeshPoint> &pts,
+	void BoundaryTemplate5::PatternC(vector<unsigned int> &all, 
 									 vector<vector<unsigned int> > &eles){
 		
 		eles.reserve(5);
-
-		//Debugging
-		int vertices_in=0;
-		vector <Point3D> mpts;
-		for(unsigned int i=0; i<all.size();i++)
-		mpts.push_back(pts.at(all[i]).getPoint());
-
-		for(unsigned int i=0; i<mpts.size();i++){
-			if (mpts[i][0] >=-50 && mpts[i][0] <=-25) // Restriccion x
-			if (mpts[i][1] >=-20 && mpts[i][1] <=10) // Restriccion y
-			if (mpts[i][2] >=5 && mpts[i][2] <=30) // Restriccion z octante 1
-				vertices_in++;
-		}
-
-		if (vertices_in == 8)
-		cout << "5a octante 1 \n";
-
-		vertices_in=0;
-		//
 		
 		vector<unsigned int> ele1(4,0);
 		vector<unsigned int> ele2(4,0);

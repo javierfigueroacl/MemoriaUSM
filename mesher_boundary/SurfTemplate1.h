@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "HexRotation.h"
-#include "MeshPoint.h"
 
 using std::vector;
 
@@ -18,7 +17,6 @@ class SurfTemplate1 {
 
       virtual bool getSubelements(vector<unsigned int> &all, 
 								  vector<unsigned int> &in,
-								  vector<MeshPoint> &pts,
 								  vector<vector<unsigned int> > &newsubs);
 
 };

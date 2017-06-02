@@ -55,8 +55,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate4.cpp
 stdafx.h
@@ -71,8 +69,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplate5.cpp
 stdafx.h
@@ -121,8 +117,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/BoundaryTemplatePrism.cpp
 stdafx.h
@@ -303,6 +297,8 @@ Mesher.h
 /home/javier/Documentos/Memoria/mesher_boundary/Mesher.h
 limits
 -
+algorithm
+-
 
 /home/javier/Documentos/Memoria/mesher_boundary/Mesher.h
 TriMesh.h
@@ -345,8 +341,6 @@ vector
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate2.cpp
 stdafx.h
@@ -361,8 +355,6 @@ HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
 iostream
 -
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate3.cpp
 stdafx.h
@@ -377,8 +369,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate4.cpp
 stdafx.h
@@ -393,8 +383,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate5.cpp
 stdafx.h
@@ -427,8 +415,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/SurfTemplate7.cpp
 stdafx.h
@@ -443,8 +429,6 @@ iostream
 -
 HexRotation.h
 /home/javier/Documentos/Memoria/mesher_boundary/HexRotation.h
-MeshPoint.h
-/home/javier/Documentos/Memoria/mesher_boundary/MeshPoint.h
 
 /home/javier/Documentos/Memoria/mesher_boundary/TriMesh.cpp
 stdafx.h

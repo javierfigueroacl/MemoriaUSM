@@ -26,14 +26,19 @@ class BoundaryTemplate2 {
 								vector<MeshPoint> &pts,
 								list<MeshPoint> &newpts,
 								vector<vector<unsigned int> > &newsubs_in,
-								vector<vector<unsigned int> > &newsubs_out);
+								vector<vector<unsigned int> > &newsubs_out,
+								vector<vector<unsigned int> > &invalid_elements,
+								vector<vector<unsigned int> > &conflicting_elements);
 	
   protected:
 	
-	virtual void PatternA(vector<unsigned int> &all,
-						  vector<MeshPoint> &pts, 
+	virtual void PatternA(vector<unsigned int> &all, 
+						  vector<MeshPoint> &pts,
 						  vector<vector<unsigned int> > &newsubs_in,
-						  vector<vector<unsigned int> > &newsubs_out);
+						  vector<vector<unsigned int> > &newsubs_out,
+						  vector<vector<unsigned int> > &invalid_elements,
+						  vector<vector<unsigned int> > &conflicting_elements,
+						  unsigned int rotstate);
 	
 	virtual void PatternB(vector<unsigned int> &all,
 						  vector<MeshPoint> &pts,
