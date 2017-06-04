@@ -211,17 +211,21 @@ namespace Clobscode
 			newsub.push_back(pointindex);
 			return true;
 		}
-		
+		//Agregado por Javier
+		if (pointindex.size()==5 or pointindex.size()==6) return false;
+
+		/*
 		if (pointindex.size()==5) {
 			return false;
-			//BoundaryTemplatePyramid btpy;
-			//return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
+			BoundaryTemplatePyramid btpy;
+			return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
 		}
 		
 		if (pointindex.size()==6) {
+			return false;
 			BoundaryTemplatePrism btpr;
 			return btpr.getSubelements(pointindex,inpts,outpts,newsub,newsub_out);
-		}
+		}*/
 		
 		//std::cout << "number of inside nodes for this element " << tmpin.size() << "\n";
 		
