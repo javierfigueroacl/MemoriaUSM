@@ -1,3 +1,0 @@
-/home/javier/Documentos/Memoria/mesher_boundary/CMakeFiles/rebuild_cache.dir
-/home/javier/Documentos/Memoria/mesher_boundary/CMakeFiles/edit_cache.dir
-/home/javier/Documentos/Memoria/mesher_boundary/CMakeFiles/mesher_boundary.dir

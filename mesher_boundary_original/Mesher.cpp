@@ -136,7 +136,6 @@ namespace Clobscode
 		
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
-		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
 		
