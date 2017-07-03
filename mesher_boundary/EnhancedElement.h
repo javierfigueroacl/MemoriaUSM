@@ -51,6 +51,16 @@ namespace Clobscode
 											vector<vector<unsigned int> > &invalid_elements,
 											const unsigned int &intersects,
 											vector<vector<unsigned int> > &conflicting_elements);
+// Agregado por Javier
+		virtual bool fixconflictingelements(vector <unsigned int> &points_ele,
+	unsigned int &i,
+	vector<MeshPoint> &points,
+	list<EnhancedElement> &tmpele,
+	list<MeshPoint> &tmppts,
+	double &old_md,
+	unsigned int &n_meshes);
+
+//
 		
 		virtual void computeMaxDistance(vector<MeshPoint> &meshpoints);
 		
@@ -74,6 +84,17 @@ namespace Clobscode
 		virtual bool isInside();
 		
 	protected:
+
+// Agregado por Javier
+
+		virtual void fixprismMandatoryElements(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternA(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternB(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternC(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternD(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternE(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+
+//
 		
 		vector<unsigned int> pointindex;
 		//this double is used decide if an inner node
