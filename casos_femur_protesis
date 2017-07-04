@@ -83,6 +83,9 @@ z: [45,70]
 
 Se expandió los casos de prismas a 2 nodos en ambas superficies.
 
+Archivos modificados:
+Todos los casos de división de elementos inválidos están ahora en la clase fixconflictingelements, fixprismMandatoryElements y los fixprismPatternX de EnhancedElement.cpp
+
 Caso 3:
 
 x:[-50,-25]

@@ -779,6 +779,39 @@ namespace Clobscode
 					}
 
 				}
+				if (tnode == 5){
+				bool ck_invalid=false;
+				unsigned int mid=0;
+					if(stnode[0] == 0){
+					fixprismPatternD(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+					else if(stnode[1] == 0){
+					fixprismPatternE(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+					else if(stnode[2] == 0){
+					fixprismPatternG(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+					else if(stnode[3] == 0){
+					fixprismPatternA(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+					else if(stnode[4] == 0){
+					fixprismPatternF(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+					else if(stnode[5] == 0){
+					fixprismPatternH(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+					ck_invalid=true;
+					}
+
+				if (ck_invalid==true){
+					fixprismMandatoryElements(points_ele,tmpele,old_md,n_meshes,mid);
+					return true;
+					}
+				}
 
 			}
 
