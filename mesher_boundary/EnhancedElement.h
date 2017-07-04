@@ -93,7 +93,9 @@ namespace Clobscode
 		virtual void fixprismPatternC(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
 		virtual void fixprismPatternD(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
 		virtual void fixprismPatternE(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
-
+		virtual void fixprismPatternF(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternG(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
+		virtual void fixprismPatternH(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
 //
 		
 		vector<unsigned int> pointindex;

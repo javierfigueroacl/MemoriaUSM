@@ -643,121 +643,21 @@ namespace Clobscode
 
 					/* Case \| */
 					else if (stnode[3] == 1 and stnode[5] == 1){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[1];
-					tetra1[2] = points_ele[4];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[4];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[2];
-					pyr[2] = points_ele[5];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternF(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 
 					}
 					/* Case |\ */
 					else if (stnode[0] == 1 and stnode[1] == 1){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[2];
-					tetra1[2] = points_ele[3];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[2];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternG(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 
 					}
 					/* Case |/ */
 					else if (stnode[4] == 1 and stnode[3] == 1){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[3];
-					tetra1[2] = points_ele[5];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[2];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
-
+					fixprismPatternH(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 					ck_invalid=true;
 
 					}
@@ -785,79 +685,13 @@ namespace Clobscode
 					}
 				/* Case \| */
 				if ((stnode[0] == 1 and stnode[1] == 1 and stnode[3] == 1) or (stnode[5] == 1 and stnode[2] == 1 and stnode[1] == 1) or (stnode[3] == 1 and stnode[5] == 1 and stnode[1] == 1)){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[2];
-					tetra1[2] = points_ele[3];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[2];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternF(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 					}
 				/* Case |/ */
 				if ((stnode[0] == 1 and stnode[2] == 1 and stnode[3] == 1) or (stnode[4] == 1 and stnode[1] == 1 and stnode[2] == 1) or (stnode[4] == 1 and stnode[3] == 1 and stnode[2] == 1)){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[3];
-					tetra1[2] = points_ele[5];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[2];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternH(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 					}
@@ -869,40 +703,7 @@ namespace Clobscode
 					}
 				/* Case |\ */
 				if ((stnode[0] == 1 and stnode[3] == 1 and stnode[5] == 1) or (stnode[4] == 1 and stnode[1] == 1 and stnode[5] == 1) or (stnode[0] == 1 and stnode[1] == 1 and stnode[5] == 1)){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[2];
-					tetra1[2] = points_ele[3];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[2];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternG(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 					}
@@ -918,40 +719,7 @@ namespace Clobscode
 
 					/* Case \| */
 					if(stnode[0]== 0 and stnode[2]== 0){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[1];
-					tetra1[2] = points_ele[4];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[4];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[2];
-					pyr[2] = points_ele[5];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternF(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 					}
@@ -964,40 +732,7 @@ namespace Clobscode
 
 					/* Case |/ */
 					else if (stnode[0] == 0 and stnode[1] == 0){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[3];
-					tetra1[2] = points_ele[5];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[2];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternH(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 
@@ -1005,40 +740,7 @@ namespace Clobscode
 
 					/* Case |\ */
 					else if (stnode[3] == 0 and stnode[4] == 0){
-					//adding new mid node.
-					Point3D middle;
-					mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[2];
-					tetra1[2] = points_ele[3];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[2];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[5];
-					tetra2[3] = mid;
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(tetra1,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-					EnhancedElement ee2(tetra2,n_meshes);
-					ee2.setMaxDistance(old_md);
-					tmpele.push_back(ee2);
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
+					fixprismPatternG(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 					ck_invalid=true;
 
@@ -1366,6 +1068,135 @@ namespace Clobscode
 					tmpele.push_back(ee3);
 
 	}
+
+	void EnhancedElement::fixprismPatternF(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid){
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				vector<unsigned int> pyr (5,0);
+
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[1];
+					tetra1[2] = points_ele[4];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[0];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[4];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[2];
+					pyr[2] = points_ele[5];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+}
+
+	void EnhancedElement::fixprismPatternG(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid){
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				vector<unsigned int> pyr (5,0);
+
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[2];
+					tetra1[2] = points_ele[3];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[2];
+					tetra2[1] = points_ele[3];
+					tetra2[2] = points_ele[5];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+}
+
+	void EnhancedElement::fixprismPatternH(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid){
+
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+				vector<unsigned int> pyr (5,0);
+
+					//adding new mid node.
+					Point3D middle;
+					mid=0;
+					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
+					middle/=6;
+					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
+					mid = points.size() + tmppts.size();
+					tmppts.push_back(mp);
+
+					tetra1[0] = points_ele[0];
+					tetra1[1] = points_ele[3];
+					tetra1[2] = points_ele[5];
+					tetra1[3] = mid;
+
+					tetra2[0] = points_ele[0];
+					tetra2[1] = points_ele[2];
+					tetra2[2] = points_ele[5];
+					tetra2[3] = mid;
+
+					pyr[0] = points_ele[0];
+					pyr[1] = points_ele[1];
+					pyr[2] = points_ele[4];
+					pyr[3] = points_ele[3];
+					pyr[4]= mid;
+
+					EnhancedElement ee1(tetra1,n_meshes);
+					ee1.setMaxDistance(old_md);
+					tmpele.push_back(ee1);
+					EnhancedElement ee2(tetra2,n_meshes);
+					ee2.setMaxDistance(old_md);
+					tmpele.push_back(ee2);
+					EnhancedElement ee3(pyr,n_meshes);
+					ee3.setMaxDistance(old_md);
+					tmpele.push_back(ee3);
+
+}
 	
 	unsigned int EnhancedElement::detectIntersectingSurface(vector<MeshPoint> &meshpoints){
 		const unsigned int n_meshes = meshpoints[pointindex[0]].getNumberOfInputMeshes();
