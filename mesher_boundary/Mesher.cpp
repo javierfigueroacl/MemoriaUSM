@@ -133,13 +133,17 @@ namespace Clobscode
 		//that rely inside the overall geometry, but are close
 		//to an intern feature
 		projectCloseToInsideBoundaryNodes(pClientData,pClientPointProjectorFunc);
-		
+
+		//agregado por javier
+		//label nodes and elements, then remove outside elements
+		labelNodesAndElements2(pClientData,pClientPointTestFunc);		
+
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
 
 		//agregado por javier
 		//label nodes and elements, then remove outside elements
-		labelNodesAndElements(pClientData,pClientPointTestFunc);
+		//labelNodesAndElements2(pClientData,pClientPointTestFunc);
 		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
@@ -175,6 +179,9 @@ namespace Clobscode
 		vector<vector<unsigned int> > out_els;
 		
 		unsigned int n = points.size();
+		/* Debugging */
+		cout << "Total nodos: " << n << "\n";
+		cout << "Total elementos: " << elements.size() << "\n";
 		out_pts.reserve(n);
 		for (unsigned int i=0; i<n; i++) {
 			out_pts.push_back(points[i].getPoint());
@@ -304,6 +311,79 @@ namespace Clobscode
 		for (eiter = newele.begin(); eiter!=newele.end(); eiter++) {
 			elements.push_back(*eiter);
 		}
+	}
+
+	void Mesher::labelNodesAndElements2(void * pClientData, 
+									   PTRFUN_POINT_IN_MESH pClientPointTestFunc){
+		
+		//check status of all points in the mesh.
+		unsigned int n = points.size();
+		for(unsigned int i=0; i<n; i++) {
+			Point3D p =points.at(i).getPoint();
+			
+			//-----------------------------------------------------
+			//-----------------------------------------------------
+			for (unsigned int j=0; j<n_meshes; j++) {
+				if (pClientPointTestFunc( pClientData, p,j)) {
+					points.at(i).setInside(j);
+				}
+			}
+			//-----------------------------------------------------
+			//-----------------------------------------------------
+			
+			
+			points.at(i).outsideChecked();
+		}
+		
+		list<EnhancedElement> newele,removed;
+		list<EnhancedElement>::iterator eiter;
+		
+		//check status of all elements in the mesh per input surface
+		n = elements.size();
+		
+		for (unsigned int i=0; i<n; i++) {
+			//test element intersection with all input surfaces.
+			//add it only once.
+			bool to_add = false;
+			
+			//std::cout << "e" << elements[i] << " :";
+			
+			for (unsigned int j=0; j<n_meshes; j++) {
+				bool allinside = true;
+				bool alloutside = true;
+				vector<unsigned int> epts = elements[i].getPoints();
+				unsigned int enp = epts.size();
+				for(unsigned int k=0; k<enp; k++) {
+					//std::cout << " " << points.at(epts[k]).getIOState(j);
+					
+					
+					if (points.at(epts[k]).getIOState(j)) {
+						alloutside = false;
+					}
+					else {
+						allinside = false;
+					}	
+				}
+				if (!alloutside) {
+					//assign intersection state per input surface
+					if (!allinside) {
+						elements[i].setBorderState(j,true);
+					}
+					else {
+						elements[i].setBorderState(j,false);
+					}
+					to_add = true;
+				}
+			}
+				//newele.push_back(elements[i]);
+					 
+		}
+		//now element std::list from Vomule mesh can be cleared, as all remaining
+		//elements are still in use and attached to newele std::list.
+		//elements.clear();
+		//for (eiter = newele.begin(); eiter!=newele.end(); eiter++) {
+		//	elements.push_back(*eiter);
+		//}
 	}
 	
 	//-----------------------------------------------------
