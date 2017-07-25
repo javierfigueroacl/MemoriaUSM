@@ -152,10 +152,6 @@ namespace Clobscode
 												 vector<vector<unsigned int> > &newsub_out,
 												 const unsigned int &intersects
 													){
-		//COMENTADO POR JAVIER
-		/*if(!insideBorder(meshpoints)){
-			return false;
-		}*/
 		
 		std::vector<unsigned int> inpts, outpts;
 		std::list<unsigned int> tmpin;
@@ -166,15 +162,8 @@ namespace Clobscode
 		
 		//Note: label as outside every node that is outside a given
 		//input surface. Erase the parameter instersects. 
-		
-/*		for (unsigned int i=0; i<pointindex.size(); i++){
-			if(meshpoints.at(pointindex[i]).getIOState(0) and meshpoints.at(pointindex[i]).getIOState(1))
-				tmpin.push_back(i);
-			else
-				tmpout.push_back(i);
-		}*/
 	
-// Inicio Descomentado por Javier	
+// Por Javier	
 		for (unsigned int i=0; i<pointindex.size(); i++){
 			bool inside_all = true;
 			for (unsigned int j=0; j<border.size(); j++) {
@@ -194,7 +183,7 @@ namespace Clobscode
 			}
 		}
 
-// Fin Descomentado por Javier
+// Fin Por Javier
 		
 		//save the points in a std::vector for quick acces
 		inpts.reserve(tmpin.size());
@@ -211,19 +200,6 @@ namespace Clobscode
 		}
 		//Agregado por Javier
 		if (pointindex.size()==5 or pointindex.size()==6) return false;
-
-		/*
-		if (pointindex.size()==5) {
-			return false;
-			BoundaryTemplatePyramid btpy;
-			return btpy.getSubelements(pointindex,inpts,newsub,newsub_out);
-		}
-		
-		if (pointindex.size()==6) {
-			return false;
-			BoundaryTemplatePrism btpr;
-			return btpr.getSubelements(pointindex,inpts,outpts,newsub,newsub_out);
-		}*/
 		
 		//std::cout << "number of inside nodes for this element " << tmpin.size() << "\n";
 		
@@ -299,137 +275,67 @@ namespace Clobscode
 			if (points_ele.size() == 5){
 			//Antes de agregar, filtrar con IOState para obtener solo las piramides que compartiran cara con un patron interno
 			int tnode=0,innode=0,outnode=0;
-			for(unsigned int k=0; k<points_ele.size()-1;k++)
-				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+			for(unsigned int k=0; k<points_ele.size()-1;k++){
+				unsigned int tintersects=0;
+
+				for(unsigned int j=0;j<n_meshes;j++)
+				if(points.at(points_ele[k]).getIOState(j) == true) tintersects++;
+
+				if(tintersects == n_meshes){
 				innode=k;
 				tnode++;
 				}
 				else{
 				outnode=k;
 				}
+			}
 			vector<unsigned int> tetra1 (4,0);
 			vector<unsigned int> tetra2 (4,0);
 
 			if (tnode == 1){
-
-				if (innode == 0 or innode == 2){
-				
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
-				}
-				else{	
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
-				}
-
-				EnhancedElement ee1(tetra1,n_meshes);
-				ee1.setMaxDistance(old_md);
-				tmpele.push_back(ee1);
-				EnhancedElement ee2(tetra2,n_meshes);
-				ee2.setMaxDistance(old_md);
-				tmpele.push_back(ee2);
-
-				points_ele.push_back(i);
+				if (innode == 0 or innode == 2)
+				fixpyrPatternA(points_ele,tmpele,old_md,n_meshes);
+				else
+				fixpyrPatternB(points_ele,tmpele,old_md,n_meshes);
 				return true;
+
 			}
 			else if (tnode == 2){
 				unsigned int stnode[4],okcon=0;
 
-				for(unsigned int k=0; k<points_ele.size()-1;k++)
-				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				for(unsigned int k=0; k<points_ele.size()-1;k++){
+				unsigned int tintersects=0;
+
+				for(unsigned int j=0;j<n_meshes;j++)
+				if(points.at(points_ele[k]).getIOState(j) == true) tintersects++;
+
+				if(tintersects == n_meshes){
 				stnode[k]=1;
 				}
 				else{
 				stnode[k]=0;
 				}
+				}
 
 				if (stnode[0]==1 and stnode[2]==1){
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
+				fixpyrPatternA(points_ele,tmpele,old_md,n_meshes);
 				okcon=1;
 				}
 				else if (stnode[1]==1 and stnode[3]==1){
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
+				fixpyrPatternB(points_ele,tmpele,old_md,n_meshes);
 				okcon=1;
 				}
-
-				if (okcon==1){
-				EnhancedElement ee3(tetra1,n_meshes);
-				ee3.setMaxDistance(old_md);
-				tmpele.push_back(ee3);
-				EnhancedElement ee4(tetra2,n_meshes);
-				ee4.setMaxDistance(old_md);
-				tmpele.push_back(ee4);
-
-				points_ele.push_back(i);
+				if (okcon==1)
 				return true;
-				}
 
 			}
 			else if (tnode == 3){
-				if (outnode == 1 or outnode==3){
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[3];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[2];
-				tetra2[1] = points_ele[1];
-				tetra2[2] = points_ele[3];
-				tetra2[3] = points_ele[4];
+				if (outnode == 1 or outnode == 3)
+				fixpyrPatternA(points_ele,tmpele,old_md,n_meshes);
+				else
+				fixpyrPatternB(points_ele,tmpele,old_md,n_meshes);
+				return true;
 				}
-				else{
-
-				tetra1[0] = points_ele[0];
-				tetra1[1] = points_ele[1];
-				tetra1[2] = points_ele[2];
-				tetra1[3] = points_ele[4];
-
-				tetra2[0] = points_ele[0];
-				tetra2[1] = points_ele[3];
-				tetra2[2] = points_ele[2];
-				tetra2[3] = points_ele[4];
-				}
-
-			EnhancedElement ee5(tetra1,n_meshes);
-			ee5.setMaxDistance(old_md);
-			tmpele.push_back(ee5);
-			EnhancedElement ee6(tetra2,n_meshes);
-			ee6.setMaxDistance(old_md);
-			tmpele.push_back(ee6);
-
-			points_ele.push_back(i);
-			return true;
-			}
 			
 			}
 
@@ -445,154 +351,37 @@ namespace Clobscode
 				vector<unsigned int> pyr (5,0);
 
 				// label nodes
-				for(unsigned int k=0; k<points_ele.size();k++)
-				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				for(unsigned int k=0; k<points_ele.size();k++){
+				unsigned int tintersects=0;
+
+				for(unsigned int j=0;j<n_meshes;j++)
+				if(points.at(points_ele[k]).getIOState(j) == true) tintersects++;
+
+				if(tintersects == n_meshes){
 				stnode[k]=1;
 				}
 				else{
 				stnode[k]=0;
 				}
+				}
 				
 				tnode= stnode[0]+stnode[1]+stnode[2]+stnode[3]+stnode[4]+stnode[5];
 
-				// in this case, the prism will be split in 2 pyramid and 2 tetras and then 1 pyramid in two tetras
-				//
-				if (tnode == 1){				
-					//adding new mid node.
-					Point3D middle;
-					unsigned int mid=0;
-					middle=points.at(points_ele[0]).getPoint()+points.at(points_ele[1]).getPoint()+points.at(points_ele[2]).getPoint()+points.at(points_ele[3]).getPoint()+points.at(points_ele[4]).getPoint()+points.at(points_ele[5]).getPoint();
-					middle/=6;
-					MeshPoint mp(middle, points[0].getNumberOfInputMeshes());
-					mid = points.size() + tmppts.size();
-					tmppts.push_back(mp);
+				if (tnode == 1){	
 
-					if(stnode[0] == 1 or stnode[4] == 1) {
-
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[3];
-					tetra1[2] = points_ele[1];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[3];
-					tetra2[1] = points_ele[4];
-					tetra2[2] = points_ele[1];
-					tetra2[3] = mid;	
-					if(stnode[0] == 1){
-						tetra3[0] = points_ele[0];
-						tetra3[1] = points_ele[2];
-						tetra3[2] = points_ele[3];
-						tetra3[3] = mid;
-
-						tetra4[0] = points_ele[2];
-						tetra4[1] = points_ele[3];
-						tetra4[2] = points_ele[5];
-						tetra4[3] = mid;	
-
-						EnhancedElement ee1(tetra3,n_meshes);
-						ee1.setMaxDistance(old_md);
-						tmpele.push_back(ee1);
-						EnhancedElement ee2(tetra4,n_meshes);
-						ee2.setMaxDistance(old_md);
-						tmpele.push_back(ee2);					
-						}
-					else{
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[2];
-					pyr[2] = points_ele[5];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee1(pyr,n_meshes);
-					ee1.setMaxDistance(old_md);
-					tmpele.push_back(ee1);
-						}
-					}
-					else if (stnode[1] == 1 or stnode[3] == 1){
-					tetra1[0] = points_ele[0];
-					tetra1[1] = points_ele[1];
-					tetra1[2] = points_ele[4];
-					tetra1[3] = mid;
-
-					tetra2[0] = points_ele[0];
-					tetra2[1] = points_ele[3];
-					tetra2[2] = points_ele[4];
-					tetra2[3] = mid;
-					if(stnode[3] == 1){
-						tetra3[0] = points_ele[0];
-						tetra3[1] = points_ele[3];
-						tetra3[2] = points_ele[5];
-						tetra3[3] = mid;
-
-						tetra4[0] = points_ele[0];
-						tetra4[1] = points_ele[2];
-						tetra4[2] = points_ele[5];
-						tetra4[3] = mid;	
-
-						EnhancedElement ee1(tetra3,n_meshes);
-						ee1.setMaxDistance(old_md);
-						tmpele.push_back(ee1);
-						EnhancedElement ee2(tetra4,n_meshes);
-						ee2.setMaxDistance(old_md);
-						tmpele.push_back(ee2);
-						}
-					else {
-
-						pyr[0] = points_ele[0];
-						pyr[1] = points_ele[2];
-						pyr[2] = points_ele[5];
-						pyr[3] = points_ele[3];
-						pyr[4]= mid;
-
-						EnhancedElement ee1(pyr,n_meshes);
-						ee1.setMaxDistance(old_md);
-						tmpele.push_back(ee1);
-						}
-					}
-					else if (stnode[5] == 1 or stnode[2] == 1){
-					if(stnode[5] == 1){
-						tetra1[0] = points_ele[0];
-						tetra1[1] = points_ele[2];
-						tetra1[2] = points_ele[3];
-						tetra1[3] = mid;
-
-						tetra2[0] = points_ele[2];
-						tetra2[1] = points_ele[3];
-						tetra2[2] = points_ele[5];
-						tetra2[3] = mid;	
-					}
-					else{
-						tetra1[0] = points_ele[0];
-						tetra1[1] = points_ele[3];
-						tetra1[2] = points_ele[5];
-						tetra1[3] = mid;
-
-						tetra2[0] = points_ele[0];
-						tetra2[1] = points_ele[2];
-						tetra2[2] = points_ele[5];
-						tetra2[3] = mid;	
-					}
-
-					pyr[0] = points_ele[0];
-					pyr[1] = points_ele[1];
-					pyr[2] = points_ele[4];
-					pyr[3] = points_ele[3];
-					pyr[4]= mid;
-
-					EnhancedElement ee3(pyr,n_meshes);
-					ee3.setMaxDistance(old_md);
-					tmpele.push_back(ee3);
-					}
-
-				
-				//insert tetra1 y tetra2, that are generated in all cases, with changes
-				EnhancedElement ee4(tetra1,n_meshes);
-				ee4.setMaxDistance(old_md);
-				tmpele.push_back(ee4);
-
-				EnhancedElement ee5(tetra2,n_meshes);
-				ee5.setMaxDistance(old_md);
-				tmpele.push_back(ee5);
+				unsigned int mid=0;
+				if (stnode[0] == 1)
+				fixprismPatternA(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+				else if (stnode[1] == 1)
+				fixprismPatternF(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+				else if (stnode[2] == 1)
+				fixprismPatternH(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);	
+				else if (stnode[3] == 1)
+				fixprismPatternD(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+				else if (stnode[4] == 1)
+				fixprismPatternE(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
+				else if (stnode[5] == 1)
+				fixprismPatternG(points,points_ele,tmpele,tmppts,old_md,n_meshes,mid);
 
 				fixprismMandatoryElements(points_ele,tmpele,old_md,n_meshes,mid);
 
@@ -814,6 +603,52 @@ namespace Clobscode
 			}
 
 			return false;
+
+	}
+
+	void EnhancedElement::fixpyrPatternA(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes){
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+
+				tetra1[0] = points_ele[0];
+				tetra1[1] = points_ele[1];
+				tetra1[2] = points_ele[3];
+				tetra1[3] = points_ele[4];
+
+				tetra2[0] = points_ele[2];
+				tetra2[1] = points_ele[1];
+				tetra2[2] = points_ele[3];
+				tetra2[3] = points_ele[4];
+
+				EnhancedElement ee1(tetra1,n_meshes);
+				ee1.setMaxDistance(old_md);
+				tmpele.push_back(ee1);
+				EnhancedElement ee2(tetra2,n_meshes);
+				ee2.setMaxDistance(old_md);
+				tmpele.push_back(ee2);
+
+	}
+
+	void EnhancedElement::fixpyrPatternB(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes){
+				vector<unsigned int> tetra1 (4,0);
+				vector<unsigned int> tetra2 (4,0);
+
+				tetra1[0] = points_ele[0];
+				tetra1[1] = points_ele[1];
+				tetra1[2] = points_ele[2];
+				tetra1[3] = points_ele[4];
+
+				tetra2[0] = points_ele[0];
+				tetra2[1] = points_ele[3];
+				tetra2[2] = points_ele[2];
+				tetra2[3] = points_ele[4];
+
+				EnhancedElement ee1(tetra1,n_meshes);
+				ee1.setMaxDistance(old_md);
+				tmpele.push_back(ee1);
+				EnhancedElement ee2(tetra2,n_meshes);
+				ee2.setMaxDistance(old_md);
+				tmpele.push_back(ee2);
 
 	}
 

@@ -84,7 +84,8 @@ namespace Clobscode
 	protected:
 
 // Agregado por Javier
-
+		virtual void fixpyrPatternA(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes);
+		virtual void fixpyrPatternB(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes);
 		virtual void fixprismMandatoryElements(vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele, double &old_md, unsigned int &n_meshes, unsigned int &mid);
 		virtual void fixprismPatternA(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
 		virtual void fixprismPatternB(vector<MeshPoint> &points,vector <unsigned int> &points_ele,list<EnhancedElement> &tmpele,list<MeshPoint> &tmppts, double &old_md, unsigned int &n_meshes, unsigned int &mid);
