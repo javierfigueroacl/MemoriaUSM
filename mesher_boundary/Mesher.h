@@ -53,7 +53,7 @@ namespace Clobscode
 		
 		virtual void labelNodesAndElements(void * pClientData, 
 										   PTRFUN_POINT_IN_MESH pClientPointTestFunc);
-		virtual void labelNodesAndElements2(void * pClientData, 
+		virtual void updateLabels(void * pClientData, 
 										   PTRFUN_POINT_IN_MESH pClientPointTestFunc);
 		
 		virtual void detectSurfaceElements();

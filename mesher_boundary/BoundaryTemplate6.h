@@ -21,18 +21,14 @@ namespace Clobscode
 									vector<unsigned int> &out,
 									vector<MeshPoint> &pts,
 									vector<vector<unsigned int> > &neweles,
-									vector<vector<unsigned int> > &newsubs_out,
-									vector<vector<unsigned int> > &invalid_elements,
-									vector<vector<unsigned int> > &conflicting_elements);
+									vector<vector<unsigned int> > &newsubs_out);
 		
 	protected:
 		
 		virtual void PatternA(vector<unsigned int> &all, 
 							  vector<MeshPoint> &pts,
 							  vector<vector<unsigned int> > &neweles,
-							  vector<vector<unsigned int> > &newsubs_out,
-							  vector<vector<unsigned int> > &invalid_elements,
-							  vector<vector<unsigned int> > &conflicting_elements);
+							  vector<vector<unsigned int> > &newsubs_out);
 		
 		virtual void PatternB(vector<unsigned int> &all, 
 							  vector<vector<unsigned int> > &neweles);

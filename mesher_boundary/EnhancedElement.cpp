@@ -150,9 +150,7 @@ namespace Clobscode
 												 list<MeshPoint> &newpts,
 												 vector<vector<unsigned int> > &newsub,
 												 vector<vector<unsigned int> > &newsub_out,
-												 vector<vector<unsigned int> > &invalid_elements,
-												 const unsigned int &intersects,
-										vector<vector<unsigned int> > &conflicting_elements
+												 const unsigned int &intersects
 													){
 		//COMENTADO POR JAVIER
 		/*if(!insideBorder(meshpoints)){
@@ -254,7 +252,7 @@ namespace Clobscode
 			case 2: {
 				//std::cout << "applying template 2\n";				
 				BoundaryTemplate2 boun_t2;
-				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out,invalid_elements,conflicting_elements);
+				return boun_t2.getSubelements(pointindex,inpts,meshpoints,newpts,newsub,newsub_out);
 			}
 			case 3: {
 				//std::cout << "applying template 3\n";				
@@ -272,7 +270,7 @@ namespace Clobscode
 			}
 			case 6: {
 				BoundaryTemplate6 boun_t6;
-				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,newsub_out,invalid_elements,conflicting_elements);
+				return boun_t6.getSubelements(pointindex,outpts,meshpoints,newsub,newsub_out);
 			}
 			case 7: {
 				BoundaryTemplate7 boun_t7;

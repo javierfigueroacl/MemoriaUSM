@@ -14,9 +14,7 @@ namespace Clobscode
 										   vector<MeshPoint> &pts,
 										   list<MeshPoint> &newpts,
 										   vector<vector<unsigned int> > &newsubs_in,
-										   vector<vector<unsigned int> > &newsubs_out,
-										   vector<vector<unsigned int> > &invalid_elements,
-										   vector<vector<unsigned int> > &conflicting_elements){
+										   vector<vector<unsigned int> > &newsubs_out){
 		
 		HexRotation hrot;
 		vector<unsigned int> rotated;
@@ -28,17 +26,17 @@ namespace Clobscode
 		
 		//Possible cases for PatternA
 		if(rotated[3] == all[in[1]]){
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,0);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,0);
 			return true;
 		}
 		if(rotated[1] == all[in[1]]){
 			rotated = hrot.rotateNegY(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,1);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,1);
 			return true;
 		}
 		if(rotated[4] == all[in[1]]){
 			rotated = hrot.rotatePosZ(rotated);
-			PatternA(rotated,pts,newsubs_in,newsubs_out,invalid_elements,conflicting_elements,2);
+			PatternA(rotated,pts,newsubs_in,newsubs_out,2);
 			return true;
 		}
 		
@@ -75,84 +73,10 @@ namespace Clobscode
 									 vector<MeshPoint> &pts,
 									 vector<vector<unsigned int> > &newsubs_in,
 									 vector<vector<unsigned int> > &newsubs_out,
-									 vector<vector<unsigned int> > &invalid_elements,
-									 vector<vector<unsigned int> > &conflicting_elements,
 									 unsigned int rotstate){
 		
 		newsubs_in.reserve(1);
 		newsubs_out.reserve(1);		
-/*
-		//Recorrer elementos conflictivos de la malla
-		for(unsigned int i=0; i<conflicting_elements.size();i++){
-			vector <Point3D> elepts;
-			// Obtener elemento conflictivo
-			for(unsigned int k=0; k<conflicting_elements[i].size();k++){
-				elepts.push_back(pts.at(conflicting_elements[i][k]).getPoint());
-			}
-			// Obtener puntos del octante
-			vector <Point3D> mpts;
-			for(unsigned int j=0; j<all.size();j++)
-			mpts.push_back(pts.at(all[j]).getPoint());
-			int sharednode=0;
-
-			// Recorrer nodos y comparar coordenadas xyz
-			for(unsigned int j=0; j<mpts.size();j++)
-			for(unsigned int k=0; k<elepts.size()-2;k++) // Se resta el ultimo nodo, que no pertenece a la cara cuadrangular
-				if (mpts[j][0] == elepts[k][0]) // Restriccion x
-				if (mpts[j][1] == elepts[k][1]) // Restriccion y
-				if (mpts[j][2] == elepts[k][2]) // Restriccion z
-				sharednode++;
-			
-			// Si comparten 4 nodos en la misma posicion, significa que comparten la cara
-			if (sharednode == 4){
-
-				//cout <<" octante \n";
-				int tnode=0,innode=0;
-				for(unsigned int k=0; k<elepts.size()-2;k++)
-				if(pts.at(conflicting_elements[i][k]).getIOState(0) == true and pts.at(conflicting_elements[i][k]).getIOState(1) == true){
-				tnode++;
-				innode=k;
-				}
-				if (tnode == 1){
-				invalid_elements.push_back(conflicting_elements[i]);
-
-				vector<unsigned int> tetra1 (4,0);
-				vector<unsigned int> tetra2 (4,0);
-
-				if (innode == 0 or innode == 2){
-				
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][3];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][2];
-				tetra2[1] = conflicting_elements[i][1];
-				tetra2[2] = conflicting_elements[i][3];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-				else{
-
-				vector<unsigned int> tetra1 (4,0);
-				vector<unsigned int> tetra2 (4,0);
-				
-				tetra1[0] = conflicting_elements[i][0];
-				tetra1[1] = conflicting_elements[i][1];
-				tetra1[2] = conflicting_elements[i][2];
-				tetra1[3] = conflicting_elements[i][4];
-
-				tetra2[0] = conflicting_elements[i][0];
-				tetra2[1] = conflicting_elements[i][3];
-				tetra2[2] = conflicting_elements[i][2];
-				tetra2[3] = conflicting_elements[i][4];
-				}
-
-				newsubs_in.push_back(tetra1);
-				newsubs_in.push_back(tetra2);
-
-				}			
-			}
-		} */
 
 		vector<unsigned int> prism1 (6,0);
 		vector<unsigned int> prism2 (6,0);

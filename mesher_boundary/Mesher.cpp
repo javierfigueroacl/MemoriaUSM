@@ -134,16 +134,11 @@ namespace Clobscode
 		//to an intern feature
 		projectCloseToInsideBoundaryNodes(pClientData,pClientPointProjectorFunc);
 
-		//agregado por javier
-		//label nodes and elements, then remove outside elements
-		labelNodesAndElements2(pClientData,pClientPointTestFunc);		
+		//updates labels of nodes and elements
+		updateLabels(pClientData,pClientPointTestFunc);		
 
 		//apply the surface Templates
 		applySurfaceTemplates(pClientData,pClientPointTestFunc);
-
-		//agregado por javier
-		//label nodes and elements, then remove outside elements
-		//labelNodesAndElements2(pClientData,pClientPointTestFunc);
 		
 		//apply boundary templates to well represent inner surfaces
 		applyBoundaryTemplates(pClientData,pClientPointTestFunc);
@@ -313,7 +308,7 @@ namespace Clobscode
 		}
 	}
 
-	void Mesher::labelNodesAndElements2(void * pClientData, 
+	void Mesher::updateLabels(void * pClientData, 
 									   PTRFUN_POINT_IN_MESH pClientPointTestFunc){
 		
 		//check status of all points in the mesh.
@@ -375,15 +370,8 @@ namespace Clobscode
 					to_add = true;
 				}
 			}
-				//newele.push_back(elements[i]);
 					 
 		}
-		//now element std::list from Vomule mesh can be cleared, as all remaining
-		//elements are still in use and attached to newele std::list.
-		//elements.clear();
-		//for (eiter = newele.begin(); eiter!=newele.end(); eiter++) {
-		//	elements.push_back(*eiter);
-		//}
 	}
 	
 	//-----------------------------------------------------
@@ -764,13 +752,11 @@ namespace Clobscode
 		list<unsigned int> in_to_check;
 		list<unsigned int>::iterator e_in_iter;
 
-		vector <EnhancedElement> tmp_elements;
-		vector < vector <unsigned int> > conflicting_elements;
+		//vector <EnhancedElement> tmp_elements;
+		//vector < vector <unsigned int> > conflicting_elements;
 		vector < vector <unsigned int> > invalid_elements;
-		// Lista Posiciones de elementos que son divididos y cantidad de nuevos elementos, para convertir posiciones
-		vector < vector <unsigned int> > regnewele;
 		//Crear lista de posiciones de elementos conflictivos
-		vector<unsigned int> conpos;	
+		//vector<unsigned int> conpos;	
 
 		for (unsigned int i=0; i<elements.size(); i++) {
 
@@ -778,15 +764,14 @@ namespace Clobscode
 
 			//////////////////////////////////////////////////////////////////////
 			// fix problem with surface pattern neightborhood with boundary patterns
-			// Corregir elementos conflictivos con patrones internos
 			vector <unsigned int> points_ele = elements[i].getPoints();
 
 			bool surf_conf=false;
-
+			// fix conflicting elements with boundary patterns
 			if(elements[i].fixconflictingelements(points_ele,i,points,tmpele,tmppts,old_md,n_meshes)){
 				continue;
 			}
-
+			// Divide hybrid hex
 			if (points_ele.size() == 8){
 				bool inall=false,outall=false;
 				for(unsigned int k=0; k<points_ele.size();k++)
@@ -802,14 +787,13 @@ namespace Clobscode
 			}
 			///////////////////////////////////////////////////////////////
 
-			//IF AGREGADO POR JAVIER
+			//if isnt hybrid element
 			if(surf_conf == false)
 			if (!elements[i].insideBorder(points)) {
 				newele.push_back(elements[i]);
 				continue;
 			}
 			
-			//IF AGREGADO POR JAVIER
 			bool found = false;
 			unsigned int intersected_surf;
 			for (unsigned int j=0; j<n_meshes; j++) {
@@ -820,7 +804,7 @@ namespace Clobscode
 				}
 			}
 
-			//IF AGREGADO POR JAVIER
+			//if isnt hybrid element
 			if(surf_conf == false)
 			if (!found) {
 				std::cout << "Warning in Mesher::applyBoundaryTemplates :";
@@ -834,45 +818,12 @@ namespace Clobscode
 
 			//Important note: the applyBoundary function is currently considering
 			
-			// agregados invalid_elements y conflicting_elements como parametros
-			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,invalid_elements,intersected_surf,conflicting_elements)) {
+			if (!elements[i].applyBoundaryTemplates(points,tmppts,replace,newinside,intersected_surf)) {
 				newele.push_back(elements[i]);
 				continue;
 			}
-			else {
-
-				//Debugging
-				/*
-				cout <<" --------2do debugging--------- \n";
-				vector <EnhancedElement> tmp_elements_2;
-				tmp_elements_2.push_back(elements[i]);
-				int vertices_in;
-
-
-				vector <unsigned int> points_ele_2 = tmp_elements_2[0].getPoints();
-				//cout << points_ele_2.size() << "<-- points_ele_2.size() \n";
-				if (points_ele_2.size() == 5){
-				vector <Point3D> elepts;
-				// Obtener elemento conflictivo
-				for(unsigned int k=0; k<points_ele_2.size();k++)
-					elepts.push_back(points.at(points_ele_2[k]).getPoint());
-
-				vertices_in = 0;
-					cout << i << " <- posicion i \n";
-					for (unsigned int k=0; k < elepts.size(); k++)
-					cout << elepts[k] << " <- punto xyz \n";
-				}*/
-				////////////////////////////////////////////////////////////////////////
-
-				//Agregar a lista de posiciones de elementos conflictivos
-				vector <EnhancedElement> tmp_elements_2;
-				tmp_elements_2.push_back(elements[i]);
-				vector <unsigned int> points_ele_2 = tmp_elements_2[0].getPoints();
-				if (points_ele_2.size() == 5)
-				conpos.push_back(i);
-
+			else 
 				removed.push_back(elements[i]);
-			}
 
 
 			//new elements intersecting the input surface
@@ -884,15 +835,6 @@ namespace Clobscode
 			//new elements that do not intersect the new surface:
 			//they are directly inserted to newele list.
 
-			// Guardar Lista Posiciones de elementos que son divididos y cantidad de nuevos elementos, para convertir posiciones
-			
-			vector <unsigned int > tmpregnewele;
-			if (newinside.size() != 1){
-				tmpregnewele.push_back(i);
-				tmpregnewele.push_back(newinside.size()-1);
-				regnewele.push_back(tmpregnewele);
-			}
-
 			for (unsigned int j=0; j<newinside.size(); j++) {
 				EnhancedElement ee(newinside[j],n_meshes);
 				ee.setMaxDistance(old_md);
@@ -903,46 +845,6 @@ namespace Clobscode
 			}
 		}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//2do debugging
-/*			cout <<" --------2do debugging--------- \n";
-			vector <EnhancedElement> tmp_elements_2;
-			for (unsigned int l=0; l<elements.size(); l++) {
-				tmp_elements_2.push_back(elements[l]);
-			}
-			int vertices_in;
-			for(unsigned int l=0; l<tmp_elements_2.size();l++){
-
-			vector <unsigned int> points_ele_2 = tmp_elements_2[l].getPoints();
-
-			if (points_ele_2.size() == 6){
-				vector <Point3D> elepts;
-				// Obtener elemento conflictivo
-				for(unsigned int k=0; k<points_ele_2.size();k++)
-					elepts.push_back(points.at(points_ele_2[k]).getPoint());
-				vertices_in = 0;
-				// Comparar con octante de prueba
-				for(unsigned int k=0; k<elepts.size();k++){
-					if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==2.25) vertices_in++;
-					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==2.25) vertices_in++;
-					//else if (elepts[k][0]==3.52932 and elepts[k][1]==3.53122 and elepts[k][2]==-1.5) vertices_in++;
-					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==2.25) vertices_in++;
-					else if ((elepts[k][0]>3.51 and elepts[k][0] < 3.53) and (elepts[k][1]>3.53 and elepts[k][1] < 3.54) and elepts[k][2]==-1.5) vertices_in++;
-					else if (elepts[k][0]==-0.25 and elepts[k][1]==3.5 and elepts[k][2]==-1.5) vertices_in++;
-					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
-					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==2.25) vertices_in++;
-					else if (elepts[k][0]==3.5 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
-					else if (elepts[k][0]==-0.25 and elepts[k][1]==7.25 and elepts[k][2]==-1.5) vertices_in++;
-					}
-				
-				//cout <<vertices_in<< " <- vertices in \n";
-				if (vertices_in == 6){
-					for (unsigned int k=0; k < elepts.size(); k++)
-					cout << elepts[k] << " <- punto xyz \n";
-					}
-				}
-			} */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//check in/out state of new inserted nodes.
 		if (!tmppts.empty()) {
 			unsigned int npts = points.size()+tmppts.size();
