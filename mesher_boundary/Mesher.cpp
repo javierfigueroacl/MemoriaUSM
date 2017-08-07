@@ -767,19 +767,24 @@ namespace Clobscode
 			vector <unsigned int> points_ele = elements[i].getPoints();
 
 			bool surf_conf=false;
-			// fix conflicting elements with boundary patterns
+			// fix hybrid elements
 			if(elements[i].fixconflictingelements(points_ele,i,points,tmpele,tmppts,old_md,n_meshes)){
 				continue;
 			}
 			// Divide hybrid hex
 			if (points_ele.size() == 8){
 				bool inall=false,outall=false;
-				for(unsigned int k=0; k<points_ele.size();k++)
-				if(points.at(points_ele[k]).getIOState(0) == true and points.at(points_ele[k]).getIOState(1) == true){
+				for(unsigned int k=0; k<points_ele.size();k++){
+				unsigned int tintersects=0;
+				for(unsigned int j=0;j<n_meshes;j++)
+				if(points.at(points_ele[k]).getIOState(j) == true) tintersects++;
+
+				if(tintersects == n_meshes){
 				inall=true;
 				}
-				else if(points.at(points_ele[k]).getIOState(0) == false and points.at(points_ele[k]).getIOState(1) == false){
+				else if(tintersects == 0){
 				outall=true;
+				}
 				}
 
 				if(inall== true and outall==true) surf_conf=true;
